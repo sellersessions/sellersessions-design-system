@@ -1,0 +1,212 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --ss-purple: #461499;
+    --ss-purple-light: #753EF7;
+    --ss-purple-dark: #0C0322;
+    --ss-accent: #753EF7;
+    --ss-gold: #FBBF24;
+    --ss-bg: #0C0322;
+    --ss-bg-card: #1a1a2e;
+    --ss-bg-hover: #252040;
+    --ss-text: #FAFAFC;
+    --ss-text-secondary: #D2D2D2;
+    --ss-text-tertiary: #9CA3AF;
+    --ss-border: #1F1F1F;
+    --container-padding: 1rem;
+    --section-padding: 4rem;
+  }
+
+  @media (min-width: 768px) {
+    :root {
+      --container-padding: 2rem;
+      --section-padding: 6rem;
+    }
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-ss-bg text-ss-text font-sans antialiased;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading font-bold text-ss-text;
+  }
+
+  a {
+    @apply text-ss-accent hover:text-ss-accent-light transition-colors;
+  }
+
+  #root {
+    @apply bg-ss-bg min-h-screen;
+  }
+
+  /* Reset Elementor theme styles inside React app */
+  #root button,
+  #root [role="button"] {
+    border: none;
+    outline: none;
+    background: none;
+    box-shadow: none;
+  }
+
+  #root button:focus,
+  #root [role="button"]:focus {
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+@layer components {
+  /* ========================================
+     GLOW CARD - gradient border + mouse glow
+     ======================================== */
+  .glow-card {
+    position: relative;
+    background: linear-gradient(180deg, #1a1a2e 0%, #0C0322 100%);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .glow-card-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Gradient border via mask */
+  .glow-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 12px;
+    padding: 1px;
+    background: linear-gradient(180deg, #753EF7 0%, #461499 30%, rgba(70, 20, 153, 0.3) 60%, rgba(30, 30, 30, 0.5) 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* Mouse-following glow */
+  .glow-card::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(117, 62, 247, 0.4) 0%, rgba(70, 20, 153, 0.2) 25%, transparent 50%);
+    border-radius: 14px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .glow-card:hover::after {
+    opacity: 1;
+  }
+
+  .glow-card:hover {
+    box-shadow: 0 0 30px rgba(117, 62, 247, 0.3), inset 0 0 20px rgba(117, 62, 247, 0.05);
+    transform: translateY(-2px);
+  }
+
+  .glow-card-hover {
+    cursor: pointer;
+  }
+
+  .glow-card-hover:hover {
+    transform: translateY(-4px);
+  }
+
+  /* ========================================
+     BUTTONS
+     ======================================== */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all duration-300;
+  }
+
+  .btn-primary {
+    @apply bg-ss-purple text-white hover:bg-ss-purple-light shadow-glow hover:shadow-lg;
+  }
+
+  .btn-secondary {
+    @apply bg-ss-bg-card text-ss-text border border-ss-border hover:border-ss-purple hover:bg-ss-bg-hover;
+  }
+
+  .btn-cta {
+    @apply bg-ss-accent text-white hover:bg-ss-accent-dark shadow-glow-accent hover:shadow-lg;
+  }
+
+  .btn-outline {
+    @apply bg-transparent text-ss-text border-2 border-ss-purple hover:bg-ss-purple hover:border-ss-purple;
+  }
+
+  /* ========================================
+     LAYOUT
+     ======================================== */
+  .card {
+    @apply bg-ss-bg-card rounded-xl border border-ss-border p-6 shadow-card transition-all duration-300;
+  }
+
+  .card-hover {
+    @apply hover:border-ss-purple hover:shadow-glow hover:-translate-y-1;
+  }
+
+  .section {
+    @apply py-16 md:py-24 px-4 md:px-8;
+  }
+
+  .section-dark {
+    @apply bg-ss-bg;
+  }
+
+  .section-card {
+    @apply bg-ss-bg-card;
+  }
+
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 md:px-8;
+  }
+
+  /* ========================================
+     GRADIENTS
+     ======================================== */
+  .gradient-purple {
+    background: linear-gradient(135deg, var(--ss-purple) 0%, var(--ss-purple-light) 100%);
+  }
+
+  .gradient-hero {
+    background: linear-gradient(180deg, var(--ss-purple-dark) 0%, var(--ss-bg) 100%);
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-ss-purple-light to-ss-accent;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .glass {
+    @apply bg-ss-bg-card/80 backdrop-blur-md;
+  }
+}
