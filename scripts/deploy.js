@@ -3,8 +3,8 @@
 /**
  * Seller Sessions Deploy Script
  *
- * Builds the React app, uploads assets to WordPress Media Library,
- * and updates (or creates) a WP page with the embed HTML.
+ * Builds the React app, pushes assets to GitHub Pages,
+ * and updates a WP page with embed HTML pointing to the hosted files.
  *
  * Usage:
  *   npm run deploy -- --page ssl2026
@@ -23,6 +23,9 @@ import { execSync } from 'child_process'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.join(__dirname, '..')
+
+// GitHub Pages base URL (set after enabling Pages on the repo)
+const GH_PAGES_BASE = 'https://sellersessions.github.io/sellersessions-design-system'
 
 // ---------------------------------------------------------------------------
 // 1. Load .env
@@ -64,7 +67,7 @@ const AUTH = 'Basic ' + Buffer.from(`${WP_USER}:${WP_APP_PASSWORD}`).toString('b
 // ---------------------------------------------------------------------------
 
 const PAGE_MAP = {
-  ssl2026: { name: 'SSL 2026 Landing', liveId: 23003, testId: null },
+  ssl2026: { name: 'SSL 2026 Landing', liveId: 23003, testId: 28352 },
   eventshub: { name: 'Events Hub', liveId: null, testId: null },
   eventsarchive: { name: 'Events Archive', liveId: null, testId: null },
 }
@@ -113,61 +116,100 @@ if (!jsFile) {
 }
 
 // ---------------------------------------------------------------------------
-// 5. Upload assets to WP Media Library
+// 5. Push built assets to gh-pages branch
 // ---------------------------------------------------------------------------
 
-async function uploadToMedia(filePath, fileName) {
-  const fileData = fs.readFileSync(filePath)
-  const contentType = fileName.endsWith('.js')
-    ? 'application/javascript'
-    : 'text/css'
+function pushToGhPages() {
+  console.log('\nPublishing assets to GitHub Pages...')
 
-  const res = await fetch(`${WP_URL}/wp-json/wp/v2/media`, {
-    method: 'POST',
-    headers: {
-      'Authorization': AUTH,
-      'Content-Disposition': `attachment; filename="${fileName}"`,
-      'Content-Type': contentType,
-    },
-    body: fileData,
-  })
+  const distDir = path.join(ROOT, 'dist')
+  const tmpDir = path.join(ROOT, '.gh-pages-tmp')
 
-  if (!res.ok) {
-    const text = await res.text()
-    throw new Error(`Upload failed for ${fileName}: ${res.status} ${text}`)
+  // Clean up any previous tmp dir
+  if (fs.existsSync(tmpDir)) {
+    execSync(`rm -rf "${tmpDir}"`, { cwd: ROOT })
   }
 
-  const data = await res.json()
-  return data.source_url
+  try {
+    // Clone just the gh-pages branch (or create orphan)
+    try {
+      execSync(`git clone --depth 1 --branch gh-pages "$(git remote get-url origin)" "${tmpDir}"`, {
+        cwd: ROOT, stdio: 'pipe'
+      })
+    } catch {
+      // Branch doesn't exist yet -- create orphan
+      fs.mkdirSync(tmpDir, { recursive: true })
+      execSync('git init', { cwd: tmpDir, stdio: 'pipe' })
+      execSync(`git remote add origin "$(cd "${ROOT}" && git remote get-url origin)"`, {
+        cwd: tmpDir, stdio: 'pipe'
+      })
+      execSync('git checkout --orphan gh-pages', { cwd: tmpDir, stdio: 'pipe' })
+    }
+
+    // Clear old assets and copy new ones
+    const tmpAssets = path.join(tmpDir, 'assets')
+    if (fs.existsSync(tmpAssets)) {
+      execSync(`rm -rf "${tmpAssets}"`, { cwd: tmpDir })
+    }
+    fs.mkdirSync(tmpAssets, { recursive: true })
+
+    // Copy built files
+    for (const f of fs.readdirSync(path.join(distDir, 'assets'))) {
+      fs.copyFileSync(
+        path.join(distDir, 'assets', f),
+        path.join(tmpAssets, f)
+      )
+    }
+
+    // Add a .nojekyll file (tells GitHub Pages to serve files as-is)
+    fs.writeFileSync(path.join(tmpDir, '.nojekyll'), '')
+
+    // Commit and push
+    execSync('git add -A', { cwd: tmpDir, stdio: 'pipe' })
+
+    try {
+      execSync('git diff --cached --quiet', { cwd: tmpDir, stdio: 'pipe' })
+      console.log('  No changes to assets -- skipping push.')
+    } catch {
+      // There are changes to commit
+      execSync(`git commit -m "deploy: ${new Date().toISOString()}"`, {
+        cwd: tmpDir, stdio: 'pipe'
+      })
+      execSync('git push origin gh-pages --force', { cwd: tmpDir, stdio: 'pipe' })
+      console.log('  Assets pushed to gh-pages branch.')
+    }
+  } finally {
+    // Clean up tmp dir
+    execSync(`rm -rf "${tmpDir}"`, { cwd: ROOT })
+  }
+
+  const jsUrl = `${GH_PAGES_BASE}/assets/${jsFile}`
+  const cssUrl = cssFile ? `${GH_PAGES_BASE}/assets/${cssFile}` : null
+
+  console.log(`  JS:  ${jsUrl}`)
+  if (cssUrl) console.log(`  CSS: ${cssUrl}`)
+
+  return { jsUrl, cssUrl }
 }
 
+// ---------------------------------------------------------------------------
+// 6. Build embed HTML and update WP page
+// ---------------------------------------------------------------------------
+
 async function main() {
-  console.log('\nUploading assets to WordPress...')
+  const { jsUrl } = pushToGhPages()
 
-  const jsUrl = await uploadToMedia(path.join(assetsDir, jsFile), jsFile)
-  console.log(`  JS: ${jsUrl}`)
-
-  let cssUrl = null
+  // Read CSS content for inline <style> (WP strips <link> tags from content)
+  // External <script src> works, but <link href> does not
+  let cssInline = ''
   if (cssFile) {
-    cssUrl = await uploadToMedia(path.join(assetsDir, cssFile), cssFile)
-    console.log(`  CSS: ${cssUrl}`)
+    cssInline = fs.readFileSync(path.join(assetsDir, cssFile), 'utf-8')
   }
 
-  // ---------------------------------------------------------------------------
-  // 6. Build embed HTML
-  // ---------------------------------------------------------------------------
-
   const embedHtml = `<!-- Seller Sessions Page Builder - Auto-deployed -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
-${cssUrl ? `<link rel="stylesheet" href="${cssUrl}">` : ''}
+<style>${cssInline}</style>
 <div id="root" style="min-height: 100vh;"></div>
 <script type="module" src="${jsUrl}"></script>`
-
-  // ---------------------------------------------------------------------------
-  // 7. Create or update WP page
-  // ---------------------------------------------------------------------------
 
   let targetPageId = pageConfig.testId
 
@@ -200,9 +242,10 @@ ${cssUrl ? `<link rel="stylesheet" href="${cssUrl}">` : ''}
     const created = await createRes.json()
     targetPageId = created.id
     console.log(`  Created draft page ID: ${created.id}`)
-    console.log(`  Preview: ${created.link}?preview=true`)
-
-    // Save the test page ID back so future deploys update the same page
+    const previewUrl = created.link.includes('?')
+      ? `${created.link}&preview=true`
+      : `${created.link}?preview=true`
+    console.log(`  Preview: ${previewUrl}`)
     console.log(`\n  >> Add testId: ${created.id} to PAGE_MAP in scripts/deploy.js`)
   } else {
     // Update existing page
