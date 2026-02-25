@@ -101,7 +101,9 @@ Key files: `scripts/deploy.js` (core pipeline), `src/pages/` (3 pages), `src/com
 
 ## Next Up
 
-- [ ] Test content guardrails workflow -- make a real content update using the spec
+- [x] Test content guardrails workflow -- cold test completed (branch: test/content-guardrails-cold-test)
+- [ ] Alex reviews standalone HTML (`review/SSL2026-review-draft.html`)
+- [ ] Fix testimonial grid debt (Nir 11w, Rony 13w -- need longer quotes)
 - [ ] Deploy updated SSL 2026 page to WP test page for review
 - [ ] Speaker headshot photos -- swap placeholders for real images
 - [ ] Promote test page to replace live Elementor page (only when Danny approves)
@@ -128,6 +130,17 @@ Built the strategic content layer that was missing from the page builder. The ex
 - No new agents or skills -- spec file IS the guardrail, existing agents validate against it
 - 4MAT learning cycle maps all 14 sections: WHY (1-3), WHAT (4,8,9), HOW (5-7), WHAT IF (10-14)
 - Cross-section rules: grid parity, card height balance, data consistency, no orphan changes
+
+**Cold test (13:02 GMT):** Branch `test/content-guardrails-cold-test` (commit 996433d).
+Claude made 4 autonomous content decisions using spec + reference files:
+1. Toni testimonial extended (was 43w, now 55w -- within 20-60w limit)
+2. FAQ venue spaces rewritten with Nave/Garden/Tent detail (55w, within 30-80w)
+3. Speaker prep hours added to Section 7 card (40-60 hours + full day rehearsals)
+4. Teaching 10K hours added to Section 7 card (from wrap email reference)
+
+Guardrails caught: Section 7 grid balance failure (18w/21w/30w = 100% variance). All 6 cards rebalanced to 24-26w range (4% variance). Pre-existing testimonial debt flagged: Nir 11w, Rony 13w vs Emma 43w, Toni 55w -- needs longer quotes.
+
+Standalone review HTML: `review/SSL2026-review-draft.html` (329KB, self-contained, for Alex).
 
 ---
 
