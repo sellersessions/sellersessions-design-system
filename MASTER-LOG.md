@@ -6,7 +6,7 @@
 
 Working on the Seller Sessions Page Builder at `~/Claude-Code-Projects-Restored/sellersessions-design-system/`. React + TypeScript design system that deploys to WordPress via REST API (bypasses the broken WordPress MCP).
 
-**Deploy pipeline proven:** `npm run deploy -- --page ssl2026` builds, pushes assets to GitHub Pages, and updates WP page content via REST API. Uses hybrid approach: inline `<style>` for CSS + external `<script src>` for JS (WordPress strips both `<link>` and inline `<script>` from page content).
+**Deploy pipeline proven:** `npm run deploy -- --page ssl2026` builds, pushes assets to GitHub Pages, and updates WP page content via REST API. CSS is inlined via `<style>` tag. JS is loaded via the Code Snippets plugin (snippet ID 7) which enqueues the script in `wp_footer` -- because Wordfence strips ALL `<script>` tags from page content. Deploy script auto-updates the snippet with the new JS URL after each deploy. WP Rocket cache is purged automatically via a custom REST endpoint (snippet ID 8).
 
 Key files: `scripts/deploy.js` (core pipeline), `src/pages/` (3 pages), `src/components/` (13 components), `.env` (WP credentials, gitignored).
 
@@ -14,17 +14,97 @@ Key files: `scripts/deploy.js` (core pipeline), `src/pages/` (3 pages), `src/com
 
 **WP credentials:** `.env` has `danny@sellersessions.com` + Application Password (created by Alex). WP user = DannyNew.
 
-**Page IDs:** SSL 2026 test page = 28352 (draft). Live Elementor page = 23003 (don't touch). Events Hub + Archive = TBD.
+**Page IDs:** SSL 2026 test page = 28352 (draft, published). Live Elementor page = 23003 (don't touch). Events Hub + Archive = TBD.
 
-**What works:** Full pipeline end-to-end. React app mounts on WP, all sections render (hero, stats, FAQ, testimonials, CTA).
+**What works:** Full pipeline end-to-end. React app mounts on WP with all sections rendering correctly. Tailwind CSS with `important: '#root'` for specificity. Google Fonts loaded via `@import`. Full-width layout via `elementor_canvas` template. Auto cache purge after deploy.
 
-**What needs fixing:** Tailwind utility classes partially applying (text invisible in some sections). WP theme wrapper (header/title) needs removing via full-width page template.
+**What needs doing:** Promote test page to replace live Elementor page (when Danny approves). Repeat for Events Hub and Events Archive pages.
+
+## Iteration Cycle (permanent reference)
+
+```
+ ITERATION CYCLE -- SS PAGE BUILDER
+ ═══════════════════════════════════════════════════════════════════
+
+ WHAT CHANGES                WHERE IT LIVES              WHO
+ ─────────────────────────────────────────────────────────────────
+ Text, copy, stats,       │ src/pages/*.tsx             │ Danny
+ FAQs, prices, dates      │ (hardcoded in TSX)          │ via Claude
+ ─────────────────────────┼─────────────────────────────┼──────────
+ Images, videos           │ Remote URLs in TSX          │ Danny
+                          │ (hosted on WP media)        │ via Claude
+ ─────────────────────────┼─────────────────────────────┼──────────
+ Styles, colours,         │ tailwind.config.js          │ Danny
+ spacing, fonts           │ src/index.css               │ via Claude
+                          │ inline styles in TSX        │ or Alex
+ ─────────────────────────┼─────────────────────────────┼──────────
+ UI components,           │ src/components/*.tsx         │ Danny
+ layout, new sections     │                             │ or Alex
+ ─────────────────────────┼─────────────────────────────┼──────────
+ New pages                │ src/pages/ + deploy.js      │ Danny
+                          │ + Code Snippet on WP        │ via Claude
+ ─────────────────────────┴─────────────────────────────┴──────────
+
+
+ THE PIPELINE (same for ALL change types)
+ ═══════════════════════════════════════════════════════════════════
+
+ ┌──────────┐    ┌──────────────┐    ┌──────────────────────────┐
+ │  EDIT    │───>│  BUILD       │───>│  DEPLOY                  │
+ │  source  │    │  Vite builds │    │  npm run deploy --page X │
+ │  files   │    │  IIFE JS +   │    │                          │
+ └──────────┘    │  CSS bundle  │    │  1. Push JS → GH Pages   │
+                 └──────────────┘    │  2. Inline CSS → WP API  │
+                                     │  3. Update Code Snippet  │
+                                     │  4. Purge WP Rocket      │
+                                     └────────────┬─────────────┘
+                                                   │
+                                     ┌─────────────▼─────────────┐
+                                     │  VERIFY                   │
+                                     │  Open page (no ?nocache   │
+                                     │  needed -- auto-purged)   │
+                                     └────────────┬──────────────┘
+                                                   │
+                                          happy? ──┤── no ──> back to EDIT
+                                                   │
+                                                  done
+
+
+ SPEED BY CHANGE TYPE
+ ═══════════════════════════════════════════════════════════════════
+
+ Tier 1  Text/data       ~3 min    Edit TSX → deploy
+ Tier 2  Styles          ~3 min    Edit CSS/config → deploy
+ Tier 3  Images          ~5 min    Upload to WP media → edit URL → deploy
+ Tier 4  Components     ~10-20m    Edit/create component → test → deploy
+ Tier 5  New pages      ~30+ min   Create page + config + snippet mapping
+
+
+ TWO WORKFLOWS
+ ═══════════════════════════════════════════════════════════════════
+
+ DANNY (fast loop):
+ "Change X" → Claude edits → Claude deploys → verify → done
+
+ ALEX (PR loop):
+ Alex edits → pushes branch → PR → Danny approves → Claude deploys
+ (Alex has repo access but NOT .env / WP deploy credentials)
+
+
+ REMAINING FRICTION
+ ═══════════════════════════════════════════════════════════════════
+
+ [!] No WP-context preview without deploying
+ [!] Images need separate upload to WP media first
+ [!] Every change = full rebuild (no incremental)
+```
 
 ## Next Up
 
-- [ ] Fix Tailwind CSS rendering on WP (some utility classes not applying -- text invisible in sections)
-- [ ] Remove WP theme wrapper (use full-width/blank page template)
-- [ ] Add Google Fonts loading (Inter, Poppins, Plus Jakarta Sans)
+- [x] Fix Tailwind CSS rendering on WP (done -- `important: '#root'`)
+- [x] Remove WP theme wrapper (done -- `elementor_canvas` template)
+- [x] Add Google Fonts loading (done -- `@import` in CSS)
+- [x] Automate WP Rocket cache purge (done -- custom REST endpoint + deploy.js)
 - [ ] Promote test page to replace live Elementor page (only when Danny approves)
 - [ ] Repeat for Events Hub and Events Archive pages
 
@@ -57,3 +137,52 @@ Key files: `scripts/deploy.js` (core pipeline), `src/pages/` (3 pages), `src/com
 - WordPress `the_content()` keeps: `<style>`, `<script src>` (external), `<div>`, standard HTML
 - GitHub Copilot subscription != GitHub Pro. Pages requires Pro ($4/mo) or public repo.
 - WP Application Password is API-only, separate from login password
+
+---
+
+## Session 2 -- 2026-02-25 02:00-06:00 GMT
+
+**Phase A: Tailwind CSS rendering fix**
+- Root cause: WP's own styles had higher specificity than Tailwind utilities
+- Fix: Added `important: '#root'` to `tailwind.config.js` -- scopes all Tailwind utilities to `#root` container
+- All text, colours, spacing now render correctly
+
+**Phase B: Google Fonts**
+- Added `@import` statements for Inter, Poppins, and Plus Jakarta Sans in `src/index.css`
+- Fonts load correctly on WP (no `<link>` needed -- `@import` inside `<style>` works)
+
+**Phase C: Full-width template**
+- Set `template: 'elementor_canvas'` in the WP REST API page update call
+- Removes WP theme header, footer, sidebar -- React app gets the full viewport
+
+**Phase D: Wordfence discovery + Code Snippets solution**
+- Discovered Wordfence (security plugin) strips ALL `<script>` tags from `the_content()` output -- not just inline, but also `<script src>`
+- Session 1 had concluded external `<script src>` worked. It didn't. Wordfence kills it on render.
+- Solution: Code Snippets plugin (already installed on WP). Created snippet ID 7 ("SS Page Builder - Script Loader") that enqueues JS via `wp_footer` action based on page ID.
+- Deploy script now auto-updates snippet code with the new JS URL after each build.
+
+**Phase E: Vite build changes**
+- Changed build format from ES module to IIFE (Immediately Invoked Function Expression)
+- IIFE is self-contained -- no `import`/`export`, no `type="module"` needed
+- Simpler to load via `wp_footer` enqueue
+
+**Phase F: Collaboration**
+- Invited Alex (AlejandroDL46) to repo with write access
+- Alex can edit components/pages and push PRs, but doesn't have `.env` or deploy credentials
+
+**Phase G: WP Rocket cache**
+- Identified that WP Rocket caches pages aggressively -- after deploy, old content serves until cache is purged
+- Created cache purge automation: Code Snippet (ID 8) registers `/wp-json/ss/v1/purge-cache` endpoint, deploy script calls it after every deploy
+
+**Phase H: Iteration cycle documentation**
+- Created 4MAT-style iteration cycle map (Why / What / How / What If)
+- Documents all change types, the pipeline, speed tiers, and two workflows (Danny fast loop vs Alex PR loop)
+- Saved as permanent reference in master log + README
+
+**Key discoveries:**
+- Wordfence strips `<script>` tags (both inline and src) from `the_content()` output
+- Code Snippets plugin bypasses this by enqueuing scripts in `wp_footer` (outside content)
+- `elementor_canvas` template gives full-width blank canvas
+- Tailwind `important` config scopes utility specificity to a container
+- WP Rocket needs explicit cache purge after REST API content updates
+- 10 architectural decisions/patterns from recent work captured into ChromaDB (7 decisions + 3 patterns)
