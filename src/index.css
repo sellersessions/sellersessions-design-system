@@ -1,3 +1,6 @@
+/* Google Fonts -- loaded via @import so it survives WP's <link> stripping */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -209,4 +212,33 @@
   .glass {
     @apply bg-ss-bg-card/80 backdrop-blur-md;
   }
+}
+
+/* ========================================
+   WP THEME OVERRIDES
+   Strip away any theme chrome that leaks through
+   even when using Elementor Canvas template
+   ======================================== */
+.page-title,
+.entry-title,
+.entry-header,
+.site-header,
+.site-footer,
+.elementor-location-header,
+.elementor-location-footer {
+  display: none !important;
+}
+
+.site-main,
+.entry-content,
+.page-content {
+  padding: 0 !important;
+  margin: 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+body.page #root {
+  margin: 0;
+  padding: 0;
 }

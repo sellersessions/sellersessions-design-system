@@ -73,7 +73,7 @@ const FAQ_ITEMS = [
   },
   {
     question: 'How does the day work?',
-    answer: 'The day is structured as a hands-on workshop format. Morning sessions focus on tool building and AI implementation, midday covers campaign architecture, afternoon is live execution and collaboration, and the evening is dedicated to high-trust networking.',
+    answer: 'The day is structured as a hands-on workshop format across three spaces: The Nave for sessions, The Garden for breaks and lunch, and a heated Bedouin Tent for networking. Morning focuses on tool building and AI implementation, midday on campaign architecture, afternoon on live execution, and the evening on high-trust networking over a buffet dinner.',
   },
   {
     question: 'Do I need coding experience?',
@@ -101,7 +101,7 @@ const FAQ_ITEMS = [
   },
   {
     question: "What's included in the ticket?",
-    answer: "Your workshop ticket includes a suite of custom tools that don't exist anywhere else on the market, plus lunch and refreshments throughout the day. You'll leave with working systems and all the frameworks needed to keep building.",
+    answer: "Your ticket includes the full-day hands-on workshop, a suite of custom tools that don't exist anywhere else on the market, lunch and refreshments throughout the day, plus a VIP buffet dinner and evening networking at the venue. You'll leave with working systems and all the frameworks needed to keep building.",
   },
   {
     question: "What's your refund policy?",
@@ -113,7 +113,7 @@ const FAQ_ITEMS = [
   },
   {
     question: 'What about networking post-workshop?',
-    answer: 'The evening after the workshop is dedicated to high-trust networking and deep conversations. This is where lasting partnerships and friendships are formed among like-minded sellers.',
+    answer: "After the workshop wraps at 5pm, the venue transforms for a VIP buffet dinner and evening networking. Glenn, our lighting engineer, relights the entire building for a warm, intimate atmosphere. Think courtyard conversations, not open-bar chaos. This is where lasting partnerships are formed.",
   },
   {
     question: 'What are the travel requirements?',
@@ -129,7 +129,7 @@ const FAQ_ITEMS = [
   },
   {
     question: 'Where is the workshop? How do I get there?',
-    answer: 'The exact venue details and directions will be shared with ticket holders closer to the event date. The venue is centrally located in London with excellent transport links.',
+    answer: "The workshop takes place at St Ethelburga's Centre, Bishopsgate, London (EC2M 4QD). It's a short walk from Liverpool Street station, with excellent connections from all London airports. Detailed directions will be sent with your ticket confirmation.",
   },
 ]
 
@@ -180,7 +180,7 @@ export default function SSLive2026() {
                   style={{ backgroundColor: 'rgba(117, 62, 247, 0.15)', color: '#753EF7', border: '1px solid rgba(117, 62, 247, 0.3)' }}
                 >
                   <Calendar className="w-4 h-4" />
-                  May 9, 2026 &nbsp;|&nbsp; London
+                  May 9, 2026 &nbsp;|&nbsp; St Ethelburga's Centre, London
                 </span>
               </motion.div>
 
@@ -303,7 +303,7 @@ export default function SSLive2026() {
               viewport={{ once: true }}
               className="mt-8 text-sm font-semibold text-[#753EF7]"
             >
-              Speaker lineup announcement coming soon
+              <a href="#speakers" className="hover:underline">Meet your speakers ↓</a>
             </motion.p>
           </div>
         </Container>
@@ -532,27 +532,27 @@ export default function SSLive2026() {
               {
                 icon: <Wrench className="w-8 h-8" />,
                 title: 'Practical Workshop Format',
-                description: 'Clear, hands-on sessions with structured activities — all designed to give you implementable takeaways that transform theory into immediate practice.',
+                description: 'Clear, hands-on sessions with structured activities and real-time builds on your own laptop -- designed to give you implementable takeaways that transform theory into immediate practice.',
               },
               {
                 icon: <BookOpen className="w-8 h-8" />,
                 title: 'Beyond Surface-Level Content',
-                description: 'While others arrive with basic slide decks hunting for leads, we deliver substantial, actionable content crafted specifically for genuine seller growth.',
+                description: 'While others arrive with basic slide decks and hunt for leads, we deliver substantial, actionable content crafted specifically for genuine seller growth and real implementation.',
               },
               {
                 icon: <GraduationCap className="w-8 h-8" />,
                 title: 'Elite Educational Experience',
-                description: 'Our unmatched expertise in delivering comprehension at the highest level sets us apart from the many who attempt to replicate our distinctive conference format.',
+                description: 'Built on 10,000+ hours teaching audio engineering and music production. Comprehension is the critical factor -- teaching is a skill, not a side effect of industry status.',
               },
               {
                 icon: <Cpu className="w-8 h-8" />,
                 title: 'Direct Access to Tools',
-                description: 'Experience the only Amazon conference worldwide that develops fully functional, professional-grade deployed tools integrated directly into the conference curriculum.',
+                description: 'The only Amazon conference worldwide that develops fully functional, professional-grade tools you can deploy immediately. Built into the curriculum -- you leave with working systems.',
               },
               {
                 icon: <CalendarCheck className="w-8 h-8" />,
                 title: 'Meticulously Crafted Agenda',
-                description: 'Unlike typical conferences, we invest six months with a specialised team to thoughtfully orchestrate every moment of your experience for maximum impact and value.',
+                description: 'Six months of preparation. Each speaker invests 40-60 hours plus a full day of rehearsals. Every moment is orchestrated -- nothing is improvised, nothing is filler.',
               },
               {
                 icon: <Users className="w-8 h-8" />,
@@ -591,6 +591,229 @@ export default function SSLive2026() {
       </Section>
 
       {/* =============================================
+          SPEAKERS
+          ============================================= */}
+      <Section id="speakers" className="section-dark" style={{ paddingTop: '100px', paddingBottom: '100px' }}>
+        <Container>
+          <div className="max-w-[1200px] mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl md:text-[42px] font-bold mb-4 text-white">
+                Meet Your <span className="text-[#753EF7]">Speakers</span>
+              </h2>
+              <p className="max-w-[700px] mx-auto" style={{ color: 'rgba(255,255,255,0.6)', fontSize: '15px', lineHeight: '1.8' }}>
+                Five operators who build, scale, and innovate at the highest level. No filler talks. No sales pitches. Just actionable expertise.
+              </p>
+            </motion.div>
+
+            {/* Host -- full-width featured card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="mb-6"
+            >
+              <Card padding="lg">
+                <div className="flex flex-col md:flex-row gap-6 items-center md:items-start">
+                  <div className="w-[120px] h-[120px] rounded-full flex-shrink-0 flex items-center justify-center text-xs uppercase tracking-[1px] font-semibold" style={{ backgroundColor: 'rgba(117, 62, 247, 0.15)', color: 'rgba(255,255,255,0.3)', border: '2px dashed rgba(117, 62, 247, 0.3)' }}>
+                    Photo
+                  </div>
+                  <div className="text-center md:text-left">
+                    <div className="flex flex-col md:flex-row md:items-center gap-2 mb-1">
+                      <span className="text-xs uppercase tracking-[2px] font-semibold text-[#753EF7]">Host + Session 1</span>
+                      <span className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>09:30 - 11:00</span>
+                    </div>
+                    <h3 className="text-xl font-bold mb-3 text-white">Danny McMillan</h3>
+                    <p className="text-sm" style={{ color: 'rgba(255,255,255,0.6)', lineHeight: '1.7' }}>
+                      Founder of Seller Sessions, co-founder of Databrill, advisor to Data Dive. Opens the day with a 90-minute deep dive into using Claude and Claude Code for Amazon operations -- live, on laptops, building alongside every delegate.
+                    </p>
+                  </div>
+                </div>
+              </Card>
+            </motion.div>
+
+            {/* Remaining 4 speakers -- 2x2 grid, all rows filled */}
+            <div className="grid md:grid-cols-2 gap-6">
+              {[
+                {
+                  name: 'Shubhash Sharma',
+                  role: 'Session 2',
+                  time: '11:15 - 12:30',
+                  bio: 'Systems architect and entrepreneur building Not A Square -- intelligent systems that reduce decision fatigue and increase strategic clarity. Delivers a session on systems thinking for Amazon sellers: operational workflows that scale without burnout.',
+                },
+                {
+                  name: 'Matt Kostan',
+                  role: 'Session 3',
+                  time: '13:30 - 14:30',
+                  bio: 'Founder of ProductPinion. Built a platform to answer the question every seller faces: why don\'t customers buy? Covers AI-powered consumer testing to validate product decisions and reduce launch risk.',
+                },
+                {
+                  name: 'Sim Mahon',
+                  role: 'Sessions 4 & 5',
+                  time: '14:45 - 17:00',
+                  bio: 'Eight-figure seller with six private label brands. Known for operational discipline and brand-building at scale. Shares the afternoon block covering advanced brand-building and scaling strategies.',
+                },
+                {
+                  name: 'Dorian Gorski',
+                  role: 'Sessions 4 & 5',
+                  time: '14:45 - 17:00',
+                  bio: 'The #1 stop-the-scroll main image specialist. CEO of Keplo.com. Shares the afternoon block with Sim, focusing on visual strategy, image testing, and the intersection of creative and data.',
+                },
+              ].map((speaker, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                >
+                  <Card padding="lg" className="h-full">
+                    <div className="flex gap-4 items-start">
+                      <div className="w-[80px] h-[80px] rounded-full flex-shrink-0 flex items-center justify-center text-[10px] uppercase tracking-[1px] font-semibold" style={{ backgroundColor: 'rgba(117, 62, 247, 0.15)', color: 'rgba(255,255,255,0.3)', border: '2px dashed rgba(117, 62, 247, 0.3)' }}>
+                        Photo
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-xs uppercase tracking-[2px] font-semibold text-[#753EF7]">{speaker.role}</span>
+                          <span className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>{speaker.time}</span>
+                        </div>
+                        <h3 className="text-lg font-bold mb-2 text-white">{speaker.name}</h3>
+                        <p className="text-sm" style={{ color: 'rgba(255,255,255,0.6)', lineHeight: '1.7' }}>{speaker.bio}</p>
+                      </div>
+                    </div>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </Container>
+      </Section>
+
+      {/* =============================================
+          AGENDA
+          ============================================= */}
+      <Section id="agenda" className="section-card" style={{ paddingTop: '100px', paddingBottom: '100px' }}>
+        <Container>
+          <div className="max-w-[800px] mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl md:text-[42px] font-bold mb-4 text-white">
+                The <span className="text-[#753EF7]">Agenda</span>
+              </h2>
+              <p className="max-w-[600px] mx-auto" style={{ color: 'rgba(255,255,255,0.6)', fontSize: '15px', lineHeight: '1.8' }}>
+                One day. One venue. Three phases. The entire building transforms as the day progresses.
+              </p>
+            </motion.div>
+
+            <div className="space-y-3">
+              {[
+                { time: '09:00', label: 'Opening Assembly', who: 'Danny McMillan', type: 'session' },
+                { time: '09:30', label: 'Session 1 -- AI for Amazon Operations', who: 'Danny McMillan', type: 'session' },
+                { time: '11:00', label: 'Break', who: '', type: 'break' },
+                { time: '11:15', label: 'Session 2 -- Systems Thinking for Sellers', who: 'Shubhash Sharma', type: 'session' },
+                { time: '12:30', label: 'Lunch', who: '', type: 'break' },
+                { time: '13:30', label: 'Session 3 -- AI-Powered Consumer Testing', who: 'Matt Kostan', type: 'session' },
+                { time: '14:30', label: 'Break', who: '', type: 'break' },
+                { time: '14:45', label: 'Sessions 4 & 5 -- Scaling & Visual Strategy', who: 'Sim Mahon & Dorian Gorski', type: 'session' },
+                { time: '17:00', label: 'Workshop Concludes', who: '', type: 'break' },
+                { time: '18:30', label: 'VIP Dinner & Networking', who: 'All delegates', type: 'evening' },
+              ].map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -10 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.05 }}
+                >
+                  <div
+                    className="flex items-center gap-4 rounded-xl px-5 py-4"
+                    style={{
+                      backgroundColor: item.type === 'session' ? 'rgba(117, 62, 247, 0.08)' : item.type === 'evening' ? 'rgba(251, 191, 36, 0.08)' : 'transparent',
+                      borderLeft: item.type === 'session' ? '3px solid #753EF7' : item.type === 'evening' ? '3px solid #FBBF24' : '3px solid rgba(255,255,255,0.1)',
+                    }}
+                  >
+                    <div className="text-sm font-mono font-semibold w-[60px] flex-shrink-0" style={{ color: item.type === 'evening' ? '#FBBF24' : '#753EF7' }}>
+                      {item.time}
+                    </div>
+                    <div className="flex-1">
+                      <div className="font-semibold text-white text-sm">{item.label}</div>
+                      {item.who && (
+                        <div className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.5)' }}>{item.who}</div>
+                      )}
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </Container>
+      </Section>
+
+      {/* =============================================
+          WRITTEN TESTIMONIALS
+          ============================================= */}
+      <Section className="section-dark" style={{ paddingTop: '80px', paddingBottom: '80px' }}>
+        <Container>
+          <div className="max-w-[1000px] mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-10"
+            >
+              <h2 className="text-3xl md:text-[42px] font-bold mb-4 text-white">
+                What Delegates <span className="text-[#753EF7]">Say</span>
+              </h2>
+            </motion.div>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              {[
+                {
+                  name: 'Emma Badley',
+                  quote: 'I want to say a huge thank you to everyone that took to the stage -- each and every one of the speakers was incredible! It was a really enjoyable, educational, and inspiring day! Can\'t wait for next year! Back at base, the team are already knee-deep in learnings and ready to implement on client accounts.',
+                },
+                {
+                  name: 'Toni Jantunen',
+                  quote: 'This truly was a game-changing conference -- unlike anything I\'ve experienced in my career before. The materials, insights, and tools provided are absolutely top-tier. Implementing all of this will keep me busy the rest of the year in the best possible way. Huge thanks for the incredible work you put into making this happen.',
+                },
+                {
+                  name: 'Nir Raveh',
+                  quote: 'Amazing content, excellent organisation, and an outstanding group of attendees!',
+                },
+                {
+                  name: 'Rony Gariplerdan',
+                  quote: 'Amazing event, great content -- it was very nice to meet you all.',
+                },
+              ].map((testimonial, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                >
+                  <Card padding="lg" className="h-full">
+                    <p className="text-sm italic mb-4" style={{ color: 'rgba(255,255,255,0.7)', lineHeight: '1.8' }}>
+                      "{testimonial.quote}"
+                    </p>
+                    <div className="text-sm font-semibold text-[#753EF7]">{testimonial.name}</div>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </Container>
+      </Section>
+
+      {/* =============================================
           EVENT DETAILS CARD
           ============================================= */}
       <Section className="section-dark" style={{ paddingTop: '100px', paddingBottom: '100px' }}>
@@ -612,7 +835,7 @@ export default function SSLive2026() {
                     </div>
                     <div className="flex items-center justify-center gap-3" style={{ color: 'rgba(255,255,255,0.8)' }}>
                       <MapPin className="w-5 h-5 text-[#753EF7]" />
-                      <span className="text-lg font-semibold">London, UK</span>
+                      <span className="text-lg font-semibold">St Ethelburga's Centre, London</span>
                     </div>
                   </div>
 
@@ -622,7 +845,7 @@ export default function SSLive2026() {
                     </div>
                     <div className="text-4xl font-bold text-[#753EF7] mt-2">£999</div>
                     <div className="text-sm mt-1" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                      Including after-party
+                      Including VIP dinner & evening networking
                     </div>
                   </div>
 

@@ -20,9 +20,10 @@ export default defineConfig({
     cssCodeSplit: false,
     rollupOptions: {
       output: {
+        format: 'iife',
         entryFileNames: 'assets/[name]-[hash].js',
-        chunkFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]'
+        assetFileNames: 'assets/[name]-[hash].[ext]',
+        inlineDynamicImports: true,
       }
     },
     assetsInlineLimit: 4096,

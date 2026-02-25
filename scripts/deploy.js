@@ -206,10 +206,13 @@ async function main() {
     cssInline = fs.readFileSync(path.join(assetsDir, cssFile), 'utf-8')
   }
 
+  // WP/Wordfence strips all <script> tags from the_content() output.
+  // CSS is inlined via <style> (WP keeps this). JS is loaded via Code Snippet
+  // plugin (snippet ID 7) which enqueues the script in wp_footer.
+  // After deploy, we update the snippet with the new JS URL.
   const embedHtml = `<!-- Seller Sessions Page Builder - Auto-deployed -->
 <style>${cssInline}</style>
-<div id="root" style="min-height: 100vh;"></div>
-<script type="module" src="${jsUrl}"></script>`
+<div id="root" style="min-height: 100vh;"></div>`
 
   let targetPageId = pageConfig.testId
 
@@ -231,6 +234,7 @@ async function main() {
         title: `[TEST] ${pageConfig.name}`,
         content: embedHtml,
         status: 'draft',
+        template: 'elementor_canvas',
       }),
     })
 
@@ -251,7 +255,7 @@ async function main() {
     // Update existing page
     console.log(`\nUpdating page ${targetPageId}...`)
     const status = promote ? 'publish' : undefined
-    const body = { content: embedHtml }
+    const body = { content: embedHtml, template: 'elementor_canvas' }
     if (status) body.status = status
 
     const updateRes = await fetch(`${WP_URL}/wp-json/wp/v2/pages/${targetPageId}`, {
@@ -270,6 +274,68 @@ async function main() {
 
     const updated = await updateRes.json()
     console.log(`  Updated: ${updated.link}`)
+  }
+
+  // -------------------------------------------------------------------------
+  // 7. Purge WP Rocket cache
+  // -------------------------------------------------------------------------
+
+  console.log('\nPurging WP Rocket cache...')
+  try {
+    const purgeRes = await fetch(`${WP_URL}/wp-json/ss/v1/purge-cache`, {
+      method: 'POST',
+      headers: {
+        'Authorization': AUTH,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ post_id: targetPageId }),
+    })
+    if (purgeRes.ok) {
+      const purgeData = await purgeRes.json()
+      console.log(`  Cache purged for page ${purgeData.purged}.`)
+    } else {
+      console.log('  Cache purge skipped (endpoint may not exist yet).')
+    }
+  } catch {
+    console.log('  Cache purge skipped (endpoint not available).')
+  }
+
+  // -------------------------------------------------------------------------
+  // 8. Update Code Snippet with new JS URL (Script Loader -- snippet ID 7)
+  // -------------------------------------------------------------------------
+  // WP/Wordfence strips <script> from page content, so JS is loaded via
+  // the "SS Page Builder - Script Loader" Code Snippet (ID 7).
+  // We update it with the correct JS URL for each page after every deploy.
+
+  console.log('\nUpdating Code Snippet script loader...')
+
+  const snippetCode = `add_action("wp_footer", function() {
+    $page_scripts = [
+        28352 => "${jsUrl}",
+    ];
+    if (is_page() && isset($page_scripts[get_the_ID()]) && $page_scripts[get_the_ID()]) {
+        echo '<script src="' . esc_url($page_scripts[get_the_ID()]) . '"></script>';
+    }
+});`
+
+  const snippetRes = await fetch(`${WP_URL}/wp-json/code-snippets/v1/snippets/7`, {
+    method: 'PUT',
+    headers: {
+      'Authorization': AUTH,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      code: snippetCode,
+      active: true,
+    }),
+  })
+
+  if (!snippetRes.ok) {
+    const text = await snippetRes.text()
+    console.error(`  Warning: Failed to update snippet: ${snippetRes.status} ${text}`)
+    console.error('  You may need to manually update the JS URL in WP > Snippets > ID 7')
+  } else {
+    console.log('  Script loader updated with new JS URL.')
   }
 
   console.log('\nDeploy complete.')
