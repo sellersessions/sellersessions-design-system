@@ -75,6 +75,23 @@ Shadows: shadow-glow, shadow-glow-orange, shadow-card
 3. Comment out the others
 4. The deploy script builds whatever is active in App.tsx
 
+## Content guardrails (page specs)
+
+Before editing ANY content in a page file, read its `.spec.md` first:
+
+| Page | Spec file |
+|------|-----------|
+| SSL 2026 | `src/pages/SSLive2026.spec.md` |
+
+The spec defines each section's purpose, voice, character limits, and grid constraints.
+Follow the content update workflow in the spec: read spec, draft, validate, edit TSX, build, screenshot, review.
+
+**Key rules from specs:**
+- Grid parity: never leave an odd card in a grid (2x2 needs 4 items, 3x2 needs 6)
+- Card height balance: text lengths within a grid row must be within 20% of each other
+- Data consistency: date, venue, price, speaker names must match across all sections
+- No orphan changes: updating a speaker name in one section means checking all others
+
 ## Rules
 
 - Always use `type="module"` on script tags
@@ -83,3 +100,4 @@ Shadows: shadow-glow, shadow-glow-orange, shadow-card
 - Test locally with `npm run dev` before deploying
 - Never deploy to live page IDs without explicit approval
 - `.env` contains WP credentials -- never commit this file
+- Before editing page content, read the page's `.spec.md` file (see Content guardrails above)

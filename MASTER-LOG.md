@@ -101,12 +101,56 @@ Key files: `scripts/deploy.js` (core pipeline), `src/pages/` (3 pages), `src/com
 
 ## Next Up
 
-- [x] Fix Tailwind CSS rendering on WP (done -- `important: '#root'`)
-- [x] Remove WP theme wrapper (done -- `elementor_canvas` template)
-- [x] Add Google Fonts loading (done -- `@import` in CSS)
-- [x] Automate WP Rocket cache purge (done -- custom REST endpoint + deploy.js)
+- [ ] Test content guardrails workflow -- make a real content update using the spec
+- [ ] Deploy updated SSL 2026 page to WP test page for review
+- [ ] Speaker headshot photos -- swap placeholders for real images
 - [ ] Promote test page to replace live Elementor page (only when Danny approves)
 - [ ] Repeat for Events Hub and Events Archive pages
+
+---
+
+## Session 3 -- 2026-02-25 12:20 GMT
+
+**Content guardrails for SSL 2026 page**
+
+Built the strategic content layer that was missing from the page builder. The existing agents (style-enforcer, ui-architect, etc.) handle technical validation, but there was nothing defining WHY content exists, what voice to use, or what character limits keep grids balanced.
+
+**Created:**
+- `src/pages/SSLive2026.spec.md` -- page spec with 14 section definitions. Each has: 4MAT role, conversion job, voice, layout, constraints (character/word limits), data source, signal test.
+- Updated `CLAUDE.md` with content guardrails section -- "read the spec before editing page content"
+- HTML visual: `~/.agent/diagrams/ssl2026-content-guardrails.html` (spec constraints + test scenarios)
+- HTML visual: `~/.agent/diagrams/ssl2026-page-builder-overview.html` (end-to-end tool overview)
+
+**Validation:** Ran full audit of current TSX against all 14 section specs. All sections pass constraints. Spec is calibrated to the existing content, not aspirational limits.
+
+**Key design decisions:**
+- One `.spec.md` per page, lives alongside the TSX file
+- No new agents or skills -- spec file IS the guardrail, existing agents validate against it
+- 4MAT learning cycle maps all 14 sections: WHY (1-3), WHAT (4,8,9), HOW (5-7), WHAT IF (10-14)
+- Cross-section rules: grid parity, card height balance, data consistency, no orphan changes
+
+---
+
+## Session 2 -- 2026-02-25 10:30-11:34 GMT
+
+**Gap analysis + content update for SSL 2026 landing page**
+
+Read 5 conference intelligence files (speaker bios, venue spec, website copy framework, ClickUp plan, wrap email) and compared against current page content. Identified 7 gaps across 3 tiers: major (speakers/agenda/testimonials missing), wrong info (after-party label, venue not named, "coming soon" text), and weak content (FAQ answers).
+
+**All 7 changes implemented:**
+1. Speakers section -- 5 cards. Danny featured full-width, 4 others in 2x2 grid. Photo placeholders (dashed purple circles) ready for headshots.
+2. Agenda section -- 10-row timed schedule. Purple = sessions, gold = evening, grey = breaks.
+3. "Including after-party" changed to "Including VIP dinner & evening networking"
+4. Venue name added -- "St Ethelburga's Centre, London" in hero badge + details card
+5. "Speaker lineup coming soon" replaced with "Meet your speakers" anchor link
+6. 3 FAQ answers updated -- venue location (with EC2M 4QD postcode), ticket inclusions (now mentions dinner), networking evening (mentions Glenn + venue transformation)
+7. Written testimonials section -- 4 quotes (Emma Badley, Toni Jantunen, Nir Raveh, Rony Gariplerdan)
+
+**Layout fix (v2):** Danny flagged 3-col grid with 5 cards = orphan row. Restructured to 1 featured (full-width host) + 2x2 grid. All rows filled. Also added image placeholder circles.
+
+**Build:** Clean. Dev server verified at localhost:5173.
+
+**Not deployed to WP yet** -- Danny wants to plan a content scaffolding approach first.
 
 ---
 
