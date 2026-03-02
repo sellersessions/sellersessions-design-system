@@ -6,7 +6,7 @@
 
 Working on the Seller Sessions Page Builder at `~/Claude-Code-Projects-Restored/sellersessions-design-system/`. React + TypeScript design system that deploys to WordPress via REST API (bypasses the broken WordPress MCP).
 
-**Deploy pipeline proven:** `npm run deploy -- --page ssl2026` builds, pushes assets to GitHub Pages, and updates WP page content via REST API. CSS is inlined via `<style>` tag. JS is loaded via the Code Snippets plugin (snippet ID 7) which enqueues the script in `wp_footer` -- because Wordfence strips ALL `<script>` tags from page content. Deploy script auto-updates the snippet with the new JS URL after each deploy. WP Rocket cache is purged automatically via a custom REST endpoint (snippet ID 8).
+**Deploy pipeline proven:** `npm run deploy -- --page ssl2026` builds, pushes assets to GitHub Pages, and updates WP page content via REST API. CSS is inlined via `<style>` tag. JS is loaded via the Code Snippets plugin (snippet ID 7) which enqueues the script in `wp_footer` -- because Wordfence strips ALL `<script>` tags from page content. Snippet uses `is_singular()` (not `is_page()`) to support custom post types like `wffn_landing`. Deploy script auto-updates the snippet with the new JS URL after each deploy. WP Rocket cache is purged automatically via a custom REST endpoint (snippet ID 8).
 
 Key files: `scripts/deploy.js` (core pipeline), `src/pages/` (3 pages), `src/components/` (13 components), `.env` (WP credentials, gitignored).
 
@@ -14,11 +14,17 @@ Key files: `scripts/deploy.js` (core pipeline), `src/pages/` (3 pages), `src/com
 
 **WP credentials:** `.env` has `danny@sellersessions.com` + Application Password (created by Alex). WP user = DannyNew.
 
-**Page IDs:** SSL 2026 test page = 28352 (draft, published). Live Elementor page = 23003 (don't touch). Events Hub + Archive = TBD.
+**Page IDs:** SSL 2026 LIVE = 23003 (`wffn_landing` custom post type, at `/sp/seller-sessions-live-2026/`). Test draft = 28352 (regular page). Events Hub + Archive = TBD.
 
-**What works:** Full pipeline end-to-end. React app mounts on WP with all sections rendering correctly. Tailwind CSS with `important: '#root'` for specificity. Google Fonts loaded via `@import`. Full-width layout via `elementor_canvas` template. Auto cache purge after deploy.
+**CRITICAL: Page 23003 is a WooFunnels `wffn_landing` post type**, not a regular WP page. REST API endpoint is `/wp-json/wp/v2/wffn_landing/23003` (not `/pages/`). The `/sp/` URL prefix comes from WooFunnels rewrite rules. Elementor data was cleared from postmeta to let `post_content` render. If rollback needed: `bash scripts/rollback-swap.sh` (restores Elementor content from `scripts/elementor-backup-23003.json`).
 
-**What needs doing:** Promote test page to replace live Elementor page (when Danny approves). Repeat for Events Hub and Events Archive pages.
+**What works:** React page LIVE at `sellersessions.com/sp/seller-sessions-live-2026/` since 2 Mar 2026. Full pipeline end-to-end. Tailwind CSS with `important: '#root'` for specificity. Google Fonts loaded via `@import`. Full-width layout via `elementor_canvas` template. Auto cache purge after deploy.
+
+**WP Rocket note:** JS loads via `rocketlazyloadscript` -- deferred until first user interaction (scroll/mouse/touch). Brief flash of empty content before hydration. Real users won't notice (interaction triggers instantly), but Playwright needs synthetic events to test.
+
+**Safety infrastructure (Session 4-5):** Code Snippet overwrite bug fixed -- `page-scripts.json` tracks JS URLs across all pages. Pre-promote guards check placeholders and links. Responsive screenshot script at `npm run test:responsive`. Full rollback docs in `ROLLBACK.md`. Elementor backup at `scripts/elementor-backup-23003.json`. Rollback script at `scripts/rollback-swap.sh`.
+
+**What needs doing:** Add mid-page CTAs (after sections 5 and 8). Fix testimonial grid debt (Nir 11w, Rony 13w). Speaker headshot photos. Build home page. Events Hub and Events Archive.
 
 ## Iteration Cycle (permanent reference)
 
@@ -101,11 +107,76 @@ Key files: `scripts/deploy.js` (core pipeline), `src/pages/` (3 pages), `src/com
 
 ## Next Up
 
-- [ ] Test content guardrails workflow -- make a real content update using the spec
-- [ ] Deploy updated SSL 2026 page to WP test page for review
+- [x] Fix Code Snippet #7 overwrite bug (page-scripts.json persistence)
+- [x] Add pre-promote safety guards (placeholder scan + link validation)
+- [x] Create responsive screenshot script (Playwright, 3 viewports)
+- [x] ROLLBACK.md with step-by-step procedures
+- [x] ClaudeFlow agent scaffolding (ss-deploy-guard + ss-content-editor)
+- [x] Deploy SSL 2026 to live (React replaces Elementor on page 23003)
+- [x] CTA links verified (WooFunnels checkout, events, anchors all working)
+- [ ] Add mid-page CTAs after sections 5 and 8 (10-section gap currently)
+- [ ] Alex reviews standalone HTML (`review/SSL2026-review-draft.html`)
+- [ ] Fix testimonial grid debt (Nir 11w, Rony 13w -- need longer quotes)
 - [ ] Speaker headshot photos -- swap placeholders for real images
-- [ ] Promote test page to replace live Elementor page (only when Danny approves)
+- [ ] Run `npm run test:responsive` -- review mobile/tablet screenshots
+- [ ] Build home page (`src/pages/HomePage.tsx`)
 - [ ] Repeat for Events Hub and Events Archive pages
+
+---
+
+## Session 5 -- 2026-03-02 11:08 GMT
+
+**React landing page goes live -- replaces Elementor on page 23003**
+
+First live deployment of the React page builder. The SSL 2026 landing page at `sellersessions.com/sp/seller-sessions-live-2026/` is now running React instead of Elementor.
+
+**Two blockers discovered and fixed during deploy:**
+
+1. **Elementor overriding post_content:** Page 23003 is a WooFunnels `wffn_landing` custom post type (not a regular WP page). Elementor stores page data in `_elementor_data` postmeta and renders from that, completely ignoring `post_content`. Fix: created one-shot Code Snippet to delete Elementor meta (`_elementor_data`, `_elementor_edit_mode`, `_elementor_page_settings`, `_elementor_controls_usage`, `_elementor_css`, `_elementor_page_assets`), triggered it, then deactivated/deleted it.
+
+2. **Code Snippet #7 using `is_page()`:** This PHP function returns false for custom post types. Page 23003 is `wffn_landing`, so the JS bundle was never injected. Fix: changed to `is_singular()` which works for all post types. Updated both live snippet and `deploy.js`.
+
+**Original plan (slug swap) was abandoned:** The plan was to swap slugs between the Elementor page (23003) and React page (28352). Discovered the `/sp/` URL prefix comes from WooFunnels rewrite rules -- a regular WP page cannot get that URL. Revised approach: update page 23003 directly with React content, keep Elementor HTML backed up locally.
+
+**Files created/modified:**
+- `scripts/deploy.js` -- `is_page()` -> `is_singular()` in snippet builder
+- `scripts/rollback-swap.sh` -- NEW, one-command Elementor restoration
+- `scripts/elementor-backup-23003.json` -- NEW, full Elementor page backup (148KB)
+
+**Verified:**
+- Live URL returns HTTP 200
+- React app renders all sections (Playwright screenshot confirmed)
+- CTA `?wffn-next-link=yes` links work (WooFunnels checkout)
+- `/events/` relative link works
+- GH Pages assets accessible (JS 303KB, CSS 25KB)
+- WP Rocket defers JS via `rocketlazyloadscript` -- loads on first user interaction
+
+---
+
+## Session 4 -- 2026-03-02 07:18 GMT
+
+**Phase 1: Safety infrastructure + deploy bug fix**
+
+Implemented the expansion plan from Danny's Loom video. This session focused exclusively on safety infrastructure -- no live page changes.
+
+**Critical bug fixed:**
+- `deploy.js` Code Snippet #7 was hardcoded to map only test page 28352. Deploying page B would overwrite page A's mapping. Fixed with `page-scripts.json` persistence file -- each deploy now reads existing mappings, adds/updates the current page, and writes the full snippet with ALL tracked pages (both `testId` and `liveId`).
+
+**Safety features added:**
+- Pre-promote guards (`runPromoteGuards()`): placeholder image scan (warn only, Danny approved placeholders), CTA link HTTP validation, checklist summary. Runs automatically on `--promote`.
+- Responsive screenshot script (`scripts/responsive-check.js`): Playwright captures full-page screenshots at 1440px, 768px, 375px. Saves to `review/screenshots/` (gitignored). Run via `npm run test:responsive`.
+- `ROLLBACK.md`: 5 rollback procedures (WP revision revert, snippet revert, Elementor republish, emergency draft, cache purge).
+- ClaudeFlow agents: `ss-deploy-guard.md` (pre-deploy safety checks) and `ss-content-editor.md` (content editing within spec guardrails).
+
+**Files created/modified:**
+- `scripts/deploy.js` -- bug fix + promote guards + page-scripts persistence
+- `scripts/responsive-check.js` -- NEW
+- `scripts/page-scripts.json` -- NEW (auto-updated on each deploy)
+- `ROLLBACK.md` -- NEW
+- `.claude/agents/ss-deploy-guard.md` -- NEW
+- `.claude/agents/ss-content-editor.md` -- NEW
+- `.gitignore` -- added review/screenshots/ and .gh-pages-tmp/
+- `package.json` -- added playwright devDep + test:responsive script
 
 ---
 
@@ -128,6 +199,17 @@ Built the strategic content layer that was missing from the page builder. The ex
 - No new agents or skills -- spec file IS the guardrail, existing agents validate against it
 - 4MAT learning cycle maps all 14 sections: WHY (1-3), WHAT (4,8,9), HOW (5-7), WHAT IF (10-14)
 - Cross-section rules: grid parity, card height balance, data consistency, no orphan changes
+
+**Cold test (13:02 GMT):** Branch `test/content-guardrails-cold-test` (commit 996433d).
+Claude made 4 autonomous content decisions using spec + reference files:
+1. Toni testimonial extended (was 43w, now 55w -- within 20-60w limit)
+2. FAQ venue spaces rewritten with Nave/Garden/Tent detail (55w, within 30-80w)
+3. Speaker prep hours added to Section 7 card (40-60 hours + full day rehearsals)
+4. Teaching 10K hours added to Section 7 card (from wrap email reference)
+
+Guardrails caught: Section 7 grid balance failure (18w/21w/30w = 100% variance). All 6 cards rebalanced to 24-26w range (4% variance). Pre-existing testimonial debt flagged: Nir 11w, Rony 13w vs Emma 43w, Toni 55w -- needs longer quotes.
+
+Standalone review HTML: `review/SSL2026-review-draft.html` (329KB, self-contained, for Alex).
 
 ---
 

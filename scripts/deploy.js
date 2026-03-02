@@ -63,13 +63,49 @@ if (!WP_URL || !WP_USER || !WP_APP_PASSWORD) {
 const AUTH = 'Basic ' + Buffer.from(`${WP_USER}:${WP_APP_PASSWORD}`).toString('base64')
 
 // ---------------------------------------------------------------------------
+// Page script URL persistence (prevents overwrite bug)
+// ---------------------------------------------------------------------------
+
+const SCRIPTS_MAP_PATH = path.join(__dirname, 'page-scripts.json')
+
+function loadPageScripts() {
+  if (fs.existsSync(SCRIPTS_MAP_PATH)) {
+    return JSON.parse(fs.readFileSync(SCRIPTS_MAP_PATH, 'utf-8'))
+  }
+  return {}
+}
+
+function savePageScripts(map) {
+  fs.writeFileSync(SCRIPTS_MAP_PATH, JSON.stringify(map, null, 2) + '\n')
+}
+
+function buildSnippetCode(pageScripts) {
+  const entries = []
+  for (const [key, url] of Object.entries(pageScripts)) {
+    const config = PAGE_MAP[key]
+    if (!config) continue
+    if (config.testId) entries.push(`        ${config.testId} => "${url}",`)
+    if (config.liveId) entries.push(`        ${config.liveId} => "${url}",`)
+  }
+
+  return `add_action("wp_footer", function() {
+    $page_scripts = [
+${entries.join('\n')}
+    ];
+    if (is_singular() && isset($page_scripts[get_the_ID()]) && $page_scripts[get_the_ID()]) {
+        echo '<script src="' . esc_url($page_scripts[get_the_ID()]) . '"></script>';
+    }
+});`
+}
+
+// ---------------------------------------------------------------------------
 // 2. Page mapping
 // ---------------------------------------------------------------------------
 
 const PAGE_MAP = {
-  ssl2026: { name: 'SSL 2026 Landing', liveId: 23003, testId: 28352 },
-  eventshub: { name: 'Events Hub', liveId: null, testId: null },
-  eventsarchive: { name: 'Events Archive', liveId: null, testId: null },
+  ssl2026: { name: 'SSL 2026 Landing', liveId: 23003, testId: 28352, file: 'SSLive2026.tsx' },
+  eventshub: { name: 'Events Hub', liveId: null, testId: null, file: 'EventsHub.tsx' },
+  eventsarchive: { name: 'Events Archive', liveId: null, testId: null, file: 'EventsArchive.tsx' },
 }
 
 // ---------------------------------------------------------------------------
@@ -196,8 +232,93 @@ function pushToGhPages() {
 // 6. Build embed HTML and update WP page
 // ---------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------
+// Pre-promote safety guards
+// ---------------------------------------------------------------------------
+
+async function runPromoteGuards(pageKey) {
+  console.log('\n--- Pre-promote safety checks ---\n')
+
+  const pageFile = PAGE_MAP[pageKey].file
+  const pagePath = path.join(ROOT, 'src', 'pages', pageFile)
+
+  if (!fs.existsSync(pagePath)) {
+    console.log(`  [!!] Page file not found: ${pagePath}`)
+    return false
+  }
+
+  const source = fs.readFileSync(pagePath, 'utf-8')
+
+  // 1. Placeholder scan (warn only -- Danny confirmed placeholders are OK)
+  const placeholderPatterns = [
+    /placeholder/gi,
+    /via\.placeholder\.com/gi,
+    /placehold\.co/gi,
+    /placehold\.it/gi,
+  ]
+  let placeholderCount = 0
+  for (const pat of placeholderPatterns) {
+    const matches = source.match(pat)
+    if (matches) placeholderCount += matches.length
+  }
+
+  if (placeholderCount > 0) {
+    console.log(`  [!] WARNING: ${placeholderCount} placeholder references found in source`)
+    console.log('      Placeholders are acceptable -- proceeding with warning.')
+  } else {
+    console.log('  [ok] No placeholder images detected')
+  }
+
+  // 2. CTA link validation
+  const hrefPattern = /href="([^"]+)"/g
+  const hrefs = [...source.matchAll(hrefPattern)].map(m => m[1])
+  const externalUrls = hrefs.filter(h => h.startsWith('http'))
+  const anchorLinks = hrefs.filter(h => h.startsWith('#'))
+  const relativeLinks = hrefs.filter(h => h.startsWith('?') || h.startsWith('/'))
+
+  console.log(`  Links: ${externalUrls.length} external, ${anchorLinks.length} anchors, ${relativeLinks.length} relative`)
+
+  let linkIssues = 0
+  for (const url of externalUrls) {
+    try {
+      const res = await fetch(url, { method: 'HEAD', redirect: 'follow', signal: AbortSignal.timeout(5000) })
+      if (res.ok) {
+        console.log(`  [ok] ${url} -> ${res.status}`)
+      } else {
+        console.log(`  [!!] ${url} -> ${res.status}`)
+        linkIssues++
+      }
+    } catch (err) {
+      console.log(`  [!!] ${url} -> FAILED (${err.message})`)
+      linkIssues++
+    }
+  }
+
+  // 3. Summary
+  console.log('\n--- Promote guard summary ---')
+  console.log(`  Placeholders:   ${placeholderCount > 0 ? `${placeholderCount} found (warning only)` : 'none'}`)
+  console.log(`  External links: ${externalUrls.length} checked, ${linkIssues} issues`)
+  console.log(`  Anchor links:   ${anchorLinks.length} (not validated)`)
+  console.log(`  Relative links: ${relativeLinks.length} (not validated)`)
+  console.log(`  Status:         ${linkIssues === 0 ? 'PASS' : 'ISSUES FOUND -- review above'}`)
+  console.log('')
+
+  return true // warn only, don't block
+}
+
 async function main() {
   const { jsUrl } = pushToGhPages()
+
+  // Persist JS URL for this page (prevents snippet overwrite bug)
+  const pageScripts = loadPageScripts()
+  pageScripts[pageKey] = jsUrl
+  savePageScripts(pageScripts)
+  console.log(`  Saved JS URL mapping for ${pageKey} (${Object.keys(pageScripts).length} pages tracked)`)
+
+  // Run promote guards before going live
+  if (promote) {
+    await runPromoteGuards(pageKey)
+  }
 
   // Read CSS content for inline <style> (WP strips <link> tags from content)
   // External <script src> works, but <link href> does not
@@ -309,14 +430,8 @@ async function main() {
 
   console.log('\nUpdating Code Snippet script loader...')
 
-  const snippetCode = `add_action("wp_footer", function() {
-    $page_scripts = [
-        28352 => "${jsUrl}",
-    ];
-    if (is_page() && isset($page_scripts[get_the_ID()]) && $page_scripts[get_the_ID()]) {
-        echo '<script src="' . esc_url($page_scripts[get_the_ID()]) . '"></script>';
-    }
-});`
+  // Build snippet from ALL tracked pages (not just current deploy)
+  const snippetCode = buildSnippetCode(pageScripts)
 
   const snippetRes = await fetch(`${WP_URL}/wp-json/code-snippets/v1/snippets/7`, {
     method: 'PUT',

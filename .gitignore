@@ -3,3 +3,5 @@ dist/
 .DS_Store
 .env
 *.log
+review/screenshots/
+.gh-pages-tmp/

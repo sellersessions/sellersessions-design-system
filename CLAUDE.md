@@ -20,13 +20,14 @@ Danny says         Claude does              Result
 | `npm run dev` | Start dev server (localhost:5173) |
 | `npm run build:wp` | Build for WordPress |
 | `npm run deploy -- --page ssl2026` | Build + upload + create/update draft WP page |
-| `npm run deploy -- --page ssl2026 --promote` | Same but publishes (replaces live page) |
+| `npm run deploy -- --page ssl2026 --promote` | Same but publishes (runs promote guards first) |
+| `npm run test:responsive` | Screenshot at 1440/768/375px -> review/screenshots/ |
 
 ## Page ID mapping
 
 | Page | React file | Live WP ID | Test WP ID | URL slug |
 |------|-----------|-----------|-----------|----------|
-| SSL 2026 Landing | `src/pages/SSLive2026.tsx` | 23003 (Elementor) | TBD | `/sp/seller-sessions-live-2026/` |
+| SSL 2026 Landing | `src/pages/SSLive2026.tsx` | 23003 (Elementor) | 28352 | `/sp/seller-sessions-live-2026/` |
 | Events Hub | `src/pages/EventsHub.tsx` | TBD | TBD | `/events/` |
 | Events Archive | `src/pages/EventsArchive.tsx` | TBD | TBD | `/events/archive/` |
 
@@ -42,6 +43,10 @@ Danny says         Claude does              Result
 | `src/index.css` | Global styles + Tailwind config |
 | `scripts/deploy.js` | Build + upload + update WP page via REST API |
 | `scripts/generate-embed.js` | Generates WP embed HTML template |
+| `scripts/responsive-check.js` | Playwright viewport screenshots |
+| `scripts/page-scripts.json` | Tracks JS URLs for all deployed pages |
+| `ROLLBACK.md` | Step-by-step rollback procedures |
+| `.claude/agents/` | Deploy guard + content editor agents |
 
 ## Brand colours (single source of truth)
 
