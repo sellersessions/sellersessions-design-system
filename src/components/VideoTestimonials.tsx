@@ -33,7 +33,7 @@ export function VideoTestimonials({
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-[42px] font-bold mb-4 text-white">
+          <h2 className="text-4xl md:text-[48px] font-bold mb-4 text-white">
             {title}
           </h2>
           <p className="max-w-[600px] mx-auto" style={{ color: 'rgba(255,255,255,0.6)', fontSize: '16px', lineHeight: '1.7' }}>
@@ -75,7 +75,9 @@ export function VideoTestimonials({
                     ) : (
                       <div className="w-full h-full bg-black" />
                     )}
-                    <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-all flex items-center justify-center">
+                    {/* Dark overlay — ensures white/light thumbnails blend into dark theme */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/30 group-hover:from-black/60 group-hover:via-black/30 group-hover:to-black/20 transition-all" />
+                    <div className="absolute inset-0 flex items-center justify-center">
                       <div
                         className="w-16 h-16 rounded-full flex items-center justify-center transition-transform group-hover:scale-110"
                         style={{ backgroundColor: 'rgba(117, 62, 247, 0.9)' }}

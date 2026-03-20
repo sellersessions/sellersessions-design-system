@@ -26,6 +26,10 @@ Key files: `scripts/deploy.js` (core pipeline), `src/pages/` (3 pages), `src/com
 
 **What needs doing:** Add mid-page CTAs (after sections 5 and 8). Fix testimonial grid debt (Nir 11w, Rony 13w). Speaker headshot photos. Build home page. Events Hub and Events Archive.
 
+**Visual polish (19 Mar session):** 14 premium techniques applied via REFINE audit from Claude UI Workflow pipeline. Section banding (3 depths), atmospheric gradient orbs, dramatic stat numerals with count-up animation, badge chips on speakers, proof elevation near pricing, CTA pulse glow, glass overlay on hero, parallax crowd image, bento asymmetry on feature grid, phase-banded agenda timeline. NOT yet deployed to live -- local only.
+
+**Last session (20 Mar):** Added CardStack 3D carousel to "Why This Format Works" section — replaced 3x2 grid. Concept approved, needs visual review. Branch: `test/content-guardrails-cold-test`.
+
 ## Iteration Cycle (permanent reference)
 
 ```
@@ -114,6 +118,9 @@ Key files: `scripts/deploy.js` (core pipeline), `src/pages/` (3 pages), `src/com
 - [x] ClaudeFlow agent scaffolding (ss-deploy-guard + ss-content-editor)
 - [x] Deploy SSL 2026 to live (React replaces Elementor on page 23003)
 - [x] CTA links verified (WooFunnels checkout, events, anchors all working)
+- [x] Visual REFINE pass -- 14/19 premium techniques applied (section banding, stat numerals, count-up, badge chips, proof elevation, CTA pulse, glass overlay, parallax, bento grid, phase-banded agenda, atmospheric orbs, dot-grid texture)
+- [ ] Danny visually reviews CardStack carousel (concept approved, refinement TBD)
+- [ ] Deploy visual refinements + CardStack to live (after Danny review)
 - [ ] Add mid-page CTAs after sections 5 and 8 (10-section gap currently)
 - [ ] Alex reviews standalone HTML (`review/SSL2026-review-draft.html`)
 - [ ] Fix testimonial grid debt (Nir 11w, Rony 13w -- need longer quotes)
@@ -121,6 +128,51 @@ Key files: `scripts/deploy.js` (core pipeline), `src/pages/` (3 pages), `src/com
 - [ ] Run `npm run test:responsive` -- review mobile/tablet screenshots
 - [ ] Build home page (`src/pages/HomePage.tsx`)
 - [ ] Repeat for Events Hub and Events Archive pages
+
+---
+
+## Session 7 -- 2026-03-20 23:20 GMT
+
+**CardStack 3D carousel added to "Why This Format Works" section**
+
+Replaced the busy 3x2 text grid in "Why This Format Works" with a 3D fanning carousel component (`CardStack.tsx`), adapted from 21st.dev `ruixenui/card-stack`. Shows one card at a time with auto-advance (3.5s), drag/click/arrow navigation, and purple dot indicators. Responsive via `matchMedia` (480px desktop, 320px mobile).
+
+**Key fix:** Translucent card backgrounds caused text bleed from fanned cards behind. All cards now use fully opaque backgrounds (`#2F0453`, `#1A1A1A`). Card text shortened from ~30 words to ~15-20 words each for carousel legibility.
+
+**Files changed:**
+- `src/components/CardStack.tsx` — NEW (3D fanning carousel)
+- `src/components/index.ts` — added CardStack export
+- `src/pages/SSLive2026.tsx` — replaced 3x2 grid, added `isMobile` hook via `matchMedia`, shortened card text
+- Build: `npm run build:wp` passes
+
+---
+
+## Session 6 -- 2026-03-19 23:45 GMT
+
+**Visual REFINE pass on SS Live 2026 — 14 premium techniques applied**
+
+Ran the new REFINE phase from the Claude UI Workflow pipeline against SSLive2026.tsx (890 lines, 14 sections). Gap analysis scored 19 techniques: 3 already present, 3 partial, 13 missing. Danny chose Path B (direct TSX edits) over Stitch since these are visual treatment additions, not structural redesigns.
+
+**Round 1 (high-impact):**
+- Section banding: 3 depth levels (`ss-bg` / `ss-bg-mid` / `ss-bg-card`) with gradient fade transitions between sections
+- Atmospheric gradient orbs: radial purple glows behind stats, features, and pricing sections
+- Dramatic stat numerals: 47.5%, 80%, 6x now at ~4.5rem with count-up animation (IntersectionObserver + ease-out cubic)
+- Badge chips: purple pill-shaped labels on all 5 speaker cards
+- Proof elevation: Toni Jantunen testimonial pulled up directly above pricing card
+- CTA pulse: breathing glow animation on hero and pricing "Get Your Ticket" buttons
+- Dot-grid texture: subtle pattern on hero section background
+
+**Round 2 (remaining features):**
+- Bento asymmetry: first and last feature cards span 2 columns in "Why This Format Works" grid
+- Timeline phase bands: agenda restructured into 4 visual phases (Morning/Midday/Afternoon/Evening) with colour-coded dots and tinted backgrounds
+- Glass overlay: backdrop-blur on hero video overlay
+- Parallax depth: `background-attachment: fixed` on crowd image section
+
+**Files changed:** `tailwind.config.js` (ss-bg-mid token), `src/index.css` (6 new utility classes), `src/pages/SSLive2026.tsx` (CountUp component + all visual upgrades). TypeScript + Vite build clean.
+
+**NOT deployed to live.** Local only — needs Danny's full review before shipping.
+
+**Decision:** For existing pages with working React code, direct TSX edits are better than Stitch round-trip (avoids reverse-engineering Stitch HTML back into the design system). Stitch path stays available for radical redesigns.
 
 ---
 

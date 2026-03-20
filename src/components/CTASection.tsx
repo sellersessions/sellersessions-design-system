@@ -17,9 +17,17 @@ export function CTASection({
 }: CTASectionProps) {
   return (
     <section
-      className="relative py-24 overflow-hidden"
-      style={{ background: 'linear-gradient(135deg, #461499 0%, #1a0540 100%)' }}
+      className="relative py-24 overflow-hidden section-textured-violet"
+      style={{
+        background: `
+          radial-gradient(ellipse at 50% 60%, rgba(117, 62, 247, 0.10) 0%, transparent 60%),
+          radial-gradient(ellipse at 30% 40%, rgba(70, 20, 153, 0.15) 0%, transparent 50%),
+          linear-gradient(180deg, #0C0322 0%, #0A0A0A 100%)
+        `,
+      }}
     >
+      {/* Breathing glow behind CTA */}
+      <div className="cta-breathing-glow" />
       <Container className="relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -27,7 +35,7 @@ export function CTASection({
           viewport={{ once: true }}
           className="text-center max-w-3xl mx-auto"
         >
-          <h2 className="text-3xl md:text-[42px] font-bold mb-4 text-white">{title}</h2>
+          <h2 className="text-4xl md:text-[48px] font-bold mb-4 text-white">{title}</h2>
 
           {description && (
             <p className="text-lg mb-8 max-w-[600px] mx-auto" style={{ color: 'rgba(255,255,255,0.9)', fontSize: '18px', lineHeight: '1.7' }}>
@@ -41,7 +49,7 @@ export function CTASection({
                 variant="cta"
                 size="lg"
                 href={primaryCTA.href}
-                className="!bg-white !text-[#461499] hover:!bg-[#f0f0f0]"
+                className="!bg-transparent !text-white !border-0 btn-animated-border"
               >
                 {primaryCTA.label}
               </Button>

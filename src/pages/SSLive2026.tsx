@@ -6,7 +6,42 @@
  * Product: ID 22873 - £999 GBP
  */
 
-import { motion } from 'framer-motion'
+import { useState, useEffect, useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
+
+/** Count-up animation — triggers once when element enters viewport */
+function CountUp({ value, suffix = '', decimals = 0 }: { value: number; suffix?: string; decimals?: number }) {
+  const [display, setDisplay] = useState('0')
+  const ref = useRef<HTMLSpanElement>(null)
+  const hasAnimated = useRef(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAnimated.current) {
+          hasAnimated.current = true
+          const duration = 2000
+          const start = performance.now()
+          const step = (now: number) => {
+            const progress = Math.min((now - start) / duration, 1)
+            const eased = 1 - Math.pow(1 - progress, 3) // ease-out cubic
+            const current = eased * value
+            setDisplay(decimals > 0 ? current.toFixed(decimals) : Math.round(current).toString())
+            if (progress < 1) requestAnimationFrame(step)
+          }
+          requestAnimationFrame(step)
+        }
+      },
+      { threshold: 0.5 }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [value, decimals])
+
+  return <span ref={ref}>{display}{suffix}</span>
+}
 import {
   Container,
   Section,
@@ -15,27 +50,24 @@ import {
   CTASection,
   VideoTestimonials,
   FAQ,
+  HyperText,
+  GradualSpacing,
+  NeonGradientCard,
+  WaveDivider,
+  SpeakerTimeline,
+  CardStack,
 } from '../components'
 import {
   CheckCircle,
   XCircle,
-  Wrench,
-  BookOpen,
-  GraduationCap,
-  Cpu,
-  CalendarCheck,
-  Users,
   MapPin,
   Calendar,
-  Laptop,
-  Plug,
-  FileText,
 } from 'lucide-react'
 
 // Image URLs from the existing sales page
 const IMAGES = {
   logo: 'https://sellersessions.com/wp-content/uploads/2025/02/Seller-Sessions-Live-horizontal-Logo-NC.png',
-  crowd: 'https://sellersessions.com/wp-content/uploads/2025/05/imagen-crowd-1.jpg',
+  crowd: '/illustrations/branching-tree-flow.png',
   bgVenue: 'https://sellersessions.com/wp-content/uploads/2025/09/1_photo-1690585703267-de31ea667ef0ixlibrb-4.1-scaled.jpg',
 }
 
@@ -47,69 +79,68 @@ const VIDEO_TESTIMONIALS = [
     name: 'Adam Hiest',
     role: 'Amazon Seller',
     videoUrl: 'https://sellersessions.com/wp-content/uploads/2025/03/Adam-Hiest-Testimonal-Edited-V1.mp4',
-    thumbnail: 'https://sellersessions.com/wp-content/uploads/2025/03/Adam-TN-Test-V1.jpg',
+    thumbnail: '/thumbnails/adam-ssl2025-branded.jpg',
   },
   {
     name: 'John',
     role: 'SSL 2025 Attendee',
     videoUrl: 'https://sellersessions.com/wp-content/uploads/2025/05/John-SSL2025-Testimonal.mp4',
+    thumbnail: '/thumbnails/john-ssl2025-branded.jpg',
   },
   {
     name: 'Fatos',
     role: 'SSL 2025 Attendee',
     videoUrl: 'https://sellersessions.com/wp-content/uploads/2025/05/Fatos-SSL2025-Testimonal.mp4',
+    thumbnail: '/thumbnails/fatos-ssl2025-branded.jpg',
   },
   {
     name: 'Cara',
     role: 'SSL 2025 Attendee',
     videoUrl: 'https://sellersessions.com/wp-content/uploads/2025/05/Cara-Testimonial-SSL2025.mp4',
+    thumbnail: '/thumbnails/cara-ssl2025-branded.jpg',
   },
 ]
 
 const FAQ_ITEMS = [
   {
     question: 'How do I know if I qualify?',
-    answer: 'This workshop is exclusively for 7 and 8-figure sellers who are looking to automate tedious tasks in their Amazon business and gain a competitive edge. You must be a full-time seller to attend. This is not intended for service providers. Each seller will be verified.',
+    answer: 'SSL 2026 is exclusively for 7 and 8-figure sellers who are looking to automate tedious tasks in their Amazon business and gain a competitive edge. You must be a full-time seller to attend. This is not intended for service providers. Each seller will be verified.',
   },
   {
     question: 'How does the day work?',
-    answer: 'The day is structured as a hands-on workshop format across three spaces: The Nave for sessions, The Garden for breaks and lunch, and a heated Bedouin Tent for networking. Morning focuses on tool building and AI implementation, midday on campaign architecture, afternoon on live execution, and the evening on high-trust networking over a buffet dinner.',
+    answer: 'Every session at SSL 2026 is built around Claude Code — delegates work alongside speakers on their own laptops, building live. The venue has three spaces: The Nave for sessions, The Garden for breaks and lunch, and a heated Bedouin Tent for networking. The day flows from morning builds through to a VIP buffet dinner and evening networking.',
   },
   {
     question: 'Do I need coding experience?',
-    answer: 'Not at all. We guide you thoroughly through the entire process of building your automations. If you can simply click and drag, you can confidently complete this workshop without any issues. We provide you with all the necessary tools and resources and walk you carefully through every single step to ensure your success.',
+    answer: 'Zero. None. Claude Code has "code" in the name but it\'s probably the worst name in the world for marketing because it\'s amazing at everything. You don\'t write code — you speak to Claude naturally, tell it what you need, and it builds for you. If you can have a conversation, you can use Claude Code.',
   },
   {
-    question: 'Who is leading the workshop?',
-    answer: 'The workshop is led by Danny McMillan and a team of industry experts who have been building tools and strategies for 7 and 8-figure Amazon sellers for years.',
+    question: 'Who is leading the sessions?',
+    answer: 'SSL 2026 is hosted by Danny McMillan, with sessions from Shubhash Sharma (systems thinking), Matt Kostan (AI-powered consumer testing via ProductPinion), Sim Mahon (scaling and brand-building), and Dorian Gorski (visual strategy and image testing). Every speaker has invested 40-60 hours preparing their material.',
   },
   {
     question: "I'm using other AI tools — why this one?",
-    answer: 'Our tools are purpose-built for Amazon sellers with deep integration into your actual workflow. Unlike generic AI tools, these are designed specifically for the tasks you perform daily — from listing optimization to competitive analysis.',
+    answer: 'Claude Code is the best Swiss Army knife in the business. It covers everything the other AI platforms offer and more — research, analysis, content, automation, data processing — all in one tool. Instead of juggling five different subscriptions, you learn one platform that does it all.',
   },
   {
     question: "What if I can't attend in person?",
-    answer: "This workshop is exclusively in-person. We don't record sessions or offer remote access because it would diminish the intimate, hands-on experience. The magic happens when we're working directly with your data, troubleshooting together, and building alongside other serious operators.",
-  },
-  {
-    question: 'Will these tools work with my setup?',
-    answer: "Yes. We connect to whatever you're already using — Seller Central reporting, Google Sheets, your email, CSV exports, etc. No need to change your current workflow. You'll just need an account with Anthropic's Claude, as that's where we'll be doing the bulk of our building work.",
+    answer: "Seller Sessions Live is an exclusive in-person event. We don't record sessions.",
   },
   {
     question: 'What tools do I need to bring?',
-    answer: "Just your laptop and Claude (we'll walk you through setup if needed). Claude is where we'll be doing the bulk of our building work.",
+    answer: "Your laptop with Claude Code installed and set up. We'll walk you through setup if needed.",
   },
   {
     question: "What's included in the ticket?",
-    answer: "Your ticket includes the full-day hands-on workshop, a suite of custom tools that don't exist anywhere else on the market, lunch and refreshments throughout the day, plus a VIP buffet dinner and evening networking at the venue. You'll leave with working systems and all the frameworks needed to keep building.",
+    answer: "Your ticket includes the full-day hands-on workshop, a library of Claude Code skills, agents, and frameworks that you'll build and take home, lunch and refreshments throughout the day, plus a VIP buffet dinner and evening networking at the venue. You'll leave with working systems and all the dependencies needed to keep building.",
   },
   {
     question: "What's your refund policy?",
-    answer: 'We offer full refunds up to 30 days before the event. After that, tickets are non-refundable but transferable to another verified seller.',
+    answer: 'We offer full refunds up to 5 days before the event. After that, tickets are non-refundable but transferable to another verified seller or to a future Seller Sessions Live event.',
   },
   {
     question: 'How do I contact the organizer?',
-    answer: 'For any questions about the workshop, contact Danny McMillan: Email: danny@sellersessions.com | Phone: UK (0)7595 217325',
+    answer: 'For any questions about SSL 2026, contact Danny McMillan: Email: danny@sellersessions.com | Phone: UK (0)7595 217325',
   },
   {
     question: 'What about networking post-workshop?',
@@ -128,12 +159,47 @@ const FAQ_ITEMS = [
     answer: 'London is well-connected by public transport. From Heathrow, the Elizabeth line or Heathrow Express to central London is recommended. From Gatwick, the Gatwick Express to Victoria is quickest. Detailed venue directions will be sent with your ticket confirmation.',
   },
   {
-    question: 'Where is the workshop? How do I get there?',
-    answer: "The workshop takes place at St Ethelburga's Centre, Bishopsgate, London (EC2M 4QD). It's a short walk from Liverpool Street station, with excellent connections from all London airports. Detailed directions will be sent with your ticket confirmation.",
+    question: 'Where is SSL Live 2026? How do I get there?',
+    answer: "SSL Live 2026 takes place at St Ethelburga's Centre, Bishopsgate, London (EC2M 4QD). It's a short walk from Liverpool Street station, with excellent connections from all London airports. Detailed directions will be sent with your ticket confirmation.",
   },
 ]
 
 export default function SSLive2026() {
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)')
+    setIsMobile(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
+
+  const speakerVideoRef = useRef<HTMLVideoElement>(null)
+  const innovationRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress: innovationScroll } = useScroll({ target: innovationRef, offset: ['start end', 'end start'] })
+  const innovationRotateX = useTransform(innovationScroll, [0, 0.5], [8, 0])
+  const innovationScale = useTransform(innovationScroll, [0, 0.5], [0.88, 1])
+  const innovationOpacity = useTransform(innovationScroll, [0, 0.4], [0.3, 1])
+  const innovationY = useTransform(innovationScroll, [0, 0.5], [60, 0])
+
+  // Lazy play/pause — only play video when section is visible
+  useEffect(() => {
+    const video = speakerVideoRef.current
+    if (!video) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play().catch(() => {})
+        } else {
+          video.pause()
+        }
+      },
+      { threshold: 0.1 }
+    )
+    observer.observe(video)
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <div className="min-h-screen bg-ss-bg">
 
@@ -141,7 +207,7 @@ export default function SSLive2026() {
           HERO - Background Video, Date, Logo, Headline, Inline Video
           ============================================= */}
       <section
-        className="relative overflow-hidden"
+        className="relative overflow-hidden bg-dot-grid"
         style={{ padding: '0 20px' }}
       >
         <div
@@ -158,8 +224,8 @@ export default function SSLive2026() {
             playsInline
             style={{ zIndex: 0 }}
           />
-          {/* Dark Overlay */}
-          <div className="absolute inset-0" style={{ backgroundColor: 'rgba(0, 0, 0, 0.55)', zIndex: 1 }} />
+          {/* Glass Overlay */}
+          <div className="absolute inset-0 backdrop-blur-[2px]" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', zIndex: 1 }} />
 
           <Container className="relative py-16 md:py-20 text-center" style={{ zIndex: 2 }}>
             <motion.div
@@ -172,7 +238,7 @@ export default function SSLive2026() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
+                transition={{ delay: 0.0 }}
                 className="mb-6"
               >
                 <span
@@ -188,7 +254,7 @@ export default function SSLive2026() {
               <motion.img
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
+                transition={{ delay: 0.3 }}
                 src={IMAGES.logo}
                 alt="Seller Sessions Live"
                 className="h-12 md:h-16 mx-auto mb-8"
@@ -198,57 +264,61 @@ export default function SSLive2026() {
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
+                transition={{ delay: 0.5 }}
                 className="text-3xl md:text-5xl lg:text-[56px] font-bold mb-4 leading-tight text-white"
               >
                 The Conference That's Sold Out<br />
-                <span className="text-[#753EF7]">6 Times Running</span>
+                <HyperText text="6 Times Running" className="text-[#753EF7]" />
               </motion.h1>
 
               {/* Subheadline */}
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
+                transition={{ delay: 0.8 }}
                 className="text-lg md:text-xl mb-3"
                 style={{ color: 'rgba(255,255,255,0.7)' }}
               >
                 80% of 2026 tickets sold in 72 hours
               </motion.p>
 
-              {/* Inline Video */}
+              {/* Inline Video — 3D perspective reveal */}
               <motion.div
                 id="video"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
                 className="mt-10 max-w-[900px] mx-auto"
+                style={{ perspective: 1200 }}
               >
-                <Card padding="none" className="overflow-hidden">
-                  <div className="aspect-video">
-                    <video
-                      src={VIDEO_URL}
-                      controls
-                      playsInline
-                      preload="metadata"
-                      className="w-full h-full object-cover"
-                      style={{ backgroundColor: '#000' }}
-                    />
-                  </div>
-                </Card>
+                <motion.div
+                  initial={{ opacity: 0, rotateX: 6, scale: 0.96 }}
+                  animate={{ opacity: 1, rotateX: 0, scale: 1 }}
+                  transition={{ delay: 1.1, duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+                >
+                  <Card padding="none" className="overflow-hidden">
+                    <div className="aspect-video">
+                      <video
+                        src={VIDEO_URL}
+                        controls
+                        playsInline
+                        preload="metadata"
+                        className="w-full h-full object-cover"
+                        style={{ backgroundColor: '#000' }}
+                      />
+                    </div>
+                  </Card>
+                </motion.div>
               </motion.div>
 
               {/* CTA */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 }}
+                transition={{ delay: 1.5 }}
                 className="flex flex-wrap justify-center gap-4 mt-10"
               >
-                <Button variant="cta" size="lg" href="?wffn-next-link=yes">
+                <Button variant="outline" size="lg" href="?wffn-next-link=yes" className="!border-0 !bg-transparent btn-animated-border">
                   Get Your Ticket — £999
                 </Button>
-                <Button variant="outline" size="lg" href="#built-for-innovators">
+                <Button variant="outline" size="lg" href="#built-for-innovators" className="!border-white/30 hover:!bg-white/10">
                   Learn More
                 </Button>
               </motion.div>
@@ -260,42 +330,49 @@ export default function SSLive2026() {
       {/* =============================================
           BUILT FOR INNOVATORS
           ============================================= */}
-      <Section id="built-for-innovators" className="section-card" style={{ paddingTop: '100px', paddingBottom: '100px' }}>
-        <Container>
+      <Section id="built-for-innovators" className="section-mid section-textured-violet relative overflow-hidden" style={{ paddingTop: '100px', paddingBottom: '100px' }}>
+        {/* Atmospheric orb */}
+        <div className="atmos-orb" style={{ width: '600px', height: '600px', background: 'radial-gradient(circle, rgba(117, 62, 247, 0.15), transparent 70%)', top: '-200px', right: '-100px' }} />
+        <Container className="relative z-10">
           <div className="max-w-[900px] mx-auto text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-3xl md:text-[42px] font-bold mb-2 text-white">
+              <h2 className="text-4xl md:text-[48px] font-bold mb-2 text-white">
                 Built for Innovators.
               </h2>
-              <h2 className="text-3xl md:text-[42px] font-bold mb-8 text-[#753EF7]">
+              <h2 className="text-4xl md:text-[48px] font-bold mb-8 text-[#753EF7]">
                 Not Imitators.
               </h2>
-              <p className="mb-10 max-w-[700px] mx-auto" style={{ color: 'rgba(255,255,255,0.6)', fontSize: '17px', lineHeight: '1.8' }}>
+              <p className="mb-10 max-w-[700px] mx-auto" style={{ color: 'rgba(255,255,255,0.6)', fontSize: '16px', lineHeight: '1.8' }}>
                 Join the brightest minds in Amazon selling at the UK's most exclusive event. This isn't just another conference — it's where 7, 8, and 9-figure sellers come to learn cutting-edge strategies that actually move the needle.
               </p>
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="grid md:grid-cols-3 gap-6 text-left"
-            >
+            <div className="grid md:grid-cols-3 gap-6 text-left">
               {[
-                { number: '47.5%', label: 'Return Rate — sellers keep coming back year after year' },
-                { number: '80%', label: 'Of tickets sold in just 72 hours — 12 months in advance' },
-                { number: '6x', label: 'Consecutive sellouts — the original format everyone copies' },
+                { value: 47.5, suffix: '%', decimals: 1, label: 'Return Rate — sellers keep coming back year after year' },
+                { value: 80, suffix: '%', decimals: 0, label: 'Of tickets sold in just 72 hours — 12 months in advance' },
+                { value: 6, suffix: 'x', decimals: 0, label: 'Consecutive sellouts — the original format everyone copies' },
               ].map((stat, i) => (
-                <Card key={i} padding="md">
-                  <div className="text-3xl font-bold text-[#753EF7] mb-2">{stat.number}</div>
-                  <p className="text-sm" style={{ color: 'rgba(255,255,255,0.6)', lineHeight: '1.6' }}>{stat.label}</p>
-                </Card>
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.15, duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+                >
+                  <Card padding="md" className="h-full">
+                    <div className="text-[#753EF7] mb-2" style={{ fontSize: 'clamp(3rem, 8vw, 4.5rem)', fontWeight: 800, lineHeight: 1, letterSpacing: '-0.02em' }}>
+                      <CountUp value={stat.value} suffix={stat.suffix} decimals={stat.decimals} />
+                    </div>
+                    <p className="text-base" style={{ color: 'rgba(255,255,255,0.6)', lineHeight: '1.6' }}>{stat.label}</p>
+                  </Card>
+                </motion.div>
               ))}
-            </motion.div>
+            </div>
 
             <motion.p
               initial={{ opacity: 0 }}
@@ -312,18 +389,93 @@ export default function SSLive2026() {
       {/* =============================================
           THIS ROOM IS FOR / NOT FOR
           ============================================= */}
-      <Section className="section-dark" style={{ paddingTop: '100px', paddingBottom: '100px' }}>
+      <Section className="section-dark section-textured section-fade-in" style={{ paddingTop: '100px', paddingBottom: '100px', '--fade-from': '#130d2a' } as React.CSSProperties}>
         <Container>
-          <div className="grid md:grid-cols-2 gap-8 max-w-[1000px] mx-auto items-stretch">
-            {/* For */}
+          {/* Desktop: Sticky card stacking — both cards sticky, second slides over first */}
+          <div className="hidden md:block max-w-[700px] mx-auto" style={{ height: '150vh' }}>
+            <div className="sticky top-[80px] z-10">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+              >
+                <Card padding="lg">
+                  <h3 className="text-[28px] font-bold mb-6 text-white">
+                    This Room Is For Sellers Who...
+                  </h3>
+                  <ul className="space-y-4">
+                    {[
+                      'Build systems, not campaigns',
+                      'Want cutting-edge tools that work',
+                      'Learn by doing, not listening',
+                      'Think long-term, not quick fixes',
+                      'Lead markets, don\'t follow',
+                    ].map((item, i) => (
+                      <motion.li
+                        key={i}
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: i * 0.1, duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+                        className="flex items-start gap-3"
+                        style={{ color: 'rgba(255,255,255,0.8)', fontSize: '16px' }}
+                      >
+                        <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
+                        {item}
+                      </motion.li>
+                    ))}
+                  </ul>
+                </Card>
+              </motion.div>
+            </div>
+            <div className="sticky top-[80px] z-20 pt-4">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+              >
+                <Card padding="lg">
+                  <h3 className="text-[28px] font-bold mb-6 text-white">
+                    This Isn't For You If...
+                  </h3>
+                  <ul className="space-y-4">
+                    {[
+                      'You copy listings and join the sea of same',
+                      'You\'re stuck in 2018 keyword stuffing',
+                      'You\'re looking for freebies and shortcuts',
+                      'You watch others before you move',
+                      'You step over pounds to save pennies',
+                    ].map((item, i) => (
+                      <motion.li
+                        key={i}
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: i * 0.1, duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+                        className="flex items-start gap-3"
+                        style={{ color: 'rgba(255,255,255,0.6)', fontSize: '16px' }}
+                      >
+                        <XCircle className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: 'rgba(255,255,255,0.3)' }} />
+                        {item}
+                      </motion.li>
+                    ))}
+                  </ul>
+                </Card>
+              </motion.div>
+            </div>
+          </div>
+
+          {/* Mobile: Normal stacked layout (no sticky) */}
+          <div className="md:hidden space-y-6 max-w-[600px] mx-auto">
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="h-full"
             >
-              <Card padding="lg" className="h-full">
-                <h3 className="text-[26px] font-bold mb-6 text-white">
+              <Card padding="lg">
+                <h3 className="text-[28px] font-bold mb-6 text-white">
                   This Room Is For Sellers Who...
                 </h3>
                 <ul className="space-y-4">
@@ -334,24 +486,29 @@ export default function SSLive2026() {
                     'Think long-term, not quick fixes',
                     'Lead markets, don\'t follow',
                   ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-3" style={{ color: 'rgba(255,255,255,0.8)', fontSize: '15px' }}>
+                    <motion.li
+                      key={i}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.1, duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+                      className="flex items-start gap-3"
+                      style={{ color: 'rgba(255,255,255,0.8)', fontSize: '16px' }}
+                    >
                       <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
                       {item}
-                    </li>
+                    </motion.li>
                   ))}
                 </ul>
               </Card>
             </motion.div>
-
-            {/* Not For */}
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="h-full"
             >
-              <Card padding="lg" className="h-full">
-                <h3 className="text-[26px] font-bold mb-6 text-white">
+              <Card padding="lg">
+                <h3 className="text-[28px] font-bold mb-6 text-white">
                   This Isn't For You If...
                 </h3>
                 <ul className="space-y-4">
@@ -362,10 +519,18 @@ export default function SSLive2026() {
                     'You watch others before you move',
                     'You step over pounds to save pennies',
                   ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-3" style={{ color: 'rgba(255,255,255,0.6)', fontSize: '15px' }}>
+                    <motion.li
+                      key={i}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.1, duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+                      className="flex items-start gap-3"
+                      style={{ color: 'rgba(255,255,255,0.6)', fontSize: '16px' }}
+                    >
                       <XCircle className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: 'rgba(255,255,255,0.3)' }} />
                       {item}
-                    </li>
+                    </motion.li>
                   ))}
                 </ul>
               </Card>
@@ -377,7 +542,7 @@ export default function SSLive2026() {
       {/* =============================================
           MODULAR FORMAT
           ============================================= */}
-      <Section className="section-card" style={{ paddingTop: '100px', paddingBottom: '100px' }}>
+      <Section className="section-card section-textured section-fade-in" style={{ paddingTop: '100px', paddingBottom: '100px', '--fade-from': '#0C0322' } as React.CSSProperties}>
         <Container>
           <div className="max-w-[900px] mx-auto">
             <motion.div
@@ -386,20 +551,20 @@ export default function SSLive2026() {
               viewport={{ once: true }}
               className="text-center mb-12"
             >
-              <h2 className="text-3xl md:text-[42px] font-bold mb-4 text-white">
+              <h2 className="text-4xl md:text-[48px] font-bold mb-4 text-white">
                 Modular Format
               </h2>
               <p className="text-[#753EF7] font-semibold text-lg mb-4">
-                One Roof. Multiple Phases. Seamless Flow.
+                <GradualSpacing text="One Roof. Multiple Phases. Seamless Flow." />
               </p>
-              <p className="max-w-[700px] mx-auto" style={{ color: 'rgba(255,255,255,0.6)', fontSize: '15px', lineHeight: '1.8' }}>
+              <p className="max-w-[700px] mx-auto" style={{ color: 'rgba(255,255,255,0.6)', fontSize: '16px', lineHeight: '1.8' }}>
                 We've rebuilt the conference model from the ground up. In 2025, we took a massive risk and implemented a hands-on adapted VARK model to maximise comprehension, which paid off.
               </p>
             </motion.div>
 
             <div className="grid md:grid-cols-2 gap-6">
               {[
-                { time: 'Morning', desc: 'Focused tool building and AI implementation', color: '#753EF7' },
+                { time: 'Morning', desc: 'Focused tool building and AI implementation — delegates work on their own laptops alongside speakers, building live systems', color: '#753EF7' },
                 { time: 'Midday', desc: 'Campaign architecture and system development', color: '#A179FF' },
                 { time: 'Afternoon', desc: 'Live execution and real-time collaboration', color: '#FBBF24' },
                 { time: 'Evening', desc: 'High-trust networking and deep conversations', color: '#F59E0B' },
@@ -411,15 +576,17 @@ export default function SSLive2026() {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
                 >
-                  <Card padding="md" className="h-full">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="w-3 h-3 rounded-full" style={{ backgroundColor: phase.color }} />
-                      <span className="text-sm uppercase tracking-[2px] font-semibold" style={{ color: phase.color }}>{phase.time}</span>
+                  <NeonGradientCard color={phase.color} intensity="subtle" className="h-full">
+                    <div className="p-6">
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: phase.color }} />
+                        <span className="text-sm uppercase tracking-[2px] font-semibold" style={{ color: phase.color }}>{phase.time}</span>
+                      </div>
+                      <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '16px', lineHeight: '1.6' }}>
+                        {phase.desc}
+                      </p>
                     </div>
-                    <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '15px', lineHeight: '1.6' }}>
-                      {phase.desc}
-                    </p>
-                  </Card>
+                  </NeonGradientCard>
                 </motion.div>
               ))}
             </div>
@@ -429,7 +596,7 @@ export default function SSLive2026() {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               className="text-center mt-8"
-              style={{ color: 'rgba(255,255,255,0.6)', fontSize: '15px', lineHeight: '1.7' }}
+              style={{ color: 'rgba(255,255,255,0.6)', fontSize: '16px', lineHeight: '1.7' }}
             >
               As the day progresses, the entire venue transforms — lighting changes, layout evolves, atmosphere shifts. Everything under one roof.
             </motion.p>
@@ -438,40 +605,53 @@ export default function SSLive2026() {
       </Section>
 
       {/* =============================================
-          CROWD IMAGE + INNOVATION
+          SPEAKER GROUP SHOT VIDEO + INNOVATION — scroll cinema reveal
           ============================================= */}
       <Section className="section-dark" style={{ paddingTop: '0', paddingBottom: '0' }}>
-        <div className="relative">
-          <div
-            className="h-[400px] md:h-[500px] bg-cover bg-center"
-            style={{
-              backgroundImage: `url(${IMAGES.crowd})`,
-            }}
-          >
-            <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, #0C0322 0%, transparent 30%, transparent 70%, #0C0322 100%)' }} />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="text-center px-4"
-              >
-                <h2 className="text-3xl md:text-[42px] font-bold text-white mb-4" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
-                  Innovation & Atmosphere
-                </h2>
-                <p className="text-lg font-semibold" style={{ color: 'rgba(255,255,255,0.9)', textShadow: '0 2px 10px rgba(0,0,0,0.8)' }}>
-                  Forget the highbrow, stiff, hotel conference energy.
-                </p>
-              </motion.div>
+        <div ref={innovationRef} style={{ perspective: 1200 }}>
+          <motion.div style={{ rotateX: innovationRotateX, scale: innovationScale, opacity: innovationOpacity, y: innovationY }}>
+            <div className="relative">
+              <div className="h-[400px] md:h-[500px] relative overflow-hidden">
+                {/* Speaker group animation */}
+                <video
+                  ref={speakerVideoRef}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  src="/videos/speakers-animation.mp4"
+                  poster="/videos/speakers-poster.jpg"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="none"
+                  style={{ zIndex: 0 }}
+                />
+                {/* Base tint — 70% opacity, mysterious dark wash, faces just visible */}
+                <div className="absolute inset-0" style={{ backgroundColor: 'rgba(12, 3, 34, 0.70)', zIndex: 1 }} />
+                {/* Vignette — darkens edges further, centre slightly lighter to hint at faces */}
+                <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at center, transparent 15%, rgba(12, 3, 34, 0.7) 100%)', zIndex: 2 }} />
+                {/* Top/bottom gradient fade — blends into adjacent sections */}
+                <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, #0C0322 0%, transparent 25%, transparent 75%, #0C0322 100%)', zIndex: 3 }} />
+                {/* Text */}
+                <div className="absolute inset-0 flex items-center justify-center" style={{ zIndex: 4 }}>
+                  <div className="text-center px-4">
+                    <h2 className="text-4xl md:text-[48px] font-bold text-white mb-4" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
+                      Innovation & Atmosphere
+                    </h2>
+                    <p className="text-lg font-semibold" style={{ color: 'rgba(255,255,255,0.9)', textShadow: '0 2px 10px rgba(0,0,0,0.8)' }}>
+                      Forget the highbrow, stiff, hotel conference energy.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </Section>
 
       {/* =============================================
           HANDS-ON WORKSHOP FORMAT
           ============================================= */}
-      <Section className="section-dark" style={{ paddingTop: '100px', paddingBottom: '100px' }}>
+      <Section className="section-dark section-textured section-fade-in" style={{ paddingTop: '100px', paddingBottom: '100px', '--fade-from': '#0C0322' } as React.CSSProperties}>
         <Container>
           <div className="max-w-[900px] mx-auto text-center">
             <motion.div
@@ -479,7 +659,7 @@ export default function SSLive2026() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-3xl md:text-[42px] font-bold mb-8 text-white">
+              <h2 className="text-4xl md:text-[48px] font-bold mb-8 text-white">
                 Advanced Hands-On Learning<br />
                 <span className="text-[#753EF7]">in a Workshop Format</span>
               </h2>
@@ -487,10 +667,10 @@ export default function SSLive2026() {
 
             <div className="grid md:grid-cols-3 gap-6">
               {[
-                { icon: <Laptop className="w-7 h-7" />, text: 'Bring your own laptop — this is essential' },
-                { icon: <Plug className="w-7 h-7" />, text: 'Dedicated workstation with power outlets provided' },
-                { icon: <FileText className="w-7 h-7" />, text: 'Library of custom bots, plugins, walkthroughs and resources' },
-              ].map((item, i) => (
+                'Bring your own laptop — this is essential',
+                'Dedicated workstation with power outlets provided',
+                'Library of custom bots, plugins, walkthroughs and resources',
+              ].map((text, i) => (
                 <motion.div
                   key={i}
                   initial={{ opacity: 0, y: 20 }}
@@ -499,10 +679,7 @@ export default function SSLive2026() {
                   transition={{ delay: i * 0.1 }}
                 >
                   <Card padding="md" className="h-full text-center">
-                    <div className="inline-flex items-center justify-center w-14 h-14 rounded-full mb-4" style={{ backgroundColor: 'rgba(117, 62, 247, 0.15)' }}>
-                      <span className="text-[#753EF7]">{item.icon}</span>
-                    </div>
-                    <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '15px', lineHeight: '1.6' }}>{item.text}</p>
+                    <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '16px', lineHeight: '1.6' }}>{text}</p>
                   </Card>
                 </motion.div>
               ))}
@@ -514,68 +691,55 @@ export default function SSLive2026() {
       {/* =============================================
           WHY THIS FORMAT WORKS
           ============================================= */}
-      <Section className="section-card" style={{ paddingTop: '100px', paddingBottom: '100px' }}>
-        <Container>
+      <Section className="section-mid section-textured-amber relative overflow-hidden section-fade-in" style={{ paddingTop: '100px', paddingBottom: '100px', '--fade-from': '#0C0322' } as React.CSSProperties}>
+        {/* Atmospheric orb */}
+        <div className="atmos-orb" style={{ width: '500px', height: '500px', background: 'radial-gradient(circle, rgba(117, 62, 247, 0.12), transparent 70%)', bottom: '-150px', left: '-100px' }} />
+        <Container className="relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl md:text-[42px] font-bold mb-4 text-white">
+            <h2 className="text-4xl md:text-[48px] font-bold mb-4 text-white">
               Why This Format Works — <span className="text-[#753EF7]">for Innovators</span>
             </h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-[1200px] mx-auto">
-            {[
-              {
-                icon: <Wrench className="w-8 h-8" />,
-                title: 'Practical Workshop Format',
-                description: 'Clear, hands-on sessions with structured activities and real-time builds on your own laptop -- designed to give you implementable takeaways that transform theory into immediate practice.',
-              },
-              {
-                icon: <BookOpen className="w-8 h-8" />,
-                title: 'Beyond Surface-Level Content',
-                description: 'While others arrive with basic slide decks and hunt for leads, we deliver substantial, actionable content crafted specifically for genuine seller growth and real implementation.',
-              },
-              {
-                icon: <GraduationCap className="w-8 h-8" />,
-                title: 'Elite Educational Experience',
-                description: 'Built on 10,000+ hours teaching audio engineering and music production. Comprehension is the critical factor -- teaching is a skill, not a side effect of industry status.',
-              },
-              {
-                icon: <Cpu className="w-8 h-8" />,
-                title: 'Direct Access to Tools',
-                description: 'The only Amazon conference worldwide that develops fully functional, professional-grade tools you can deploy immediately. Built into the curriculum -- you leave with working systems.',
-              },
-              {
-                icon: <CalendarCheck className="w-8 h-8" />,
-                title: 'Meticulously Crafted Agenda',
-                description: 'Six months of preparation. Each speaker invests 40-60 hours plus a full day of rehearsals. Every moment is orchestrated -- nothing is improvised, nothing is filler.',
-              },
-              {
-                icon: <Users className="w-8 h-8" />,
-                title: 'Meaningful Networking',
-                description: 'Connect with brilliant seven- and eight-figure sellers in an environment carefully curated to shield you from the service provider solicitations that plague 99% of conferences.',
-              },
-            ].map((feature, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-              >
-                <Card hover padding="lg" className="h-full">
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4" style={{ backgroundColor: 'rgba(117, 62, 247, 0.15)' }}>
-                    <span className="text-[#753EF7]">{feature.icon}</span>
-                  </div>
-                  <h3 className="text-lg font-bold mb-2 text-white">{feature.title}</h3>
-                  <p className="text-sm" style={{ color: 'rgba(255,255,255,0.6)', lineHeight: '1.7' }}>{feature.description}</p>
-                </Card>
-              </motion.div>
-            ))}
+          {/* CardStack carousel — one benefit at a time, 3D fan animation */}
+          <div className="flex justify-center">
+            <CardStack
+              items={[
+                { id: 1, title: 'Practical Workshop Format', description: 'Hands-on builds on your own laptop. Implementable takeaways, not slide deck theory.' },
+                { id: 2, title: 'Beyond Surface-Level Content', description: 'Substantial, actionable content for genuine seller growth. No lead-gen talks.' },
+                { id: 3, title: 'Elite Educational Experience', description: 'Teaching is a skill, not a side effect of status. Built on 10,000+ hours of instruction.' },
+                { id: 4, title: 'Direct Access to Tools', description: 'The only Amazon conference that builds professional-grade tools live. You leave with working systems.' },
+                { id: 5, title: 'Meticulously Crafted Agenda', description: 'Six months of prep. Each speaker invests 40-60 hours plus a full day of rehearsals.' },
+                { id: 6, title: 'Meaningful Networking', description: 'Seven- and eight-figure sellers in a curated environment. No service provider solicitations.' },
+              ]}
+              cardWidth={isMobile ? 320 : 480}
+              cardHeight={isMobile ? 240 : 260}
+              autoAdvance
+              intervalMs={3500}
+              pauseOnHover
+              showDots
+              renderCard={(item, { active }) => (
+                <div
+                  className="h-full w-full flex flex-col justify-center p-8"
+                  style={{
+                    background: active
+                      ? 'linear-gradient(135deg, #2F0453, #1A0A2E)'
+                      : 'linear-gradient(135deg, #1A1A1A, #1C0E30)',
+                    borderRadius: '16px',
+                  }}
+                >
+                  <h3 className="text-2xl font-bold text-white mb-3">{item.title}</h3>
+                  <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '16px', lineHeight: '1.7' }}>
+                    {item.description}
+                  </p>
+                </div>
+              )}
+            />
           </div>
 
           <motion.p
@@ -583,7 +747,7 @@ export default function SSLive2026() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             className="text-center mt-10 max-w-[700px] mx-auto"
-            style={{ color: 'rgba(255,255,255,0.6)', fontSize: '15px', lineHeight: '1.7' }}
+            style={{ color: 'rgba(255,255,255,0.6)', fontSize: '16px', lineHeight: '1.7' }}
           >
             Evening Strategy Sessions: Continue your development with organised evening discussions and roundtables focused on actionable insights from fellow sellers that extend learning beyond standard conference hours.
           </motion.p>
@@ -593,7 +757,7 @@ export default function SSLive2026() {
       {/* =============================================
           SPEAKERS
           ============================================= */}
-      <Section id="speakers" className="section-dark" style={{ paddingTop: '100px', paddingBottom: '100px' }}>
+      <Section id="speakers" className="section-dark section-textured section-fade-in" style={{ paddingTop: '100px', paddingBottom: '100px', '--fade-from': '#130d2a' } as React.CSSProperties}>
         <Container>
           <div className="max-w-[1200px] mx-auto">
             <motion.div
@@ -602,93 +766,21 @@ export default function SSLive2026() {
               viewport={{ once: true }}
               className="text-center mb-12"
             >
-              <h2 className="text-3xl md:text-[42px] font-bold mb-4 text-white">
+              <h2 className="text-4xl md:text-[48px] font-bold mb-4 text-white">
                 Meet Your <span className="text-[#753EF7]">Speakers</span>
               </h2>
-              <p className="max-w-[700px] mx-auto" style={{ color: 'rgba(255,255,255,0.6)', fontSize: '15px', lineHeight: '1.8' }}>
+              <p className="max-w-[700px] mx-auto" style={{ color: 'rgba(255,255,255,0.6)', fontSize: '16px', lineHeight: '1.8' }}>
                 Five operators who build, scale, and innovate at the highest level. No filler talks. No sales pitches. Just actionable expertise.
               </p>
             </motion.div>
 
-            {/* Host -- full-width featured card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="mb-6"
-            >
-              <Card padding="lg">
-                <div className="flex flex-col md:flex-row gap-6 items-center md:items-start">
-                  <div className="w-[120px] h-[120px] rounded-full flex-shrink-0 flex items-center justify-center text-xs uppercase tracking-[1px] font-semibold" style={{ backgroundColor: 'rgba(117, 62, 247, 0.15)', color: 'rgba(255,255,255,0.3)', border: '2px dashed rgba(117, 62, 247, 0.3)' }}>
-                    Photo
-                  </div>
-                  <div className="text-center md:text-left">
-                    <div className="flex flex-col md:flex-row md:items-center gap-2 mb-1">
-                      <span className="text-xs uppercase tracking-[2px] font-semibold text-[#753EF7]">Host + Session 1</span>
-                      <span className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>09:30 - 11:00</span>
-                    </div>
-                    <h3 className="text-xl font-bold mb-3 text-white">Danny McMillan</h3>
-                    <p className="text-sm" style={{ color: 'rgba(255,255,255,0.6)', lineHeight: '1.7' }}>
-                      Founder of Seller Sessions, co-founder of Databrill, advisor to Data Dive. Opens the day with a 90-minute deep dive into using Claude and Claude Code for Amazon operations -- live, on laptops, building alongside every delegate.
-                    </p>
-                  </div>
-                </div>
-              </Card>
-            </motion.div>
-
-            {/* Remaining 4 speakers -- 2x2 grid, all rows filled */}
-            <div className="grid md:grid-cols-2 gap-6">
-              {[
-                {
-                  name: 'Shubhash Sharma',
-                  role: 'Session 2',
-                  time: '11:15 - 12:30',
-                  bio: 'Systems architect and entrepreneur building Not A Square -- intelligent systems that reduce decision fatigue and increase strategic clarity. Delivers a session on systems thinking for Amazon sellers: operational workflows that scale without burnout.',
-                },
-                {
-                  name: 'Matt Kostan',
-                  role: 'Session 3',
-                  time: '13:30 - 14:30',
-                  bio: 'Founder of ProductPinion. Built a platform to answer the question every seller faces: why don\'t customers buy? Covers AI-powered consumer testing to validate product decisions and reduce launch risk.',
-                },
-                {
-                  name: 'Sim Mahon',
-                  role: 'Sessions 4 & 5',
-                  time: '14:45 - 17:00',
-                  bio: 'Eight-figure seller with six private label brands. Known for operational discipline and brand-building at scale. Shares the afternoon block covering advanced brand-building and scaling strategies.',
-                },
-                {
-                  name: 'Dorian Gorski',
-                  role: 'Sessions 4 & 5',
-                  time: '14:45 - 17:00',
-                  bio: 'The #1 stop-the-scroll main image specialist. CEO of Keplo.com. Shares the afternoon block with Sim, focusing on visual strategy, image testing, and the intersection of creative and data.',
-                },
-              ].map((speaker, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                >
-                  <Card padding="lg" className="h-full">
-                    <div className="flex gap-4 items-start">
-                      <div className="w-[80px] h-[80px] rounded-full flex-shrink-0 flex items-center justify-center text-[10px] uppercase tracking-[1px] font-semibold" style={{ backgroundColor: 'rgba(117, 62, 247, 0.15)', color: 'rgba(255,255,255,0.3)', border: '2px dashed rgba(117, 62, 247, 0.3)' }}>
-                        Photo
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="text-xs uppercase tracking-[2px] font-semibold text-[#753EF7]">{speaker.role}</span>
-                          <span className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>{speaker.time}</span>
-                        </div>
-                        <h3 className="text-lg font-bold mb-2 text-white">{speaker.name}</h3>
-                        <p className="text-sm" style={{ color: 'rgba(255,255,255,0.6)', lineHeight: '1.7' }}>{speaker.bio}</p>
-                      </div>
-                    </div>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
+            <SpeakerTimeline data={[
+              { name: 'Danny McMillan', badge: 'Host + Session 1', time: '09:30 - 11:00', image: '/speakers/danny-mcmillan.jpg', bio: 'Founder of Seller Sessions, co-founder of Databrill, advisor to Data Dive. Opens the day with a 90-minute deep dive into using Claude and Claude Code for Amazon operations -- live, on laptops, building alongside every delegate.' },
+              { name: 'Shubhash Sharma', badge: 'Session 2', time: '11:15 - 12:30', image: '/speakers/shubhash-sharma.jpg', bio: 'Systems architect and entrepreneur building Not A Square -- intelligent systems that reduce decision fatigue and increase strategic clarity. Delivers a session on systems thinking for Amazon sellers: operational workflows that scale without burnout.' },
+              { name: 'Matt Kostan', badge: 'Session 3', time: '13:30 - 14:30', image: '/speakers/matt-kostan.jpg', bio: 'Founder of ProductPinion. Built a platform to answer the question every seller faces: why don\'t customers buy? Covers AI-powered consumer testing to validate product decisions and reduce launch risk.' },
+              { name: 'Sim Mahon', badge: 'Sessions 4 & 5', time: '14:45 - 17:00', image: '/speakers/sim-mahon.jpg', bio: 'Eight-figure seller with six private label brands. Known for operational discipline and brand-building at scale. Shares the afternoon block covering advanced brand-building and scaling strategies.' },
+              { name: 'Dorian Gorski', badge: 'Sessions 4 & 5', time: '14:45 - 17:00', image: '/speakers/dorian-gorski.jpg', bio: 'The #1 stop-the-scroll main image specialist. CEO of Keplo.com. Shares the afternoon block with Sim, focusing on visual strategy, image testing, and the intersection of creative and data.' },
+            ]} />
           </div>
         </Container>
       </Section>
@@ -696,7 +788,7 @@ export default function SSLive2026() {
       {/* =============================================
           AGENDA
           ============================================= */}
-      <Section id="agenda" className="section-card" style={{ paddingTop: '100px', paddingBottom: '100px' }}>
+      <Section id="agenda" className="section-dark section-textured-indigo section-fade-in" style={{ paddingTop: '100px', paddingBottom: '100px', '--fade-from': '#0C0322' } as React.CSSProperties}>
         <Container>
           <div className="max-w-[800px] mx-auto">
             <motion.div
@@ -705,42 +797,87 @@ export default function SSLive2026() {
               viewport={{ once: true }}
               className="text-center mb-12"
             >
-              <h2 className="text-3xl md:text-[42px] font-bold mb-4 text-white">
+              <h2 className="text-4xl md:text-[48px] font-bold mb-4 text-white">
                 The <span className="text-[#753EF7]">Agenda</span>
               </h2>
-              <p className="max-w-[600px] mx-auto" style={{ color: 'rgba(255,255,255,0.6)', fontSize: '15px', lineHeight: '1.8' }}>
+              <p className="max-w-[600px] mx-auto" style={{ color: 'rgba(255,255,255,0.6)', fontSize: '16px', lineHeight: '1.8' }}>
                 One day. One venue. Three phases. The entire building transforms as the day progresses.
               </p>
             </motion.div>
 
-            <div className="space-y-3">
+            <div className="space-y-6">
+              {/* Phase-banded timeline */}
               {[
-                { time: '09:00', label: 'Opening Assembly', who: 'Danny McMillan', type: 'session' },
-                { time: '09:30', label: 'Session 1 -- AI for Amazon Operations', who: 'Danny McMillan', type: 'session' },
-                { time: '11:00', label: 'Break', who: '', type: 'break' },
-                { time: '11:15', label: 'Session 2 -- Systems Thinking for Sellers', who: 'Shubhash Sharma', type: 'session' },
-                { time: '12:30', label: 'Lunch', who: '', type: 'break' },
-                { time: '13:30', label: 'Session 3 -- AI-Powered Consumer Testing', who: 'Matt Kostan', type: 'session' },
-                { time: '14:30', label: 'Break', who: '', type: 'break' },
-                { time: '14:45', label: 'Sessions 4 & 5 -- Scaling & Visual Strategy', who: 'Sim Mahon & Dorian Gorski', type: 'session' },
-                { time: '17:00', label: 'Workshop Concludes', who: '', type: 'break' },
-                { time: '18:30', label: 'VIP Dinner & Networking', who: 'All delegates', type: 'evening' },
-              ].map((item, i) => (
+                {
+                  phase: 'Morning',
+                  phaseColor: '#753EF7',
+                  phaseBg: 'rgba(117, 62, 247, 0.06)',
+                  items: [
+                    { time: '09:00', label: 'Opening Assembly', who: 'Danny McMillan', type: 'session' },
+                    { time: '09:30', label: 'Session 1 -- AI for Amazon Operations', who: 'Danny McMillan', type: 'session' },
+                    { time: '11:00', label: 'Break', who: '', type: 'break' },
+                  ],
+                },
+                {
+                  phase: 'Midday',
+                  phaseColor: '#A179FF',
+                  phaseBg: 'rgba(161, 121, 255, 0.06)',
+                  items: [
+                    { time: '11:15', label: 'Session 2 -- Systems Thinking for Sellers', who: 'Shubhash Sharma', type: 'session' },
+                    { time: '12:30', label: 'Lunch', who: '', type: 'break' },
+                  ],
+                },
+                {
+                  phase: 'Afternoon',
+                  phaseColor: '#FBBF24',
+                  phaseBg: 'rgba(251, 191, 36, 0.05)',
+                  items: [
+                    { time: '13:30', label: 'Session 3 -- AI-Powered Consumer Testing', who: 'Matt Kostan', type: 'session' },
+                    { time: '14:30', label: 'Break', who: '', type: 'break' },
+                    { time: '14:45', label: 'Sessions 4 & 5 -- Scaling & Visual Strategy', who: 'Sim Mahon & Dorian Gorski', type: 'session' },
+                    { time: '17:00', label: 'Workshop Concludes', who: '', type: 'break' },
+                  ],
+                },
+                {
+                  phase: 'Evening',
+                  phaseColor: '#F59E0B',
+                  phaseBg: 'rgba(245, 158, 11, 0.06)',
+                  items: [
+                    { time: '18:30', label: 'VIP Dinner & Networking', who: 'All delegates', type: 'evening' },
+                  ],
+                },
+              ].map((band, bi) => (
+                <motion.div
+                  key={bi}
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: bi * 0.1 }}
+                  className="rounded-xl overflow-hidden"
+                  style={{ backgroundColor: band.phaseBg, border: `1px solid ${band.phaseColor}20` }}
+                >
+                  {/* Phase label */}
+                  <div className="px-5 py-2.5 flex items-center gap-2" style={{ borderBottom: `1px solid ${band.phaseColor}20` }}>
+                    <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: band.phaseColor }} />
+                    <span className="text-xs uppercase tracking-[2px] font-semibold" style={{ color: band.phaseColor }}>{band.phase}</span>
+                  </div>
+                  {/* Items within phase */}
+                  <div className="space-y-0">
+                    {band.items.map((item, i) => (
                 <motion.div
                   key={i}
                   initial={{ opacity: 0, x: -10 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: i * 0.05 }}
+                  transition={{ delay: bi * 0.1 + i * 0.05 }}
                 >
                   <div
-                    className="flex items-center gap-4 rounded-xl px-5 py-4"
+                    className="flex items-center gap-4 px-5 py-4"
                     style={{
-                      backgroundColor: item.type === 'session' ? 'rgba(117, 62, 247, 0.08)' : item.type === 'evening' ? 'rgba(251, 191, 36, 0.08)' : 'transparent',
-                      borderLeft: item.type === 'session' ? '3px solid #753EF7' : item.type === 'evening' ? '3px solid #FBBF24' : '3px solid rgba(255,255,255,0.1)',
+                      borderLeft: item.type === 'session' ? `3px solid ${band.phaseColor}` : item.type === 'evening' ? `3px solid ${band.phaseColor}` : '3px solid rgba(255,255,255,0.1)',
                     }}
                   >
-                    <div className="text-sm font-mono font-semibold w-[60px] flex-shrink-0" style={{ color: item.type === 'evening' ? '#FBBF24' : '#753EF7' }}>
+                    <div className="text-sm font-mono font-semibold w-[60px] flex-shrink-0" style={{ color: band.phaseColor }}>
                       {item.time}
                     </div>
                     <div className="flex-1">
@@ -751,16 +888,22 @@ export default function SSLive2026() {
                     </div>
                   </div>
                 </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
               ))}
             </div>
           </div>
         </Container>
       </Section>
 
+      {/* Wave divider — Agenda → Testimonials */}
+      <WaveDivider color="#753EF7" className="bg-ss-bg" />
+
       {/* =============================================
           WRITTEN TESTIMONIALS
           ============================================= */}
-      <Section className="section-dark" style={{ paddingTop: '80px', paddingBottom: '80px' }}>
+      <Section className="section-dark section-textured section-fade-in" style={{ paddingTop: '80px', paddingBottom: '80px', '--fade-from': '#1a1a2e' } as React.CSSProperties}>
         <Container>
           <div className="max-w-[1000px] mx-auto">
             <motion.div
@@ -769,11 +912,12 @@ export default function SSLive2026() {
               viewport={{ once: true }}
               className="text-center mb-10"
             >
-              <h2 className="text-3xl md:text-[42px] font-bold mb-4 text-white">
+              <h2 className="text-4xl md:text-[48px] font-bold mb-4 text-white">
                 What Delegates <span className="text-[#753EF7]">Say</span>
               </h2>
             </motion.div>
 
+            {/* Featured testimonials — balanced 2-card grid */}
             <div className="grid md:grid-cols-2 gap-6">
               {[
                 {
@@ -784,14 +928,6 @@ export default function SSLive2026() {
                   name: 'Toni Jantunen',
                   quote: 'This truly was a game-changing conference -- unlike anything I\'ve experienced in my career before. The materials, insights, and tools provided are absolutely top-tier. Implementing all of this will keep me busy the rest of the year in the best possible way. Huge thanks for the incredible work you put into making this happen.',
                 },
-                {
-                  name: 'Nir Raveh',
-                  quote: 'Amazing content, excellent organisation, and an outstanding group of attendees!',
-                },
-                {
-                  name: 'Rony Gariplerdan',
-                  quote: 'Amazing event, great content -- it was very nice to meet you all.',
-                },
               ].map((testimonial, i) => (
                 <motion.div
                   key={i}
@@ -801,7 +937,7 @@ export default function SSLive2026() {
                   transition={{ delay: i * 0.1 }}
                 >
                   <Card padding="lg" className="h-full">
-                    <p className="text-sm italic mb-4" style={{ color: 'rgba(255,255,255,0.7)', lineHeight: '1.8' }}>
+                    <p className="text-base italic mb-4" style={{ color: 'rgba(255,255,255,0.7)', lineHeight: '1.8' }}>
                       "{testimonial.quote}"
                     </p>
                     <div className="text-sm font-semibold text-[#753EF7]">{testimonial.name}</div>
@@ -809,23 +945,46 @@ export default function SSLive2026() {
                 </motion.div>
               ))}
             </div>
+
+            {/* Short endorsements — 2-column grid for equal centering */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-8 max-w-[700px] mx-auto"
+            >
+              {[
+                { name: 'Nir Raveh', quote: 'Amazing content, excellent organisation, and an outstanding group of attendees!' },
+                { name: 'Rony Gariplerdan', quote: 'Amazing event, great content -- it was very nice to meet you all.' },
+              ].map((t, i) => (
+                <div key={i} className="text-center">
+                  <p className="text-sm italic" style={{ color: 'rgba(255,255,255,0.5)', lineHeight: '1.6' }}>"{t.quote}"</p>
+                  <p className="text-xs font-semibold text-[#753EF7] mt-2">{t.name}</p>
+                </div>
+              ))}
+            </motion.div>
           </div>
         </Container>
       </Section>
 
+      {/* Wave divider — Testimonials → Pricing */}
+      <WaveDivider color="#753EF7" className="bg-ss-bg" />
+
       {/* =============================================
           EVENT DETAILS CARD
           ============================================= */}
-      <Section className="section-dark" style={{ paddingTop: '100px', paddingBottom: '100px' }}>
-        <Container>
+      <Section className="section-mid relative overflow-hidden section-fade-in" style={{ paddingTop: '100px', paddingBottom: '100px', '--fade-from': '#0C0322' } as React.CSSProperties}>
+        {/* Atmospheric orb behind pricing */}
+        <div className="atmos-orb" style={{ width: '700px', height: '700px', background: 'radial-gradient(circle, rgba(117, 62, 247, 0.12), transparent 70%)', top: '-200px', left: '50%', transform: 'translateX(-50%)' }} />
+        <Container className="relative z-10">
           <div className="max-w-[600px] mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <Card padding="lg">
-                <div className="text-center">
+              <NeonGradientCard color="#753EF7" intensity="strong">
+                <div className="p-8 text-center">
                   <img src={IMAGES.logo} alt="Seller Sessions Live" className="h-10 mx-auto mb-6" />
 
                   <div className="space-y-4 mb-8">
@@ -849,7 +1008,7 @@ export default function SSLive2026() {
                     </div>
                   </div>
 
-                  <Button variant="cta" size="lg" href="?wffn-next-link=yes" className="w-full">
+                  <Button variant="outline" size="lg" href="?wffn-next-link=yes" className="w-full !border-0 !bg-transparent btn-animated-border">
                     Get Your Ticket
                   </Button>
 
@@ -857,7 +1016,7 @@ export default function SSLive2026() {
                     Limited seats available. 80% sold in first 72 hours.
                   </p>
                 </div>
-              </Card>
+              </NeonGradientCard>
             </motion.div>
           </div>
         </Container>

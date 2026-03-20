@@ -89,7 +89,7 @@ export function FAQ({
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-[42px] font-bold mb-4 text-white">
+          <h2 className="text-4xl md:text-[48px] font-bold mb-4 text-white">
             {title}
           </h2>
           {subtitle && (

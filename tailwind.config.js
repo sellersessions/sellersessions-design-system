@@ -26,6 +26,7 @@ export default {
         },
         'ss-bg': {
           DEFAULT: '#0C0322',
+          mid: '#130d2a',
           card: '#1a1a2e',
           hover: '#252040',
         },

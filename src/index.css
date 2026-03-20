@@ -101,7 +101,7 @@
     pointer-events: none;
   }
 
-  /* Mouse-following glow */
+  /* Mouse-following glow — enhanced radius + purple tint */
   .glow-card::after {
     content: '';
     position: absolute;
@@ -109,7 +109,7 @@
     left: -2px;
     right: -2px;
     bottom: -2px;
-    background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(117, 62, 247, 0.4) 0%, rgba(70, 20, 153, 0.2) 25%, transparent 50%);
+    background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(117, 62, 247, 0.15) 0%, rgba(117, 62, 247, 0.08) 30%, transparent 50%);
     border-radius: 14px;
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -122,8 +122,9 @@
   }
 
   .glow-card:hover {
-    box-shadow: 0 0 30px rgba(117, 62, 247, 0.3), inset 0 0 20px rgba(117, 62, 247, 0.05);
-    transform: translateY(-2px);
+    box-shadow: 0 0 40px rgba(117, 62, 247, 0.35), inset 0 0 25px rgba(117, 62, 247, 0.06);
+    border-color: rgba(117, 62, 247, 0.3);
+    transform: translateY(-6px);
   }
 
   .glow-card-hover {
@@ -132,6 +133,90 @@
 
   .glow-card-hover:hover {
     transform: translateY(-4px);
+  }
+
+  /* ========================================
+     NEON GRADIENT CARD — animated conic border + pulsing glow
+     ======================================== */
+  .neon-gradient-card {
+    position: relative;
+    isolation: isolate;
+    border-radius: 12px;
+    background: linear-gradient(180deg, #1a1a2e 0%, #0C0322 100%);
+    overflow: visible;
+  }
+
+  .neon-gradient-card::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 14px;
+    padding: 2px;
+    background: conic-gradient(from var(--border-angle, 0deg), var(--neon-color, #753EF7), transparent 30%, transparent 70%, var(--neon-color, #753EF7));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: rotate-border var(--neon-speed, 3s) linear infinite;
+    pointer-events: none;
+  }
+
+  .neon-gradient-card::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 16px;
+    box-shadow: 0 0 20px var(--neon-color, #753EF7);
+    opacity: var(--neon-pulse-opacity, 0.3);
+    animation: neonPulse 2.5s ease-in-out infinite;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .neon-gradient-card-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  @keyframes neonPulse {
+    0%, 100% { opacity: var(--neon-pulse-opacity, 0.3); }
+    50% { opacity: var(--neon-glow-opacity, 0.4); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .neon-gradient-card::before {
+      animation: none;
+      background: conic-gradient(from 45deg, var(--neon-color, #753EF7), transparent 30%, transparent 70%, var(--neon-color, #753EF7));
+    }
+    .neon-gradient-card::after {
+      animation: none;
+    }
+  }
+
+  /* ========================================
+     WAVE DIVIDER — animated horizontal drift
+     ======================================== */
+  .wave-divider-wrap {
+    overflow: hidden;
+    height: 60px;
+    position: relative;
+  }
+
+  .wave-divider-svg {
+    width: 200%;
+    height: 100%;
+    animation: waveDrift 12s linear infinite;
+  }
+
+  @keyframes waveDrift {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wave-divider-svg {
+      animation: none;
+      width: 100%;
+    }
   }
 
   /* ========================================
@@ -180,6 +265,154 @@
     @apply bg-ss-bg-card;
   }
 
+  .section-mid {
+    @apply bg-ss-bg-mid;
+  }
+
+  /* Section texture banding -- subtle noise grain on alternating sections */
+  .section-textured {
+    position: relative;
+  }
+  .section-textured::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('/section-texture.png');
+    background-repeat: repeat;
+    background-size: 512px 512px;
+    opacity: 0.5;
+    pointer-events: none;
+    z-index: 0;
+    mix-blend-mode: screen;
+  }
+  .section-textured > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Violet variant -- warm purple tint */
+  .section-textured-violet {
+    position: relative;
+  }
+  .section-textured-violet::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('/section-texture-violet.png');
+    background-repeat: repeat;
+    background-size: 512px 512px;
+    opacity: 1;
+    pointer-events: none;
+    z-index: 0;
+    mix-blend-mode: screen;
+  }
+  .section-textured-violet > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Amber variant -- warm gold dust */
+  .section-textured-amber {
+    position: relative;
+  }
+  .section-textured-amber::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('/section-texture-amber.png');
+    background-repeat: repeat;
+    background-size: 512px 512px;
+    opacity: 1;
+    pointer-events: none;
+    z-index: 0;
+    mix-blend-mode: screen;
+  }
+  .section-textured-amber > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Indigo variant -- cool blue shift */
+  .section-textured-indigo {
+    position: relative;
+  }
+  .section-textured-indigo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('/section-texture-indigo.png');
+    background-repeat: repeat;
+    background-size: 512px 512px;
+    opacity: 0.35;
+    pointer-events: none;
+    z-index: 0;
+    mix-blend-mode: screen;
+  }
+  .section-textured-indigo > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ========================================
+     SECTION DEPTH & ATMOSPHERE
+     ======================================== */
+  .section-fade-in {
+    position: relative;
+  }
+
+  .section-fade-in::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 120px;
+    background: linear-gradient(180deg, var(--fade-from, #0C0322), transparent);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .atmos-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+  }
+
+  /* ========================================
+     CTA PULSE GLOW
+     ======================================== */
+  @keyframes ctaPulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(117, 62, 247, 0.4); }
+    50% { box-shadow: 0 0 40px rgba(117, 62, 247, 0.7), 0 0 80px rgba(117, 62, 247, 0.2); }
+  }
+
+  .cta-pulse {
+    animation: ctaPulse 2.5s ease-in-out infinite;
+  }
+
+  /* ========================================
+     DOT GRID TEXTURE
+     ======================================== */
+  /* ========================================
+     PARALLAX DEPTH
+     ======================================== */
+  .parallax-bg {
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .bg-dot-grid::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(117, 62, 247, 0.06) 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
   .container-custom {
     @apply max-w-7xl mx-auto px-4 md:px-8;
   }
@@ -211,6 +444,75 @@
 
   .glass {
     @apply bg-ss-bg-card/80 backdrop-blur-md;
+  }
+
+  /* ========================================
+     ANIMATED BORDER — thunderbolt CTA effect
+     ======================================== */
+  @property --border-angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+  }
+
+  .btn-animated-border {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .btn-animated-border::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    padding: 2px;
+    background: conic-gradient(from var(--border-angle), #753EF7, #FBBF24 15%, transparent 30%, transparent 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    z-index: -1;
+    animation: rotate-border 3s linear infinite;
+  }
+
+  @keyframes rotate-border {
+    to { --border-angle: 360deg; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btn-animated-border::before {
+      animation: none;
+      background: conic-gradient(from 45deg, #753EF7, #FBBF24 15%, transparent 30%, transparent 100%);
+    }
+  }
+
+  /* ========================================
+     CTA FOOTER BREATHING GLOW
+     ======================================== */
+  @keyframes breathingGlow {
+    0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.15); }
+  }
+
+  .cta-breathing-glow {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(117, 62, 247, 0.5) 0%, transparent 70%);
+    left: 50%;
+    top: 60%;
+    transform: translate(-50%, -50%);
+    filter: blur(60px);
+    pointer-events: none;
+    animation: breathingGlow 8s ease-in-out infinite;
+    z-index: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cta-breathing-glow {
+      animation: none;
+      opacity: 0.4;
+    }
   }
 }
 
