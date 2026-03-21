@@ -83,6 +83,8 @@ export function SpeakerTimeline({ data }: { data: SpeakerEntry[] }) {
                   src={entry.image}
                   alt={entry.name}
                   loading="lazy"
+                  width={240}
+                  height={240}
                   className="w-full aspect-square object-cover rounded-lg mb-3"
                   style={{
                     objectPosition: 'center 30%',
@@ -131,6 +133,8 @@ export function SpeakerTimeline({ data }: { data: SpeakerEntry[] }) {
                     src={entry.image}
                     alt={entry.name}
                     loading="lazy"
+                    width={240}
+                    height={240}
                     className="w-[240px] h-[240px] object-cover rounded-lg mb-4 transition-shadow duration-300"
                     style={{
                       objectPosition: 'center 30%',

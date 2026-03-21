@@ -214,6 +214,7 @@
     width: 200%;
     height: 100%;
     animation: waveDrift 12s linear infinite;
+    will-change: transform;
   }
 
   @keyframes waveDrift {

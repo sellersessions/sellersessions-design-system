@@ -6,7 +6,7 @@
  * Product: ID 22873 - £999 GBP
  */
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, lazy, Suspense } from 'react'
 import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion'
 
 /** Count-up animation — triggers once when element enters viewport */
@@ -42,21 +42,19 @@ function CountUp({ value, suffix = '', decimals = 0 }: { value: number; suffix?:
 
   return <span ref={ref} role="status" aria-live="polite" style={{ fontVariantNumeric: 'tabular-nums' }}>{display}{suffix}</span>
 }
-import {
-  Container,
-  Section,
-  Card,
-  Button,
-  CTASection,
-  VideoTestimonials,
-  FAQ,
-  HyperText,
-  GradualSpacing,
-  NeonGradientCard,
-  WaveDivider,
-  SpeakerTimeline,
-  CardStack,
-} from '../components'
+import { Container } from '../components/Container'
+import { Section } from '../components/Section'
+import { Card } from '../components/Card'
+import { Button } from '../components/Button'
+import { CTASection } from '../components/CTASection'
+const VideoTestimonials = lazy(() => import('../components/VideoTestimonials').then(m => ({ default: m.VideoTestimonials })))
+const FAQ = lazy(() => import('../components/FAQ').then(m => ({ default: m.FAQ })))
+import { HyperText } from '../components/HyperText'
+import { GradualSpacing } from '../components/GradualSpacing'
+import { NeonGradientCard } from '../components/NeonGradientCard'
+import { WaveDivider } from '../components/WaveDivider'
+import { SpeakerTimeline } from '../components/SpeakerTimeline'
+import { CardStack } from '../components/CardStack'
 import {
   CheckCircle,
   XCircle,
@@ -202,17 +200,22 @@ export default function SSLive2026() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-ss-bg">
+    <main className="min-h-screen bg-ss-bg">
+      {/* Skip link for keyboard/screen reader users */}
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-ss-purple focus:text-white focus:px-4 focus:py-2 focus:rounded-lg">
+        Skip to main content
+      </a>
 
       {/* =============================================
           HERO - Background Video, Date, Logo, Headline, Inline Video
           ============================================= */}
       <section
-        className="relative overflow-hidden bg-dot-grid"
+        id="main-content"
+        className="relative overflow-hidden"
         style={{ padding: '0 20px' }}
       >
         <div
-          className="relative rounded-[25px] overflow-hidden"
+          className="relative rounded-2xl overflow-hidden"
           style={{ minHeight: '85vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}
         >
           {/* Background Video */}
@@ -331,8 +334,6 @@ export default function SSLive2026() {
           BUILT FOR INNOVATORS
           ============================================= */}
       <Section id="built-for-innovators" className="section-mid section-textured-violet relative overflow-hidden" style={{ paddingTop: '100px', paddingBottom: '100px' }}>
-        {/* Atmospheric orb */}
-        <div className="atmos-orb" style={{ width: '600px', height: '600px', background: 'radial-gradient(circle, rgba(117, 62, 247, 0.15), transparent 70%)', top: '-200px', right: '-100px' }} />
         <Container className="relative z-10">
           <div className="max-w-[900px] mx-auto text-center">
             <motion.div
@@ -574,17 +575,15 @@ export default function SSLive2026() {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
                 >
-                  <NeonGradientCard color={phase.color} intensity="subtle" className="h-full">
-                    <div className="p-6">
-                      <div className="flex items-center gap-3 mb-3">
-                        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: phase.color }} />
-                        <span className="text-sm uppercase tracking-[2px] font-semibold" style={{ color: phase.color }}>{phase.time}</span>
-                      </div>
-                      <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '16px', lineHeight: '1.6' }}>
-                        {phase.desc}
-                      </p>
+                  <Card padding="md" className="h-full" style={{ borderLeft: `3px solid ${phase.color}` }}>
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-3 h-3 rounded-full" style={{ backgroundColor: phase.color }} />
+                      <span className="text-sm uppercase tracking-[2px] font-semibold" style={{ color: phase.color }}>{phase.time}</span>
                     </div>
-                  </NeonGradientCard>
+                    <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '16px', lineHeight: '1.6' }}>
+                      {phase.desc}
+                    </p>
+                  </Card>
                 </motion.div>
               ))}
             </div>
@@ -690,8 +689,6 @@ export default function SSLive2026() {
           WHY THIS FORMAT WORKS
           ============================================= */}
       <Section className="section-mid section-textured-amber relative overflow-hidden section-fade-in" style={{ paddingTop: '100px', paddingBottom: '100px', '--fade-from': '#0C0322' } as React.CSSProperties}>
-        {/* Atmospheric orb */}
-        <div className="atmos-orb" style={{ width: '500px', height: '500px', background: 'radial-gradient(circle, rgba(117, 62, 247, 0.12), transparent 70%)', bottom: '-150px', left: '-100px' }} />
         <Container className="relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -718,7 +715,7 @@ export default function SSLive2026() {
               cardWidth={isMobile ? 320 : 480}
               cardHeight={isMobile ? 240 : 260}
               autoAdvance
-              intervalMs={3500}
+              intervalMs={6000}
               pauseOnHover
               showDots
               renderCard={(item, { active }) => (
@@ -862,30 +859,23 @@ export default function SSLive2026() {
                   {/* Items within phase */}
                   <div className="space-y-0">
                     {band.items.map((item, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: -10 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: bi * 0.1 + i * 0.05 }}
-                >
-                  <div
-                    className="flex items-center gap-4 px-5 py-4"
-                    style={{
-                      borderLeft: item.type === 'session' ? `3px solid ${band.phaseColor}` : item.type === 'evening' ? `3px solid ${band.phaseColor}` : '3px solid rgba(255,255,255,0.1)',
-                    }}
-                  >
-                    <div className="text-sm font-mono font-semibold w-[60px] flex-shrink-0" style={{ color: band.phaseColor }}>
-                      {item.time}
-                    </div>
-                    <div className="flex-1">
-                      <div className="font-semibold text-white text-sm">{item.label}</div>
-                      {item.who && (
-                        <div className="text-xs mt-0.5 text-white/50">{item.who}</div>
-                      )}
-                    </div>
-                  </div>
-                </motion.div>
+                      <div
+                        key={i}
+                        className="flex items-center gap-4 px-5 py-4"
+                        style={{
+                          borderLeft: item.type === 'session' ? `3px solid ${band.phaseColor}` : item.type === 'evening' ? `3px solid ${band.phaseColor}` : '3px solid rgba(255,255,255,0.1)',
+                        }}
+                      >
+                        <div className="text-sm font-mono font-semibold w-[60px] flex-shrink-0" style={{ color: band.phaseColor }}>
+                          {item.time}
+                        </div>
+                        <div className="flex-1">
+                          <div className="font-semibold text-white text-sm">{item.label}</div>
+                          {item.who && (
+                            <div className="text-xs mt-0.5 text-white/50">{item.who}</div>
+                          )}
+                        </div>
+                      </div>
                     ))}
                   </div>
                 </motion.div>
@@ -983,7 +973,7 @@ export default function SSLive2026() {
             >
               <NeonGradientCard color="#753EF7" intensity="strong">
                 <div className="p-8 text-center">
-                  <img src={IMAGES.logo} alt="Seller Sessions Live" className="h-10 mx-auto mb-6" />
+                  <img src={IMAGES.logo} alt="Seller Sessions Live" className="h-10 mx-auto mb-6" width={240} height={40} />
 
                   <div className="space-y-4 mb-8">
                     <div className="flex items-center justify-center gap-3 text-white/80">
@@ -1006,7 +996,7 @@ export default function SSLive2026() {
                     </div>
                   </div>
 
-                  <Button variant="outline" size="lg" href="?wffn-next-link=yes" className="w-full !border-0 !bg-transparent btn-animated-border">
+                  <Button variant="outline" size="lg" href="?wffn-next-link=yes" className="w-full">
                     Get Your Ticket
                   </Button>
 
@@ -1037,24 +1027,28 @@ export default function SSLive2026() {
       {/* =============================================
           VIDEO TESTIMONIALS
           ============================================= */}
-      <VideoTestimonials testimonials={VIDEO_TESTIMONIALS} />
+      <Suspense fallback={<div className="py-20" />}>
+        <VideoTestimonials testimonials={VIDEO_TESTIMONIALS} />
+      </Suspense>
 
       {/* =============================================
           FAQ
           ============================================= */}
-      <FAQ items={FAQ_ITEMS} />
+      <Suspense fallback={<div className="py-20" />}>
+        <FAQ items={FAQ_ITEMS} />
+      </Suspense>
 
       {/* =============================================
           CTA SECTION
           ============================================= */}
       <CTASection
         title="Secure Your Spot"
-        description="Join the conference that 7-8 figure Amazon sellers keep coming back to. Limited tickets — don't wait."
+        description={<>80% sold in the first 72 hours. 6 consecutive sellouts. Join the conference that 7-8 figure Amazon sellers keep coming back to.<br /><span className="text-white/50 text-sm mt-2 block">"The single best event in the Amazon space." — Adam Hiest</span></>}
         primaryCTA={{ label: "Get Your Ticket — £999", href: "?wffn-next-link=yes" }}
         secondaryCTA={{ label: "Back to Events", href: "/events/" }}
       />
 
       {/* Footer handled by Elementor site template */}
-    </div>
+    </main>
   )
 }

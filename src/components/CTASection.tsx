@@ -1,10 +1,11 @@
+import { type ReactNode } from 'react'
 import { motion } from 'framer-motion'
 import { Button } from './Button'
 import { Container } from './Container'
 
 interface CTASectionProps {
   title: string
-  description?: string
+  description?: ReactNode
   primaryCTA?: { label: string; href: string }
   secondaryCTA?: { label: string; href: string }
 }
@@ -49,7 +50,7 @@ export function CTASection({
                 variant="cta"
                 size="lg"
                 href={primaryCTA.href}
-                className="!bg-transparent !text-white !border-0 btn-animated-border"
+                className="!bg-transparent !text-white !border-0"
               >
                 {primaryCTA.label}
               </Button>
