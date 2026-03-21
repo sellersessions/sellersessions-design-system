@@ -41,6 +41,7 @@
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading font-bold text-ss-text;
+    text-wrap: balance;
   }
 
   a {
@@ -65,6 +66,14 @@
     outline: none;
     box-shadow: none;
   }
+
+  #root button:focus-visible,
+  #root a:focus-visible,
+  #root [role="button"]:focus-visible {
+    outline: 2px solid #753EF7;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
 }
 
 @layer components {
@@ -76,7 +85,7 @@
     background: linear-gradient(180deg, #1a1a2e 0%, #0C0322 100%);
     border-radius: 12px;
     overflow: hidden;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
   }
 
   .glow-card-content {
@@ -223,7 +232,12 @@
      BUTTONS
      ======================================== */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all duration-300;
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold;
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, transform 0.15s ease;
+  }
+
+  .btn:active {
+    transform: scale(0.96);
   }
 
   .btn-primary {
@@ -246,7 +260,8 @@
      LAYOUT
      ======================================== */
   .card {
-    @apply bg-ss-bg-card rounded-xl border border-ss-border p-6 shadow-card transition-all duration-300;
+    @apply bg-ss-bg-card rounded-xl border border-ss-border p-6 shadow-card;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
   }
 
   .card-hover {
@@ -368,6 +383,19 @@
     right: 0;
     height: 120px;
     background: linear-gradient(180deg, var(--fade-from, #0C0322), transparent);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Soft gradient blend at section bottom — smooths hard cuts between sections */
+  .section-blend-out::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: linear-gradient(180deg, transparent, var(--blend-to, #0C0322));
     pointer-events: none;
     z-index: 1;
   }

@@ -7,7 +7,7 @@
  */
 
 import { useState, useEffect, useRef } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion'
 
 /** Count-up animation — triggers once when element enters viewport */
 function CountUp({ value, suffix = '', decimals = 0 }: { value: number; suffix?: string; decimals?: number }) {
@@ -40,7 +40,7 @@ function CountUp({ value, suffix = '', decimals = 0 }: { value: number; suffix?:
     return () => observer.disconnect()
   }, [value, decimals])
 
-  return <span ref={ref}>{display}{suffix}</span>
+  return <span ref={ref} role="status" aria-live="polite" style={{ fontVariantNumeric: 'tabular-nums' }}>{display}{suffix}</span>
 }
 import {
   Container,
@@ -128,7 +128,7 @@ const FAQ_ITEMS = [
   },
   {
     question: 'What tools do I need to bring?',
-    answer: "Your laptop with Claude Code installed and set up. We'll walk you through setup if needed.",
+    answer: "Your laptop with Claude Code installed. That's it. All assets — agents, hooks, Markdown files, and skills — are provided on the day.",
   },
   {
     question: "What's included in the ticket?",
@@ -165,6 +165,7 @@ const FAQ_ITEMS = [
 ]
 
 export default function SSLive2026() {
+  const prefersReducedMotion = useReducedMotion()
   const [isMobile, setIsMobile] = useState(false)
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 767px)')
@@ -268,7 +269,7 @@ export default function SSLive2026() {
                 className="text-3xl md:text-5xl lg:text-[56px] font-bold mb-4 leading-tight text-white"
               >
                 The Conference That's Sold Out<br />
-                <HyperText text="6 Times Running" className="text-[#753EF7]" />
+                <HyperText text="6 Times Running" className="text-ss-accent" />
               </motion.h1>
 
               {/* Subheadline */}
@@ -276,8 +277,7 @@ export default function SSLive2026() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.8 }}
-                className="text-lg md:text-xl mb-3"
-                style={{ color: 'rgba(255,255,255,0.7)' }}
+                className="text-lg md:text-xl mb-3 text-white/70"
               >
                 80% of 2026 tickets sold in 72 hours
               </motion.p>
@@ -343,10 +343,10 @@ export default function SSLive2026() {
               <h2 className="text-4xl md:text-[48px] font-bold mb-2 text-white">
                 Built for Innovators.
               </h2>
-              <h2 className="text-4xl md:text-[48px] font-bold mb-8 text-[#753EF7]">
+              <h2 className="text-4xl md:text-[48px] font-bold mb-8 text-ss-accent">
                 Not Imitators.
               </h2>
-              <p className="mb-10 max-w-[700px] mx-auto" style={{ color: 'rgba(255,255,255,0.6)', fontSize: '16px', lineHeight: '1.8' }}>
+              <p className="mb-10 max-w-[700px] mx-auto text-white/60 text-base leading-[1.8]">
                 Join the brightest minds in Amazon selling at the UK's most exclusive event. This isn't just another conference — it's where 7, 8, and 9-figure sellers come to learn cutting-edge strategies that actually move the needle.
               </p>
             </motion.div>
@@ -365,10 +365,10 @@ export default function SSLive2026() {
                   transition={{ delay: i * 0.15, duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
                 >
                   <Card padding="md" className="h-full">
-                    <div className="text-[#753EF7] mb-2" style={{ fontSize: 'clamp(3rem, 8vw, 4.5rem)', fontWeight: 800, lineHeight: 1, letterSpacing: '-0.02em' }}>
+                    <div className="text-ss-accent mb-2" style={{ fontSize: 'clamp(3rem, 8vw, 4.5rem)', fontWeight: 800, lineHeight: 1, letterSpacing: '-0.02em' }}>
                       <CountUp value={stat.value} suffix={stat.suffix} decimals={stat.decimals} />
                     </div>
-                    <p className="text-base" style={{ color: 'rgba(255,255,255,0.6)', lineHeight: '1.6' }}>{stat.label}</p>
+                    <p className="text-base text-white/60 leading-relaxed">{stat.label}</p>
                   </Card>
                 </motion.div>
               ))}
@@ -378,7 +378,7 @@ export default function SSLive2026() {
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              className="mt-8 text-sm font-semibold text-[#753EF7]"
+              className="mt-8 text-sm font-semibold text-ss-accent"
             >
               <a href="#speakers" className="hover:underline">Meet your speakers ↓</a>
             </motion.p>
@@ -418,10 +418,9 @@ export default function SSLive2026() {
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
                         transition={{ delay: i * 0.1, duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-                        className="flex items-start gap-3"
-                        style={{ color: 'rgba(255,255,255,0.8)', fontSize: '16px' }}
+                        className="flex items-start gap-3 text-white/80 text-base"
                       >
-                        <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
+                        <motion.span initial={prefersReducedMotion ? undefined : { opacity: 0, scale: 0.25, filter: 'blur(4px)' }} whileInView={prefersReducedMotion ? undefined : { opacity: 1, scale: 1, filter: 'blur(0px)' }} viewport={{ once: true }} transition={{ duration: 0.2, delay: i * 0.1 }}><CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" /></motion.span>
                         {item}
                       </motion.li>
                     ))}
@@ -457,7 +456,7 @@ export default function SSLive2026() {
                         className="flex items-start gap-3"
                         style={{ color: 'rgba(255,255,255,0.6)', fontSize: '16px' }}
                       >
-                        <XCircle className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: 'rgba(255,255,255,0.3)' }} />
+                        <motion.span initial={prefersReducedMotion ? undefined : { opacity: 0, scale: 0.25, filter: 'blur(4px)' }} whileInView={prefersReducedMotion ? undefined : { opacity: 1, scale: 1, filter: 'blur(0px)' }} viewport={{ once: true }} transition={{ duration: 0.2, delay: i * 0.1 }}><XCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-white/30" /></motion.span>
                         {item}
                       </motion.li>
                     ))}
@@ -492,10 +491,9 @@ export default function SSLive2026() {
                       whileInView={{ opacity: 1, scale: 1 }}
                       viewport={{ once: true }}
                       transition={{ delay: i * 0.1, duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-                      className="flex items-start gap-3"
-                      style={{ color: 'rgba(255,255,255,0.8)', fontSize: '16px' }}
+                      className="flex items-start gap-3 text-white/80 text-base"
                     >
-                      <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
+                      <motion.span initial={prefersReducedMotion ? undefined : { opacity: 0, scale: 0.25, filter: 'blur(4px)' }} whileInView={prefersReducedMotion ? undefined : { opacity: 1, scale: 1, filter: 'blur(0px)' }} viewport={{ once: true }} transition={{ duration: 0.2, delay: i * 0.1 }}><CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" /></motion.span>
                       {item}
                     </motion.li>
                   ))}
@@ -528,7 +526,7 @@ export default function SSLive2026() {
                       className="flex items-start gap-3"
                       style={{ color: 'rgba(255,255,255,0.6)', fontSize: '16px' }}
                     >
-                      <XCircle className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: 'rgba(255,255,255,0.3)' }} />
+                      <motion.span initial={prefersReducedMotion ? undefined : { opacity: 0, scale: 0.25, filter: 'blur(4px)' }} whileInView={prefersReducedMotion ? undefined : { opacity: 1, scale: 1, filter: 'blur(0px)' }} viewport={{ once: true }} transition={{ duration: 0.2, delay: i * 0.1 }}><XCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-white/30" /></motion.span>
                       {item}
                     </motion.li>
                   ))}
@@ -554,17 +552,17 @@ export default function SSLive2026() {
               <h2 className="text-4xl md:text-[48px] font-bold mb-4 text-white">
                 Modular Format
               </h2>
-              <p className="text-[#753EF7] font-semibold text-lg mb-4">
+              <p className="text-ss-accent font-semibold text-lg mb-4">
                 <GradualSpacing text="One Roof. Multiple Phases. Seamless Flow." />
               </p>
-              <p className="max-w-[700px] mx-auto" style={{ color: 'rgba(255,255,255,0.6)', fontSize: '16px', lineHeight: '1.8' }}>
+              <p className="max-w-[700px] mx-auto text-white/60 text-base leading-[1.8]">
                 We've rebuilt the conference model from the ground up. In 2025, we took a massive risk and implemented a hands-on adapted VARK model to maximise comprehension, which paid off.
               </p>
             </motion.div>
 
             <div className="grid md:grid-cols-2 gap-6">
               {[
-                { time: 'Morning', desc: 'Focused tool building and AI implementation — delegates work on their own laptops alongside speakers, building live systems', color: '#753EF7' },
+                { time: 'Morning', desc: 'Focused tool building and AI implementation — delegates work inside Claude Code alongside speakers, building live systems', color: '#753EF7' },
                 { time: 'Midday', desc: 'Campaign architecture and system development', color: '#A179FF' },
                 { time: 'Afternoon', desc: 'Live execution and real-time collaboration', color: '#FBBF24' },
                 { time: 'Evening', desc: 'High-trust networking and deep conversations', color: '#F59E0B' },
@@ -661,15 +659,15 @@ export default function SSLive2026() {
             >
               <h2 className="text-4xl md:text-[48px] font-bold mb-8 text-white">
                 Advanced Hands-On Learning<br />
-                <span className="text-[#753EF7]">in a Workshop Format</span>
+                <span className="text-ss-accent">in a Workshop Format</span>
               </h2>
             </motion.div>
 
             <div className="grid md:grid-cols-3 gap-6">
               {[
-                'Bring your own laptop — this is essential',
+                'Bring your laptop with Claude Code installed — essential',
                 'Dedicated workstation with power outlets provided',
-                'Library of custom bots, plugins, walkthroughs and resources',
+                'All Claude Code assets supplied — agents, hooks, files & skills',
               ].map((text, i) => (
                 <motion.div
                   key={i}
@@ -702,7 +700,7 @@ export default function SSLive2026() {
             className="text-center mb-12"
           >
             <h2 className="text-4xl md:text-[48px] font-bold mb-4 text-white">
-              Why This Format Works — <span className="text-[#753EF7]">for Innovators</span>
+              Why This Format Works — <span className="text-ss-accent">for Innovators</span>
             </h2>
           </motion.div>
 
@@ -713,7 +711,7 @@ export default function SSLive2026() {
                 { id: 1, title: 'Practical Workshop Format', description: 'Hands-on builds on your own laptop. Implementable takeaways, not slide deck theory.' },
                 { id: 2, title: 'Beyond Surface-Level Content', description: 'Substantial, actionable content for genuine seller growth. No lead-gen talks.' },
                 { id: 3, title: 'Elite Educational Experience', description: 'Teaching is a skill, not a side effect of status. Built on 10,000+ hours of instruction.' },
-                { id: 4, title: 'Direct Access to Tools', description: 'The only Amazon conference that builds professional-grade tools live. You leave with working systems.' },
+                { id: 4, title: 'Direct Access to Tools', description: 'Every session runs inside Claude Code. You leave with working systems, agents, and assets ready to deploy.' },
                 { id: 5, title: 'Meticulously Crafted Agenda', description: 'Six months of prep. Each speaker invests 40-60 hours plus a full day of rehearsals.' },
                 { id: 6, title: 'Meaningful Networking', description: 'Seven- and eight-figure sellers in a curated environment. No service provider solicitations.' },
               ]}
@@ -767,9 +765,9 @@ export default function SSLive2026() {
               className="text-center mb-12"
             >
               <h2 className="text-4xl md:text-[48px] font-bold mb-4 text-white">
-                Meet Your <span className="text-[#753EF7]">Speakers</span>
+                Meet Your <span className="text-ss-accent">Speakers</span>
               </h2>
-              <p className="max-w-[700px] mx-auto" style={{ color: 'rgba(255,255,255,0.6)', fontSize: '16px', lineHeight: '1.8' }}>
+              <p className="max-w-[700px] mx-auto text-white/60 text-base leading-[1.8]">
                 Five operators who build, scale, and innovate at the highest level. No filler talks. No sales pitches. Just actionable expertise.
               </p>
             </motion.div>
@@ -798,9 +796,9 @@ export default function SSLive2026() {
               className="text-center mb-12"
             >
               <h2 className="text-4xl md:text-[48px] font-bold mb-4 text-white">
-                The <span className="text-[#753EF7]">Agenda</span>
+                The <span className="text-ss-accent">Agenda</span>
               </h2>
-              <p className="max-w-[600px] mx-auto" style={{ color: 'rgba(255,255,255,0.6)', fontSize: '16px', lineHeight: '1.8' }}>
+              <p className="max-w-[600px] mx-auto text-white/60 text-base leading-[1.8]">
                 One day. One venue. Three phases. The entire building transforms as the day progresses.
               </p>
             </motion.div>
@@ -883,7 +881,7 @@ export default function SSLive2026() {
                     <div className="flex-1">
                       <div className="font-semibold text-white text-sm">{item.label}</div>
                       {item.who && (
-                        <div className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.5)' }}>{item.who}</div>
+                        <div className="text-xs mt-0.5 text-white/50">{item.who}</div>
                       )}
                     </div>
                   </div>
@@ -913,7 +911,7 @@ export default function SSLive2026() {
               className="text-center mb-10"
             >
               <h2 className="text-4xl md:text-[48px] font-bold mb-4 text-white">
-                What Delegates <span className="text-[#753EF7]">Say</span>
+                What Delegates <span className="text-ss-accent">Say</span>
               </h2>
             </motion.div>
 
@@ -940,7 +938,7 @@ export default function SSLive2026() {
                     <p className="text-base italic mb-4" style={{ color: 'rgba(255,255,255,0.7)', lineHeight: '1.8' }}>
                       "{testimonial.quote}"
                     </p>
-                    <div className="text-sm font-semibold text-[#753EF7]">{testimonial.name}</div>
+                    <div className="text-sm font-semibold text-ss-accent">{testimonial.name}</div>
                   </Card>
                 </motion.div>
               ))}
@@ -959,7 +957,7 @@ export default function SSLive2026() {
               ].map((t, i) => (
                 <div key={i} className="text-center">
                   <p className="text-sm italic" style={{ color: 'rgba(255,255,255,0.5)', lineHeight: '1.6' }}>"{t.quote}"</p>
-                  <p className="text-xs font-semibold text-[#753EF7] mt-2">{t.name}</p>
+                  <p className="text-xs font-semibold text-ss-accent mt-2">{t.name}</p>
                 </div>
               ))}
             </motion.div>
@@ -988,22 +986,22 @@ export default function SSLive2026() {
                   <img src={IMAGES.logo} alt="Seller Sessions Live" className="h-10 mx-auto mb-6" />
 
                   <div className="space-y-4 mb-8">
-                    <div className="flex items-center justify-center gap-3" style={{ color: 'rgba(255,255,255,0.8)' }}>
-                      <Calendar className="w-5 h-5 text-[#753EF7]" />
+                    <div className="flex items-center justify-center gap-3 text-white/80">
+                      <Calendar className="w-5 h-5 text-ss-accent" />
                       <span className="text-lg font-semibold">May 9, 2026</span>
                     </div>
-                    <div className="flex items-center justify-center gap-3" style={{ color: 'rgba(255,255,255,0.8)' }}>
-                      <MapPin className="w-5 h-5 text-[#753EF7]" />
+                    <div className="flex items-center justify-center gap-3 text-white/80">
+                      <MapPin className="w-5 h-5 text-ss-accent" />
                       <span className="text-lg font-semibold">St Ethelburga's Centre, London</span>
                     </div>
                   </div>
 
                   <div className="rounded-xl p-6 mb-6" style={{ backgroundColor: 'rgba(117, 62, 247, 0.08)' }}>
-                    <div className="text-sm uppercase tracking-[2px] font-semibold" style={{ color: 'rgba(255,255,255,0.6)' }}>
+                    <div className="text-sm uppercase tracking-[2px] font-semibold text-white/60">
                       Ticket Price
                     </div>
-                    <div className="text-4xl font-bold text-[#753EF7] mt-2">£999</div>
-                    <div className="text-sm mt-1" style={{ color: 'rgba(255,255,255,0.6)' }}>
+                    <div className="text-4xl font-bold text-ss-accent mt-2" style={{ fontVariantNumeric: 'tabular-nums' }}>£999</div>
+                    <div className="text-sm mt-1 text-white/60">
                       Including VIP dinner & evening networking
                     </div>
                   </div>
@@ -1012,11 +1010,25 @@ export default function SSLive2026() {
                     Get Your Ticket
                   </Button>
 
-                  <p className="text-xs mt-4" style={{ color: 'rgba(255,255,255,0.6)' }}>
+                  <p className="text-xs mt-4 text-white/60">
                     Limited seats available. 80% sold in first 72 hours.
                   </p>
                 </div>
               </NeonGradientCard>
+            </motion.div>
+
+            {/* Proof elevation — testimonial near CTA for conversion */}
+            <motion.div
+              initial={prefersReducedMotion ? undefined : { opacity: 0, y: 15 }}
+              whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="mt-8 text-center"
+            >
+              <p className="text-sm italic text-white/50 leading-relaxed max-w-[500px] mx-auto">
+                "This truly was a game-changing conference — unlike anything I've experienced in my career before."
+              </p>
+              <p className="text-xs font-semibold text-ss-accent mt-2">Toni Jantunen</p>
             </motion.div>
           </div>
         </Container>
