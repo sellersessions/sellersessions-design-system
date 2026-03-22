@@ -9,46 +9,47 @@ interface FAQItem {
   answer: string
 }
 
+interface FAQCategory {
+  label: string
+  items: FAQItem[]
+}
+
 interface FAQProps {
   title?: string
   subtitle?: string
-  items: FAQItem[]
+  items?: FAQItem[]
+  categories?: FAQCategory[]
 }
 
 export function FAQ({
   title = 'Got Questions? We\u2019ve Got Answers.',
   subtitle,
   items,
+  categories,
 }: FAQProps) {
-  const [openIndex, setOpenIndex] = useState<number | null>(null)
+  const [openIndex, setOpenIndex] = useState<string | null>(null)
 
-  const toggle = (i: number) => {
-    setOpenIndex(openIndex === i ? null : i)
+  const toggle = (key: string) => {
+    setOpenIndex(openIndex === key ? null : key)
   }
 
-  // Split items into two columns
-  const mid = Math.ceil(items.length / 2)
-  const col1 = items.slice(0, mid)
-  const col2 = items.slice(mid)
-
-  const renderItem = (item: FAQItem, index: number) => (
+  const renderItem = (item: FAQItem, key: string) => (
     <motion.div
-      key={index}
+      key={key}
       initial={{ opacity: 0, y: 10 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ delay: (index % mid) * 0.05 }}
       className="rounded-2xl border overflow-hidden"
       style={{
-        borderColor: openIndex === index ? 'rgba(117, 62, 247, 0.4)' : 'rgba(255,255,255,0.08)',
-        background: openIndex === index
+        borderColor: openIndex === key ? 'rgba(117, 62, 247, 0.4)' : 'rgba(255,255,255,0.08)',
+        background: openIndex === key
           ? 'linear-gradient(145deg, rgba(117, 62, 247, 0.08) 0%, #0C0322 100%)'
           : 'linear-gradient(145deg, #1a1a2e 0%, #0E0E0E 100%)',
         transition: 'all 0.3s ease',
       }}
     >
       <button
-        onClick={() => toggle(index)}
+        onClick={() => toggle(key)}
         className="w-full flex items-center justify-between p-5 text-left cursor-pointer"
       >
         <span className="font-semibold text-[15px] text-white pr-4">{item.question}</span>
@@ -56,12 +57,12 @@ export function FAQ({
           className="w-5 h-5 flex-shrink-0 transition-transform duration-300"
           style={{
             color: '#753EF7',
-            transform: openIndex === index ? 'rotate(180deg)' : 'rotate(0deg)',
+            transform: openIndex === key ? 'rotate(180deg)' : 'rotate(0deg)',
           }}
         />
       </button>
       <AnimatePresence>
-        {openIndex === index && (
+        {openIndex === key && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
@@ -79,6 +80,26 @@ export function FAQ({
       </AnimatePresence>
     </motion.div>
   )
+
+  const renderCategory = (cat: FAQCategory, catIndex: number) => (
+    <div key={catIndex} className="space-y-3">
+      <h3
+        className="text-xs uppercase tracking-[2px] font-semibold mb-1 px-1"
+        style={{ color: '#753EF7' }}
+      >
+        {cat.label}
+      </h3>
+      {cat.items.map((item, i) => renderItem(item, `${catIndex}-${i}`))}
+    </div>
+  )
+
+  // Categorized mode: split categories across 2 columns
+  const hasCats = categories && categories.length > 0
+  const catMid = hasCats ? Math.ceil(categories.length / 2) : 0
+
+  // Flat mode fallback
+  const flatItems = items || []
+  const flatMid = Math.ceil(flatItems.length / 2)
 
   return (
     <Section className="section-card" style={{ paddingTop: '100px', paddingBottom: '100px' }}>
@@ -99,13 +120,26 @@ export function FAQ({
           )}
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-4 max-w-[1100px] mx-auto">
-          <div className="space-y-4">
-            {col1.map((item, i) => renderItem(item, i))}
-          </div>
-          <div className="space-y-4">
-            {col2.map((item, i) => renderItem(item, i + mid))}
-          </div>
+        <div className="grid md:grid-cols-2 gap-8 max-w-[1100px] mx-auto">
+          {hasCats ? (
+            <>
+              <div className="space-y-8">
+                {categories.slice(0, catMid).map((cat, i) => renderCategory(cat, i))}
+              </div>
+              <div className="space-y-8">
+                {categories.slice(catMid).map((cat, i) => renderCategory(cat, i + catMid))}
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="space-y-4">
+                {flatItems.slice(0, flatMid).map((item, i) => renderItem(item, `${i}`))}
+              </div>
+              <div className="space-y-4">
+                {flatItems.slice(flatMid).map((item, i) => renderItem(item, `${i + flatMid}`))}
+              </div>
+            </>
+          )}
         </div>
       </Container>
     </Section>

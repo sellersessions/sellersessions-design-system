@@ -32,11 +32,11 @@ Key files: `scripts/deploy.js` (core pipeline), `src/pages/` (3 pages), `src/com
 
 **Safety infrastructure (Session 4-5):** Code Snippet overwrite bug fixed -- `page-scripts.json` tracks JS URLs across all pages. Pre-promote guards check placeholders and links. Responsive screenshot script at `npm run test:responsive`. Full rollback docs in `ROLLBACK.md`. Elementor backup at `scripts/elementor-backup-23003.json`. Rollback script at `scripts/rollback-swap.sh`.
 
-**What needs doing:** Add mid-page CTAs (after sections 5 and 8). Fix testimonial grid debt (Nir 11w, Rony 13w). Speaker headshot photos. Build home page. Events Hub and Events Archive.
+**What needs doing:** Deploy visual refinements + teardown changes to live (after Danny review). Add mid-page CTAs (after sections 5 and 8). Fix testimonial grid debt (Nir 11w, Rony 13w). Speaker headshot photos. Build home page. Events Hub and Events Archive.
 
 **Visual polish (19 Mar session):** 14 premium techniques applied via REFINE audit from Claude UI Workflow pipeline. Section banding (3 depths), atmospheric gradient orbs, dramatic stat numerals with count-up animation, badge chips on speakers, proof elevation near pricing, CTA pulse glow, glass overlay on hero, parallax crowd image, bento asymmetry on feature grid, phase-banded agenda timeline. NOT yet deployed to live -- local only.
 
-**Last session (21 Mar):** v2 REFINE audit applied — 17 changes across 5 phases (CSS polish, accessibility, animation upgrades, layout refinements, cleanup). Score 59→90. Key: text-wrap:balance, tabular-nums, button :active scale(0.96), aria-live on CountUp, useReducedMotion(), icon entrance animations, proof elevation callout near pricing, focus-visible rings, ~20 rgba→Tailwind classes, text-[#753EF7]→text-ss-accent. TypeScript clean build. NOT yet deployed to live — local only.
+**Last session (21 Mar):** Completed final 2 teardown items: FAQ chunked into 4 categories (The Event, Skills & Tools, Tickets & Pricing, Venue & Travel) — Miller's Law compliance. CTA loading states on all 3 ticket buttons (hero, event details, final CTA) — spinner + opacity + 600ms delay before navigation. Button component updated to support isLoading on href links. CTASection component extended with onPrimaryClick + isLoading props. TypeScript clean. NOT yet deployed to live — local only.
 
 ## Iteration Cycle (permanent reference)
 
@@ -136,6 +136,36 @@ Key files: `scripts/deploy.js` (core pipeline), `src/pages/` (3 pages), `src/com
 - [ ] Run `npm run test:responsive` -- review mobile/tablet screenshots
 - [ ] Build home page (`src/pages/HomePage.tsx`)
 - [ ] Repeat for Events Hub and Events Archive pages
+
+---
+
+## Session 9 -- 2026-03-21 23:59 GMT
+
+**Teardown completion — FAQ chunking + CTA loading states**
+
+Completed the final 2 items from the v3 teardown plan (items deferred from previous session at 88% context).
+
+**FAQ chunking (Miller's Law):**
+- 15 flat FAQ items → 4 categories: The Event (4), Skills & Tools (3), Tickets & Pricing (4), Venue & Travel (4)
+- FAQ component updated to support `categories` prop alongside existing flat `items` (backward compatible)
+- Categories render as purple uppercase headers above their item groups, 2 categories per column
+- Data restructured from `FAQ_ITEMS` array to `FAQ_CATEGORIES` array of `{ label, items }` objects
+
+**CTA loading states (system-feedback):**
+- All 3 ticket CTAs now show spinner + opacity reduction on click, 600ms delay before navigation
+- Button component updated: `isLoading` support extended to `<a>` tags (previously only worked on `<button>`)
+- CTASection component: added `isLoading` + `onPrimaryClick` props, wired through to Button
+- Shared `ticketLoading` state + `handleTicketClick` handler in SSLive2026.tsx
+
+**Files changed:**
+- `src/components/FAQ.tsx` — FAQCategory interface, renderCategory(), dual-mode rendering
+- `src/components/Button.tsx` — isLoading spinner + pointer-events-none on href links
+- `src/components/CTASection.tsx` — isLoading + onPrimaryClick props
+- `src/pages/SSLive2026.tsx` — FAQ_CATEGORIES data, ticketLoading state, handleTicketClick handler
+
+**Verification:** TypeScript clean. Playwright screenshots confirmed FAQ categories render correctly. CTA click tested — spinner shows, navigation fires after 600ms.
+
+**Teardown complete.** All 4 phases done across 2 sessions. Score projection: 33/50 C+ → ~44/50 A-.
 
 ---
 

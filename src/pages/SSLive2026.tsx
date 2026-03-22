@@ -99,72 +99,101 @@ const VIDEO_TESTIMONIALS = [
   },
 ]
 
-const FAQ_ITEMS = [
+const FAQ_CATEGORIES = [
   {
-    question: 'How do I know if I qualify?',
-    answer: 'SSL 2026 is exclusively for 7 and 8-figure sellers who are looking to automate tedious tasks in their Amazon business and gain a competitive edge. You must be a full-time seller to attend. This is not intended for service providers. Each seller will be verified.',
+    label: 'The Event',
+    items: [
+      {
+        question: 'How does the day work?',
+        answer: 'Every session at SSL 2026 is built around Claude Code — delegates work alongside speakers on their own laptops, building live. The venue has three spaces: The Nave for sessions, The Garden for breaks and lunch, and a heated Bedouin Tent for networking. The day flows from morning builds through to a VIP buffet dinner and evening networking.',
+      },
+      {
+        question: 'Who is leading the sessions?',
+        answer: 'SSL 2026 is hosted by Danny McMillan, with sessions from Shubhash Sharma (systems thinking), Matt Kostan (AI-powered consumer testing via ProductPinion), Sim Mahon (scaling and brand-building), and Dorian Gorski (visual strategy and image testing). Every speaker has invested 40-60 hours preparing their material.',
+      },
+      {
+        question: 'What about networking post-workshop?',
+        answer: "After the workshop wraps at 5pm, the venue transforms for a VIP buffet dinner and evening networking. Glenn, our lighting engineer, relights the entire building for a warm, intimate atmosphere. Think courtyard conversations, not open-bar chaos. This is where lasting partnerships are formed.",
+      },
+      {
+        question: "What if I can't attend in person?",
+        answer: "Seller Sessions Live is an exclusive in-person event. We don't record sessions.",
+      },
+    ],
   },
   {
-    question: 'How does the day work?',
-    answer: 'Every session at SSL 2026 is built around Claude Code — delegates work alongside speakers on their own laptops, building live. The venue has three spaces: The Nave for sessions, The Garden for breaks and lunch, and a heated Bedouin Tent for networking. The day flows from morning builds through to a VIP buffet dinner and evening networking.',
+    label: 'Skills & Tools',
+    items: [
+      {
+        question: 'Do I need coding experience?',
+        answer: 'Zero. None. Claude Code has "code" in the name but it\'s probably the worst name in the world for marketing because it\'s amazing at everything. You don\'t write code — you speak to Claude naturally, tell it what you need, and it builds for you. If you can have a conversation, you can use Claude Code.',
+      },
+      {
+        question: "I'm using other AI tools — why this one?",
+        answer: 'Claude Code is the best Swiss Army knife in the business. It covers everything the other AI platforms offer and more — research, analysis, content, automation, data processing — all in one tool. Instead of juggling five different subscriptions, you learn one platform that does it all.',
+      },
+      {
+        question: 'What tools do I need to bring?',
+        answer: "Your laptop with Claude Code installed. That's it. All assets — agents, hooks, Markdown files, and skills — are provided on the day.",
+      },
+    ],
   },
   {
-    question: 'Do I need coding experience?',
-    answer: 'Zero. None. Claude Code has "code" in the name but it\'s probably the worst name in the world for marketing because it\'s amazing at everything. You don\'t write code — you speak to Claude naturally, tell it what you need, and it builds for you. If you can have a conversation, you can use Claude Code.',
+    label: 'Tickets & Pricing',
+    items: [
+      {
+        question: 'How do I know if I qualify?',
+        answer: 'SSL 2026 is exclusively for 7 and 8-figure sellers who are looking to automate tedious tasks in their Amazon business and gain a competitive edge. You must be a full-time seller to attend. This is not intended for service providers. Each seller will be verified.',
+      },
+      {
+        question: "What's included in the ticket?",
+        answer: "Your ticket includes the full-day hands-on workshop, a library of Claude Code skills, agents, and frameworks that you'll build and take home, lunch and refreshments throughout the day, plus a VIP buffet dinner and evening networking at the venue. You'll leave with working systems and all the dependencies needed to keep building.",
+      },
+      {
+        question: "What's your refund policy?",
+        answer: 'We offer full refunds up to 5 days before the event. After that, tickets are non-refundable but transferable to another verified seller or to a future Seller Sessions Live event.',
+      },
+      {
+        question: 'Do you provide business invoices?',
+        answer: 'Yes, business invoices are available upon request after purchase. Contact our team with your company details and we will issue one promptly.',
+      },
+    ],
   },
   {
-    question: 'Who is leading the sessions?',
-    answer: 'SSL 2026 is hosted by Danny McMillan, with sessions from Shubhash Sharma (systems thinking), Matt Kostan (AI-powered consumer testing via ProductPinion), Sim Mahon (scaling and brand-building), and Dorian Gorski (visual strategy and image testing). Every speaker has invested 40-60 hours preparing their material.',
-  },
-  {
-    question: "I'm using other AI tools — why this one?",
-    answer: 'Claude Code is the best Swiss Army knife in the business. It covers everything the other AI platforms offer and more — research, analysis, content, automation, data processing — all in one tool. Instead of juggling five different subscriptions, you learn one platform that does it all.',
-  },
-  {
-    question: "What if I can't attend in person?",
-    answer: "Seller Sessions Live is an exclusive in-person event. We don't record sessions.",
-  },
-  {
-    question: 'What tools do I need to bring?',
-    answer: "Your laptop with Claude Code installed. That's it. All assets — agents, hooks, Markdown files, and skills — are provided on the day.",
-  },
-  {
-    question: "What's included in the ticket?",
-    answer: "Your ticket includes the full-day hands-on workshop, a library of Claude Code skills, agents, and frameworks that you'll build and take home, lunch and refreshments throughout the day, plus a VIP buffet dinner and evening networking at the venue. You'll leave with working systems and all the dependencies needed to keep building.",
-  },
-  {
-    question: "What's your refund policy?",
-    answer: 'We offer full refunds up to 5 days before the event. After that, tickets are non-refundable but transferable to another verified seller or to a future Seller Sessions Live event.',
-  },
-  {
-    question: 'How do I contact the organizer?',
-    answer: 'For any questions about SSL 2026, contact Danny McMillan: Email: danny@sellersessions.com | Phone: UK (0)7595 217325',
-  },
-  {
-    question: 'What about networking post-workshop?',
-    answer: "After the workshop wraps at 5pm, the venue transforms for a VIP buffet dinner and evening networking. Glenn, our lighting engineer, relights the entire building for a warm, intimate atmosphere. Think courtyard conversations, not open-bar chaos. This is where lasting partnerships are formed.",
-  },
-  {
-    question: 'What are the travel requirements?',
-    answer: 'The event is held in London, UK. International attendees should ensure they have valid travel documents. We recommend booking accommodation nearby for the best experience.',
-  },
-  {
-    question: 'Do you provide business invoices?',
-    answer: 'Yes, business invoices are available upon request after purchase. Contact our team with your company details and we will issue one promptly.',
-  },
-  {
-    question: 'How do I get there from the airport?',
-    answer: 'London is well-connected by public transport. From Heathrow, the Elizabeth line or Heathrow Express to central London is recommended. From Gatwick, the Gatwick Express to Victoria is quickest. Detailed venue directions will be sent with your ticket confirmation.',
-  },
-  {
-    question: 'Where is SSL Live 2026? How do I get there?',
-    answer: "SSL Live 2026 takes place at St Ethelburga's Centre, Bishopsgate, London (EC2M 4QD). It's a short walk from Liverpool Street station, with excellent connections from all London airports. Detailed directions will be sent with your ticket confirmation.",
+    label: 'Venue & Travel',
+    items: [
+      {
+        question: 'Where is SSL Live 2026? How do I get there?',
+        answer: "SSL Live 2026 takes place at St Ethelburga's Centre, Bishopsgate, London (EC2M 4QD). It's a short walk from Liverpool Street station, with excellent connections from all London airports. Detailed directions will be sent with your ticket confirmation.",
+      },
+      {
+        question: 'How do I get there from the airport?',
+        answer: 'London is well-connected by public transport. From Heathrow, the Elizabeth line or Heathrow Express to central London is recommended. From Gatwick, the Gatwick Express to Victoria is quickest. Detailed venue directions will be sent with your ticket confirmation.',
+      },
+      {
+        question: 'What are the travel requirements?',
+        answer: 'The event is held in London, UK. International attendees should ensure they have valid travel documents. We recommend booking accommodation nearby for the best experience.',
+      },
+      {
+        question: 'How do I contact the organizer?',
+        answer: 'For any questions about SSL 2026, contact Danny McMillan: Email: danny@sellersessions.com | Phone: UK (0)7595 217325',
+      },
+    ],
   },
 ]
 
 export default function SSLive2026() {
   const prefersReducedMotion = useReducedMotion()
   const [isMobile, setIsMobile] = useState(false)
+  const [ticketLoading, setTicketLoading] = useState(false)
+
+  const handleTicketClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    setTicketLoading(true)
+    setTimeout(() => {
+      window.location.href = '?wffn-next-link=yes'
+    }, 600)
+  }
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 767px)')
     setIsMobile(mq.matches)
@@ -318,7 +347,7 @@ export default function SSLive2026() {
                 transition={{ delay: 1.5 }}
                 className="flex flex-wrap justify-center gap-4 mt-10"
               >
-                <Button variant="outline" size="lg" href="?wffn-next-link=yes" className="!border-0 !bg-transparent btn-animated-border">
+                <Button variant="outline" size="lg" href="?wffn-next-link=yes" className="!border-0 !bg-transparent btn-animated-border" isLoading={ticketLoading} onClick={handleTicketClick}>
                   Get Your Ticket — £999
                 </Button>
                 <Button variant="outline" size="lg" href="#built-for-innovators" className="!border-white/30 hover:!bg-white/10">
@@ -996,7 +1025,7 @@ export default function SSLive2026() {
                     </div>
                   </div>
 
-                  <Button variant="outline" size="lg" href="?wffn-next-link=yes" className="w-full">
+                  <Button variant="outline" size="lg" href="?wffn-next-link=yes" className="w-full" isLoading={ticketLoading} onClick={handleTicketClick}>
                     Get Your Ticket
                   </Button>
 
@@ -1035,7 +1064,7 @@ export default function SSLive2026() {
           FAQ
           ============================================= */}
       <Suspense fallback={<div className="py-20" />}>
-        <FAQ items={FAQ_ITEMS} />
+        <FAQ categories={FAQ_CATEGORIES} />
       </Suspense>
 
       {/* =============================================
@@ -1046,6 +1075,8 @@ export default function SSLive2026() {
         description={<>80% sold in the first 72 hours. 6 consecutive sellouts. Join the conference that 7-8 figure Amazon sellers keep coming back to.<br /><span className="text-white/50 text-sm mt-2 block">"The single best event in the Amazon space." — Adam Hiest</span></>}
         primaryCTA={{ label: "Get Your Ticket — £999", href: "?wffn-next-link=yes" }}
         secondaryCTA={{ label: "Back to Events", href: "/events/" }}
+        isLoading={ticketLoading}
+        onPrimaryClick={handleTicketClick}
       />
 
       {/* Footer handled by Elementor site template */}

@@ -8,6 +8,8 @@ interface CTASectionProps {
   description?: ReactNode
   primaryCTA?: { label: string; href: string }
   secondaryCTA?: { label: string; href: string }
+  isLoading?: boolean
+  onPrimaryClick?: (e: React.MouseEvent) => void
 }
 
 export function CTASection({
@@ -15,6 +17,8 @@ export function CTASection({
   description,
   primaryCTA,
   secondaryCTA,
+  isLoading,
+  onPrimaryClick,
 }: CTASectionProps) {
   return (
     <section
@@ -51,6 +55,8 @@ export function CTASection({
                 size="lg"
                 href={primaryCTA.href}
                 className="!bg-transparent !text-white !border-0"
+                isLoading={isLoading}
+                onClick={onPrimaryClick}
               >
                 {primaryCTA.label}
               </Button>

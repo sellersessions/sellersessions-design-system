@@ -5,3 +5,6 @@ dist/
 *.log
 review/screenshots/
 .gh-pages-tmp/
+
+# Local Netlify folder
+.netlify

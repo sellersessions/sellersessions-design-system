@@ -27,7 +27,7 @@ The deploy script pushes built assets to GitHub Pages and updates page content v
 ## How It Works
 
 ```mermaid
-%%{init: {'theme': 'dark', 'themeVariables': {'clusterBkg': 'transparent', 'clusterBorder': '#8b949e'}}}%%
+%%{init: {'theme': 'dark', 'themeVariables': {'nodeTextColor': '#e8e8e8', 'primaryTextColor': '#e8e8e8', 'secondaryTextColor': '#cccccc', 'tertiaryTextColor': '#cccccc', 'clusterBkg': 'transparent', 'clusterBorder': '#8b949e'}}}%%
 
 flowchart LR
     subgraph EDIT[" EDIT "]
@@ -53,13 +53,13 @@ flowchart LR
     GH --> SNIP
     PAGE --> PURGE
 
-    style SRC fill:none,stroke-width:1px
-    style VITE fill:none,stroke-width:1px
-    style ASSETS fill:none,stroke-width:1px
-    style GH fill:none,stroke-width:1px
-    style PAGE fill:none,stroke-width:1px
-    style SNIP fill:none,stroke-width:1px
-    style PURGE fill:none,stroke-width:1px
+    style SRC fill:none,stroke-width:1px,color:#e8e8e8
+    style VITE fill:none,stroke-width:1px,color:#e8e8e8
+    style ASSETS fill:none,stroke-width:1px,color:#e8e8e8
+    style GH fill:none,stroke-width:1px,color:#e8e8e8
+    style PAGE fill:none,stroke-width:1px,color:#e8e8e8
+    style SNIP fill:none,stroke-width:1px,color:#e8e8e8
+    style PURGE fill:none,stroke-width:1px,color:#e8e8e8
 ```
 
 ---
@@ -160,7 +160,7 @@ flowchart LR
 ## Components
 
 ```mermaid
-%%{init: {'theme': 'dark', 'themeVariables': {'clusterBkg': 'transparent', 'clusterBorder': '#8b949e'}}}%%
+%%{init: {'theme': 'dark', 'themeVariables': {'nodeTextColor': '#e8e8e8', 'primaryTextColor': '#e8e8e8', 'secondaryTextColor': '#cccccc', 'tertiaryTextColor': '#cccccc', 'clusterBkg': 'transparent', 'clusterBorder': '#8b949e'}}}%%
 
 flowchart TD
     subgraph LAYOUT[" LAYOUT "]
@@ -185,19 +185,19 @@ flowchart TD
         C13["VideoTestimonials"]
     end
 
-    style C1 fill:none,stroke-width:1px
-    style C2 fill:none,stroke-width:1px
-    style C3 fill:none,stroke-width:1px
-    style C4 fill:none,stroke-width:1px
-    style C5 fill:none,stroke-width:1px
-    style C6 fill:none,stroke-width:1px
-    style C7 fill:none,stroke-width:1px
-    style C8 fill:none,stroke-width:1px
-    style C9 fill:none,stroke-width:1px
-    style C10 fill:none,stroke-width:1px
-    style C11 fill:none,stroke-width:1px
-    style C12 fill:none,stroke-width:1px
-    style C13 fill:none,stroke-width:1px
+    style C1 fill:none,stroke-width:1px,color:#e8e8e8
+    style C2 fill:none,stroke-width:1px,color:#e8e8e8
+    style C3 fill:none,stroke-width:1px,color:#e8e8e8
+    style C4 fill:none,stroke-width:1px,color:#e8e8e8
+    style C5 fill:none,stroke-width:1px,color:#e8e8e8
+    style C6 fill:none,stroke-width:1px,color:#e8e8e8
+    style C7 fill:none,stroke-width:1px,color:#e8e8e8
+    style C8 fill:none,stroke-width:1px,color:#e8e8e8
+    style C9 fill:none,stroke-width:1px,color:#e8e8e8
+    style C10 fill:none,stroke-width:1px,color:#e8e8e8
+    style C11 fill:none,stroke-width:1px,color:#e8e8e8
+    style C12 fill:none,stroke-width:1px,color:#e8e8e8
+    style C13 fill:none,stroke-width:1px,color:#e8e8e8
 ```
 
 All components use the SS brand tokens. Animations via Framer Motion. Icons via Lucide.
@@ -241,7 +241,7 @@ npm run deploy -- --page ssl2026 --promote    # Replace live page
 ## The Stack
 
 ```mermaid
-%%{init: {'theme': 'dark', 'themeVariables': {'clusterBkg': 'transparent', 'clusterBorder': '#8b949e'}}}%%
+%%{init: {'theme': 'dark', 'themeVariables': {'nodeTextColor': '#e8e8e8', 'primaryTextColor': '#e8e8e8', 'secondaryTextColor': '#cccccc', 'tertiaryTextColor': '#cccccc', 'clusterBkg': 'transparent', 'clusterBorder': '#8b949e'}}}%%
 
 flowchart TD
     L1["<b>Layer 1</b> · React 18 + TypeScript · <i>Component library</i>"]
@@ -252,11 +252,11 @@ flowchart TD
 
     L1 --> L2 --> L3 --> L4 --> L5
 
-    style L1 fill:none,stroke-width:1px
-    style L2 fill:none,stroke-width:1px
-    style L3 fill:none,stroke-width:1px
-    style L4 fill:none,stroke-width:1px
-    style L5 fill:none,stroke-width:1px
+    style L1 fill:none,stroke-width:1px,color:#e8e8e8
+    style L2 fill:none,stroke-width:1px,color:#e8e8e8
+    style L3 fill:none,stroke-width:1px,color:#e8e8e8
+    style L4 fill:none,stroke-width:1px,color:#e8e8e8
+    style L5 fill:none,stroke-width:1px,color:#e8e8e8
 ```
 
 ---
