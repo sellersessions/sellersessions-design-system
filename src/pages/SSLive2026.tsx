@@ -50,7 +50,6 @@ import { CTASection } from '../components/CTASection'
 const VideoTestimonials = lazy(() => import('../components/VideoTestimonials').then(m => ({ default: m.VideoTestimonials })))
 const FAQ = lazy(() => import('../components/FAQ').then(m => ({ default: m.FAQ })))
 import { HyperText } from '../components/HyperText'
-import { GradualSpacing } from '../components/GradualSpacing'
 import { NeonGradientCard } from '../components/NeonGradientCard'
 import { WaveDivider } from '../components/WaveDivider'
 import { SpeakerTimeline } from '../components/SpeakerTimeline'
@@ -163,8 +162,8 @@ const FAQ_CATEGORIES = [
     label: 'Venue & Travel',
     items: [
       {
-        question: 'Where is SSL Live 2026? How do I get there?',
-        answer: "SSL Live 2026 takes place at St Ethelburga's Centre, Bishopsgate, London (EC2M 4QD). It's a short walk from Liverpool Street station, with excellent connections from all London airports. Detailed directions will be sent with your ticket confirmation.",
+        question: 'Where is SSL 2026? How do I get there?',
+        answer: "SSL 2026 takes place at St Ethelburga's Centre, Bishopsgate, London (EC2M 4QD). It's a short walk from Liverpool Street station, with excellent connections from all London airports. Detailed directions will be sent with your ticket confirmation. For any questions, contact Danny McMillan: danny@sellersessions.com | UK (0)7595 217325.",
       },
       {
         question: 'How do I get there from the airport?',
@@ -173,10 +172,6 @@ const FAQ_CATEGORIES = [
       {
         question: 'What are the travel requirements?',
         answer: 'The event is held in London, UK. International attendees should ensure they have valid travel documents. We recommend booking accommodation nearby for the best experience.',
-      },
-      {
-        question: 'How do I contact the organizer?',
-        answer: 'For any questions about SSL 2026, contact Danny McMillan: Email: danny@sellersessions.com | Phone: UK (0)7595 217325',
       },
     ],
   },
@@ -301,7 +296,7 @@ export default function SSLive2026() {
                 className="text-3xl md:text-5xl lg:text-[56px] font-bold mb-4 leading-tight text-white"
               >
                 The Conference That's Sold Out<br />
-                <HyperText text="6 Times Running" className="text-ss-accent" />
+                <HyperText text="6 Times Running" className="text-ss-accent" duration={1800} />
               </motion.h1>
 
               {/* Subheadline */}
@@ -347,7 +342,7 @@ export default function SSLive2026() {
                 transition={{ delay: 1.5 }}
                 className="flex flex-wrap justify-center gap-4 mt-10"
               >
-                <Button variant="outline" size="lg" href="?wffn-next-link=yes" className="!border-0 !bg-transparent btn-animated-border" isLoading={ticketLoading} onClick={handleTicketClick}>
+                <Button variant="outline" size="lg" href="?wffn-next-link=yes" className="!border-0 !bg-transparent btn-animated-border hover:!bg-white/5" isLoading={ticketLoading} onClick={handleTicketClick}>
                   Get Your Ticket — £999
                 </Button>
                 <Button variant="outline" size="lg" href="#built-for-innovators" className="!border-white/30 hover:!bg-white/10">
@@ -450,7 +445,7 @@ export default function SSLive2026() {
                         transition={{ delay: i * 0.1, duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
                         className="flex items-start gap-3 text-white/80 text-base"
                       >
-                        <motion.span initial={prefersReducedMotion ? undefined : { opacity: 0, scale: 0.25, filter: 'blur(4px)' }} whileInView={prefersReducedMotion ? undefined : { opacity: 1, scale: 1, filter: 'blur(0px)' }} viewport={{ once: true }} transition={{ duration: 0.2, delay: i * 0.1 }}><CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" /></motion.span>
+                        <motion.span initial={prefersReducedMotion ? undefined : { opacity: 0, scale: 0.25, filter: 'blur(4px)' }} whileInView={prefersReducedMotion ? undefined : { opacity: 1, scale: 1, filter: 'blur(0px)' }} viewport={{ once: true }} transition={{ duration: 0.2, delay: i * 0.1 }}><CheckCircle className="w-5 h-5 text-ss-accent mt-0.5 flex-shrink-0" /></motion.span>
                         {item}
                       </motion.li>
                     ))}
@@ -486,7 +481,7 @@ export default function SSLive2026() {
                         className="flex items-start gap-3"
                         style={{ color: 'rgba(255,255,255,0.6)', fontSize: '16px' }}
                       >
-                        <motion.span initial={prefersReducedMotion ? undefined : { opacity: 0, scale: 0.25, filter: 'blur(4px)' }} whileInView={prefersReducedMotion ? undefined : { opacity: 1, scale: 1, filter: 'blur(0px)' }} viewport={{ once: true }} transition={{ duration: 0.2, delay: i * 0.1 }}><XCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-white/30" /></motion.span>
+                        <motion.span initial={prefersReducedMotion ? undefined : { opacity: 0, scale: 0.25, filter: 'blur(4px)' }} whileInView={prefersReducedMotion ? undefined : { opacity: 1, scale: 1, filter: 'blur(0px)' }} viewport={{ once: true }} transition={{ duration: 0.2, delay: i * 0.1 }}><XCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-white/20" /></motion.span>
                         {item}
                       </motion.li>
                     ))}
@@ -523,7 +518,7 @@ export default function SSLive2026() {
                       transition={{ delay: i * 0.1, duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
                       className="flex items-start gap-3 text-white/80 text-base"
                     >
-                      <motion.span initial={prefersReducedMotion ? undefined : { opacity: 0, scale: 0.25, filter: 'blur(4px)' }} whileInView={prefersReducedMotion ? undefined : { opacity: 1, scale: 1, filter: 'blur(0px)' }} viewport={{ once: true }} transition={{ duration: 0.2, delay: i * 0.1 }}><CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" /></motion.span>
+                      <motion.span initial={prefersReducedMotion ? undefined : { opacity: 0, scale: 0.25, filter: 'blur(4px)' }} whileInView={prefersReducedMotion ? undefined : { opacity: 1, scale: 1, filter: 'blur(0px)' }} viewport={{ once: true }} transition={{ duration: 0.2, delay: i * 0.1 }}><CheckCircle className="w-5 h-5 text-ss-accent mt-0.5 flex-shrink-0" /></motion.span>
                       {item}
                     </motion.li>
                   ))}
@@ -556,7 +551,7 @@ export default function SSLive2026() {
                       className="flex items-start gap-3"
                       style={{ color: 'rgba(255,255,255,0.6)', fontSize: '16px' }}
                     >
-                      <motion.span initial={prefersReducedMotion ? undefined : { opacity: 0, scale: 0.25, filter: 'blur(4px)' }} whileInView={prefersReducedMotion ? undefined : { opacity: 1, scale: 1, filter: 'blur(0px)' }} viewport={{ once: true }} transition={{ duration: 0.2, delay: i * 0.1 }}><XCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-white/30" /></motion.span>
+                      <motion.span initial={prefersReducedMotion ? undefined : { opacity: 0, scale: 0.25, filter: 'blur(4px)' }} whileInView={prefersReducedMotion ? undefined : { opacity: 1, scale: 1, filter: 'blur(0px)' }} viewport={{ once: true }} transition={{ duration: 0.2, delay: i * 0.1 }}><XCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-white/20" /></motion.span>
                       {item}
                     </motion.li>
                   ))}
@@ -573,22 +568,17 @@ export default function SSLive2026() {
       <Section className="section-card section-textured section-fade-in" style={{ paddingTop: '100px', paddingBottom: '100px', '--fade-from': '#0C0322' } as React.CSSProperties}>
         <Container>
           <div className="max-w-[900px] mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-center mb-12"
-            >
+            <div className="text-center mb-12">
               <h2 className="text-4xl md:text-[48px] font-bold mb-4 text-white">
                 Modular Format
               </h2>
               <p className="text-ss-accent font-semibold text-lg mb-4">
-                <GradualSpacing text="One Roof. Multiple Phases. Seamless Flow." />
+                One Roof. Multiple Phases. Seamless Flow.
               </p>
               <p className="max-w-[700px] mx-auto text-white/60 text-base leading-[1.8]">
                 We've rebuilt the conference model from the ground up. In 2025, we took a massive risk and implemented a hands-on adapted VARK model to maximise comprehension, which paid off.
               </p>
-            </motion.div>
+            </div>
 
             <div className="grid md:grid-cols-2 gap-6">
               {[
@@ -597,13 +587,7 @@ export default function SSLive2026() {
                 { time: 'Afternoon', desc: 'Live execution and real-time collaboration', color: '#FBBF24' },
                 { time: 'Evening', desc: 'High-trust networking and deep conversations', color: '#F59E0B' },
               ].map((phase, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                >
+                <div key={i}>
                   <Card padding="md" className="h-full" style={{ borderLeft: `3px solid ${phase.color}` }}>
                     <div className="flex items-center gap-3 mb-3">
                       <div className="w-3 h-3 rounded-full" style={{ backgroundColor: phase.color }} />
@@ -613,19 +597,16 @@ export default function SSLive2026() {
                       {phase.desc}
                     </p>
                   </Card>
-                </motion.div>
+                </div>
               ))}
             </div>
 
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
+            <p
               className="text-center mt-8"
               style={{ color: 'rgba(255,255,255,0.6)', fontSize: '16px', lineHeight: '1.7' }}
             >
               As the day progresses, the entire venue transforms — lighting changes, layout evolves, atmosphere shifts. Everything under one roof.
-            </motion.p>
+            </p>
           </div>
         </Container>
       </Section>
@@ -686,7 +667,7 @@ export default function SSLive2026() {
               viewport={{ once: true }}
             >
               <h2 className="text-4xl md:text-[48px] font-bold mb-8 text-white">
-                Advanced Hands-On Learning<br />
+                Advanced Learning<br />
                 <span className="text-ss-accent">in a Workshop Format</span>
               </h2>
             </motion.div>
@@ -726,7 +707,7 @@ export default function SSLive2026() {
             className="text-center mb-12"
           >
             <h2 className="text-4xl md:text-[48px] font-bold mb-4 text-white">
-              Why This Format Works — <span className="text-ss-accent">for Innovators</span>
+              Why This Format Works
             </h2>
           </motion.div>
 
@@ -946,30 +927,19 @@ export default function SSLive2026() {
                   quote: 'This truly was a game-changing conference -- unlike anything I\'ve experienced in my career before. The materials, insights, and tools provided are absolutely top-tier. Implementing all of this will keep me busy the rest of the year in the best possible way. Huge thanks for the incredible work you put into making this happen.',
                 },
               ].map((testimonial, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                >
+                <div key={i}>
                   <Card padding="lg" className="h-full">
                     <p className="text-base italic mb-4" style={{ color: 'rgba(255,255,255,0.7)', lineHeight: '1.8' }}>
                       "{testimonial.quote}"
                     </p>
                     <div className="text-sm font-semibold text-ss-accent">{testimonial.name}</div>
                   </Card>
-                </motion.div>
+                </div>
               ))}
             </div>
 
             {/* Short endorsements — 2-column grid for equal centering */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              className="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-8 max-w-[700px] mx-auto"
-            >
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-8 max-w-[700px] mx-auto">
               {[
                 { name: 'Nir Raveh', quote: 'Amazing content, excellent organisation, and an outstanding group of attendees!' },
                 { name: 'Rony Gariplerdan', quote: 'Amazing event, great content -- it was very nice to meet you all.' },
@@ -979,7 +949,7 @@ export default function SSLive2026() {
                   <p className="text-xs font-semibold text-ss-accent mt-2">{t.name}</p>
                 </div>
               ))}
-            </motion.div>
+            </div>
           </div>
         </Container>
       </Section>

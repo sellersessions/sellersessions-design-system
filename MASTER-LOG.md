@@ -36,7 +36,7 @@ Key files: `scripts/deploy.js` (core pipeline), `src/pages/` (3 pages), `src/com
 
 **Visual polish (19 Mar session):** 14 premium techniques applied via REFINE audit from Claude UI Workflow pipeline. Section banding (3 depths), atmospheric gradient orbs, dramatic stat numerals with count-up animation, badge chips on speakers, proof elevation near pricing, CTA pulse glow, glass overlay on hero, parallax crowd image, bento asymmetry on feature grid, phase-banded agenda timeline. NOT yet deployed to live -- local only.
 
-**Last session (21 Mar):** Completed final 2 teardown items: FAQ chunked into 4 categories (The Event, Skills & Tools, Tickets & Pricing, Venue & Travel) — Miller's Law compliance. CTA loading states on all 3 ticket buttons (hero, event details, final CTA) — spinner + opacity + 600ms delay before navigation. Button component updated to support isLoading on href links. CTASection component extended with onPrimaryClick + isLoading props. TypeScript clean. NOT yet deployed to live — local only.
+**Last session (22 Mar):** Loom feedback session — Danny recorded 9:37 video walkthrough, Claude extracted 13 items and implemented all. Animation kills (Modular Format, SpeakerTimeline slide-ins, testimonials, video testimonials all made static). Text edits ("Advanced Learning", "Why This Format Works", "SSL 2026" global). FAQ contact merged into venue (4→3 items). HyperText slowed 600→1800ms. Hero CTA hover added. Check/X icons restyled to SS palette. Deployed to Netlify: https://ss-live-2026-preview.netlify.app. NOT yet deployed to WP live.
 
 ## Iteration Cycle (permanent reference)
 
@@ -127,8 +127,9 @@ Key files: `scripts/deploy.js` (core pipeline), `src/pages/` (3 pages), `src/com
 - [x] Deploy SSL 2026 to live (React replaces Elementor on page 23003)
 - [x] CTA links verified (WooFunnels checkout, events, anchors all working)
 - [x] Visual REFINE pass -- 14/19 premium techniques applied (section banding, stat numerals, count-up, badge chips, proof elevation, CTA pulse, glass overlay, parallax, bento grid, phase-banded agenda, atmospheric orbs, dot-grid texture)
+- [x] Danny Loom feedback review -- 13 items extracted and implemented (22 Mar)
 - [ ] Danny visually reviews CardStack carousel (concept approved, refinement TBD)
-- [ ] Deploy visual refinements + CardStack to live (after Danny review)
+- [ ] Deploy all local changes to WP live (after Danny final review on Netlify preview)
 - [ ] Add mid-page CTAs after sections 5 and 8 (10-section gap currently)
 - [ ] Alex reviews standalone HTML (`review/SSL2026-review-draft.html`)
 - [ ] Fix testimonial grid debt (Nir 11w, Rony 13w -- need longer quotes)
@@ -136,6 +137,41 @@ Key files: `scripts/deploy.js` (core pipeline), `src/pages/` (3 pages), `src/com
 - [ ] Run `npm run test:responsive` -- review mobile/tablet screenshots
 - [ ] Build home page (`src/pages/HomePage.tsx`)
 - [ ] Repeat for Events Hub and Events Archive pages
+
+---
+
+## Session 10 -- 2026-03-22 07:32 GMT
+
+**Loom feedback — 13 changes from Danny's video walkthrough + Netlify deploy**
+
+Danny recorded a 9:37 Loom walkthrough of the SS Live 2026 page and flagged specific issues. Video Transcriber MCP extracted the transcript, sequential thinking analysed it into 13 discrete items, plan mode produced change list, all implemented in one session.
+
+**Phase 1 — Animation kills (4 sections):**
+- Modular Format: removed whileInView from heading, GradualSpacing replaced with plain text, card stagger removed, closing text static
+- SpeakerTimeline: removed slide-in (x:-20, x:20) from speaker names/images. Kept scroll-fill timeline (Danny praised it)
+- Delegate testimonials: all 4 quote cards now static (no whileInView)
+- VideoTestimonials: all video cards static, motion import removed
+
+**Phase 2 — Text changes (3 edits):**
+- "Advanced Hands-On Learning" → "Advanced Learning" (too many words)
+- "Why This Format Works — for Innovators" → "Why This Format Works" (shorter)
+- "SSL Live 2026" → "SSL 2026" globally (2 instances in FAQ)
+
+**Phase 3 — FAQ restructure:**
+- "How do I contact the organizer?" removed as standalone FAQ
+- Contact info merged into "Where is SSL 2026? How do I get there?" answer
+- Venue & Travel: 4→3 items (now balanced with Skills & Tools)
+
+**Phase 4 — Interaction polish:**
+- HyperText "6 Times Running": duration 600ms→1800ms (was "barely a flicker")
+- Hero CTA: added `hover:!bg-white/5` (subtle hover state, Danny asked for it but warned about overcooking)
+- CheckCircle icons: `text-green-400` → `text-ss-accent` (purple, fits design system)
+- XCircle icons: `text-white/30` → `text-white/20` (more muted)
+- GradualSpacing import removed (unused after Modular Format change)
+
+**Netlify deploy:** Built and deployed to https://ss-live-2026-preview.netlify.app (prod deploy, site ID 956aa70b).
+
+**Parked:** "Secure Your Spot" final CTA — Danny wanted to check prior discussion about making it "more powerful." ChromaDB search found nothing specific. Peak-end already strengthened (scarcity + Adam Hiest quote). Left for future session.
 
 ---
 

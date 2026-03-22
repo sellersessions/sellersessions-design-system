@@ -59,12 +59,7 @@ export function SpeakerTimeline({ data }: { data: SpeakerEntry[] }) {
 
             {/* Mobile layout */}
             <div className="md:hidden pl-10">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
-              >
+              <div>
                 <div className="mb-3">
                   <h3 className="text-xl font-bold text-white mb-1">{entry.name}</h3>
                   <div className="flex items-center gap-2">
@@ -94,20 +89,14 @@ export function SpeakerTimeline({ data }: { data: SpeakerEntry[] }) {
                 <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '15px', lineHeight: '1.7' }}>
                   {entry.bio}
                 </p>
-              </motion.div>
+              </div>
             </div>
 
             {/* Desktop layout */}
             <div className="hidden md:grid md:grid-cols-2 gap-8 items-start">
               {/* Left — sticky metadata */}
               <div className="flex justify-end pr-12">
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.08 }}
-                  className="sticky top-40 text-right"
-                >
+                <div className="sticky top-40 text-right">
                   <h3 className="text-4xl font-bold text-white mb-2">{entry.name}</h3>
                   <span
                     className="inline-flex items-center px-3 py-1 rounded-full text-xs uppercase tracking-[1.5px] font-semibold mb-2"
@@ -118,17 +107,12 @@ export function SpeakerTimeline({ data }: { data: SpeakerEntry[] }) {
                   <p className="text-sm" style={{ color: 'rgba(255,255,255,0.4)' }}>
                     {entry.time}
                   </p>
-                </motion.div>
+                </div>
               </div>
 
               {/* Right — image + bio */}
               <div className="pl-12">
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.08 + 0.05 }}
-                >
+                <div>
                   <img
                     src={entry.image}
                     alt={entry.name}
@@ -153,7 +137,7 @@ export function SpeakerTimeline({ data }: { data: SpeakerEntry[] }) {
                   >
                     {entry.bio}
                   </p>
-                </motion.div>
+                </div>
               </div>
             </div>
           </div>

@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
 import { Play } from 'lucide-react'
 import { Container } from './Container'
 import { Section } from './Section'
@@ -27,28 +26,19 @@ export function VideoTestimonials({
   return (
     <Section className="section-dark" style={{ paddingTop: '100px', paddingBottom: '100px' }}>
       <Container>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
+        <div className="text-center mb-12">
           <h2 className="text-4xl md:text-[48px] font-bold mb-4 text-white">
             {title}
           </h2>
           <p className="max-w-[600px] mx-auto" style={{ color: 'rgba(255,255,255,0.6)', fontSize: '16px', lineHeight: '1.7' }}>
             {subtitle}
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid md:grid-cols-2 gap-6 max-w-[1000px] mx-auto">
           {testimonials.map((t, i) => (
-            <motion.div
+            <div
               key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
               className="rounded-2xl overflow-hidden border"
               style={{ borderColor: 'rgba(117, 62, 247, 0.2)', background: 'linear-gradient(145deg, #1a1a2e 0%, #0C0322 100%)' }}
             >
@@ -94,7 +84,7 @@ export function VideoTestimonials({
                   <p className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>{t.role}</p>
                 )}
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </Container>
