@@ -581,13 +581,14 @@ body.wfacp_main_wrapper::-webkit-scrollbar-thumb {
   border-radius: 4px;
 }
 
-/* FAQ header/breadcrumb area — kill the 120px top padding */
-body.wfacp_main_wrapper .elementor-23004 .elementor-element.elementor-element-4114b91e {
-  --padding-top: 16px !important;
-  --padding-block-start: 16px !important;
-  --padding-bottom: 0px !important;
-  --padding-block-end: 0px !important;
-  padding: 16px 20px 0 !important;
+/* FAQ header/breadcrumb area — kill the 120px top padding
+   Elementor sets padding via --padding-top CSS var consumed internally.
+   We override padding-top directly with max specificity. */
+body.wfacp_main_wrapper .elementor-23004 .elementor-element.elementor-element-4114b91e.e-con-full.e-flex.e-con {
+  padding-top: 16px !important;
+  padding-bottom: 0 !important;
+  padding-block-start: 16px !important;
+  padding-block-end: 0 !important;
 }
 
 /* Breadcrumb container — remove grey card background */
