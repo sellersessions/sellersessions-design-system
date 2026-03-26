@@ -581,6 +581,35 @@ body.wfacp_main_wrapper::-webkit-scrollbar-thumb {
   border-radius: 4px;
 }
 
+/* FAQ header/breadcrumb area — reduce massive padding */
+body.wfacp_main_wrapper .e-con:has(> .e-con-inner > p > a[href="#"]) {
+  padding: 16px 24px !important;
+  min-height: unset !important;
+  background-color: var(--ss-bg) !important;
+}
+
+/* Elementor section wrapping the breadcrumb */
+body.wfacp_main_wrapper .elementor-section:has(a[href="#"]) {
+  padding: 16px 24px !important;
+  min-height: unset !important;
+  background: var(--ss-bg) !important;
+}
+
+/* Breadcrumb text styling */
+body.wfacp_main_wrapper p:has(> a[href="#"]) {
+  font-size: 14px !important;
+  margin: 0 !important;
+  padding: 8px 0 !important;
+}
+
+/* Fallback: target all Elementor containers between form and FAQs */
+body.wfacp_main_wrapper .wfacp-form ~ .e-con {
+  padding-top: 16px !important;
+  padding-bottom: 16px !important;
+  min-height: unset !important;
+  background-color: var(--ss-bg) !important;
+}
+
 /* FAQs accordion on checkout */
 body.wfacp_main_wrapper [aria-label*="Accordion"] > div,
 body.wfacp_main_wrapper .wfacp_faq_section {
