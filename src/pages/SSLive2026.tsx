@@ -186,7 +186,7 @@ export default function SSLive2026() {
     e.preventDefault()
     setTicketLoading(true)
     setTimeout(() => {
-      window.location.href = '?wffn-next-link=yes'
+      window.location.href = '/checkouts/ssl26-checkout/'
     }, 600)
   }
   useEffect(() => {
@@ -342,7 +342,7 @@ export default function SSLive2026() {
                 transition={{ delay: 1.5 }}
                 className="flex flex-wrap justify-center gap-4 mt-10"
               >
-                <Button variant="outline" size="lg" href="?wffn-next-link=yes" className="!border-0 !bg-transparent btn-animated-border hover:!bg-white/5" isLoading={ticketLoading} onClick={handleTicketClick}>
+                <Button variant="outline" size="lg" href="/checkouts/ssl26-checkout/" className="!border-0 !bg-transparent btn-animated-border hover:!bg-white/5" isLoading={ticketLoading} onClick={handleTicketClick}>
                   Get Your Ticket — £999
                 </Button>
                 <Button variant="outline" size="lg" href="#built-for-innovators" className="!border-white/30 hover:!bg-white/10">
@@ -995,7 +995,7 @@ export default function SSLive2026() {
                     </div>
                   </div>
 
-                  <Button variant="outline" size="lg" href="?wffn-next-link=yes" className="w-full" isLoading={ticketLoading} onClick={handleTicketClick}>
+                  <Button variant="outline" size="lg" href="/checkouts/ssl26-checkout/" className="w-full" isLoading={ticketLoading} onClick={handleTicketClick}>
                     Get Your Ticket
                   </Button>
 
@@ -1043,7 +1043,7 @@ export default function SSLive2026() {
       <CTASection
         title="Secure Your Spot"
         description={<>80% sold in the first 72 hours. 6 consecutive sellouts. Join the conference that 7-8 figure Amazon sellers keep coming back to.<br /><span className="text-white/50 text-sm mt-2 block">"The single best event in the Amazon space." — Adam Hiest</span></>}
-        primaryCTA={{ label: "Get Your Ticket — £999", href: "?wffn-next-link=yes" }}
+        primaryCTA={{ label: "Get Your Ticket — £999", href: "/checkouts/ssl26-checkout/" }}
         secondaryCTA={{ label: "Back to Events", href: "/events/" }}
         isLoading={ticketLoading}
         onPrimaryClick={handleTicketClick}
