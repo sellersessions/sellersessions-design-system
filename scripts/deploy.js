@@ -199,7 +199,7 @@ function pushToGhPages() {
 
     // Copy static media files (textures, videos, thumbnails) from dist/
     // These are copied from public/ by Vite during build
-    const mediaDirs = ['videos', 'thumbnails']
+    const mediaDirs = ['videos', 'thumbnails', 'speakers']
     for (const dir of mediaDirs) {
       const srcDir = path.join(distDir, dir)
       if (fs.existsSync(srcDir)) {
