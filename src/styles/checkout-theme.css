@@ -1,0 +1,610 @@
+/**
+ * Seller Sessions Checkout Theme
+ *
+ * CSS-only overrides for the WooFunnels checkout page.
+ * Applies the SS dark design system without touching HTML/JS.
+ * Loaded via Code Snippet #8 on checkout pages only.
+ *
+ * Layers:
+ *   1. Foundation (dark base)
+ *   2. Form fields
+ *   3. Buttons
+ *   4. Order summary
+ *   5. Payment section
+ *   6. Validation & feedback
+ *   7. Responsive
+ *   8. Micro-interactions
+ */
+
+/* ==========================================================================
+   Design Tokens (matching src/index.css)
+   ========================================================================== */
+
+:root {
+  --ss-bg: #0C0322;
+  --ss-bg-mid: #130d2a;
+  --ss-bg-card: #1a1a2e;
+  --ss-bg-hover: #252040;
+  --ss-border: #2a2a3e;
+  --ss-border-focus: #753EF7;
+  --ss-purple: #461499;
+  --ss-accent: #753EF7;
+  --ss-accent-light: #9B6DFF;
+  --ss-gold: #FBBF24;
+  --ss-orange: #F97316;
+  --ss-text: #FAFAFC;
+  --ss-text-secondary: #D2D2D2;
+  --ss-text-tertiary: #9CA3AF;
+  --ss-error: #EF4444;
+  --ss-success: #22C55E;
+  --ss-glow: 0 0 0 3px rgba(117, 62, 247, 0.2);
+  --ss-glow-lg: 0 0 20px rgba(117, 62, 247, 0.3);
+  --ss-radius: 8px;
+  --ss-radius-lg: 12px;
+  --ss-transition: 0.2s ease;
+}
+
+/* ==========================================================================
+   Layer 1: Foundation
+   ========================================================================== */
+
+body.wfacp_main_wrapper {
+  background-color: var(--ss-bg) !important;
+  color: var(--ss-text) !important;
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif !important;
+}
+
+/* Main form container */
+body.wfacp_main_wrapper #wfacp-e-form,
+body.wfacp_main_wrapper .wfacp-form {
+  background-color: transparent !important;
+}
+
+body.wfacp_main_wrapper .wfacp-section,
+body.wfacp_main_wrapper .wfacp_main_form.woocommerce {
+  background-color: var(--ss-bg-card) !important;
+  border: 1px solid var(--ss-border) !important;
+  border-radius: var(--ss-radius-lg) !important;
+  padding: 24px !important;
+}
+
+/* Section headings */
+body.wfacp_main_wrapper .wfacp_section_heading,
+body.wfacp_main_wrapper .wfacp_section_title,
+body.wfacp_main_wrapper .wfacp-comm-title,
+body.wfacp_main_wrapper h2,
+body.wfacp_main_wrapper h3,
+body.wfacp_main_wrapper h4 {
+  color: var(--ss-text) !important;
+}
+
+/* Body text */
+body.wfacp_main_wrapper p,
+body.wfacp_main_wrapper span,
+body.wfacp_main_wrapper label,
+body.wfacp_main_wrapper td,
+body.wfacp_main_wrapper th,
+body.wfacp_main_wrapper li {
+  color: var(--ss-text-secondary) !important;
+}
+
+/* Links */
+body.wfacp_main_wrapper a {
+  color: var(--ss-accent) !important;
+}
+
+body.wfacp_main_wrapper a:hover {
+  color: var(--ss-accent-light) !important;
+}
+
+/* Dividers / HR */
+body.wfacp_main_wrapper hr {
+  border-color: var(--ss-border) !important;
+}
+
+/* ==========================================================================
+   Layer 2: Form Fields
+   ========================================================================== */
+
+body.wfacp_main_wrapper input[type="text"],
+body.wfacp_main_wrapper input[type="email"],
+body.wfacp_main_wrapper input[type="tel"],
+body.wfacp_main_wrapper input[type="password"],
+body.wfacp_main_wrapper input[type="number"],
+body.wfacp_main_wrapper input[type="date"],
+body.wfacp_main_wrapper input[type="url"],
+body.wfacp_main_wrapper select,
+body.wfacp_main_wrapper textarea {
+  background-color: var(--ss-bg-mid) !important;
+  border: 1px solid var(--ss-border) !important;
+  border-radius: var(--ss-radius) !important;
+  color: var(--ss-text) !important;
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif !important;
+  font-size: 16px !important;
+  padding: 12px 14px !important;
+  transition: border-color var(--ss-transition), box-shadow var(--ss-transition) !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+}
+
+body.wfacp_main_wrapper input::placeholder,
+body.wfacp_main_wrapper textarea::placeholder {
+  color: var(--ss-text-tertiary) !important;
+}
+
+/* Autofill override (Chrome/Safari) */
+body.wfacp_main_wrapper input:-webkit-autofill,
+body.wfacp_main_wrapper input:-webkit-autofill:hover,
+body.wfacp_main_wrapper input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px var(--ss-bg-mid) inset !important;
+  -webkit-text-fill-color: var(--ss-text) !important;
+  border-color: var(--ss-border) !important;
+  transition: background-color 5000s ease-in-out 0s !important;
+}
+
+/* Focus state */
+body.wfacp_main_wrapper input[type="text"]:focus,
+body.wfacp_main_wrapper input[type="email"]:focus,
+body.wfacp_main_wrapper input[type="tel"]:focus,
+body.wfacp_main_wrapper input[type="password"]:focus,
+body.wfacp_main_wrapper input[type="number"]:focus,
+body.wfacp_main_wrapper input[type="date"]:focus,
+body.wfacp_main_wrapper input[type="url"]:focus,
+body.wfacp_main_wrapper select:focus,
+body.wfacp_main_wrapper textarea:focus {
+  border-color: var(--ss-border-focus) !important;
+  box-shadow: var(--ss-glow) !important;
+  outline: none !important;
+}
+
+/* Labels */
+body.wfacp_main_wrapper .wfacp-form-control-label,
+body.wfacp_main_wrapper label {
+  color: var(--ss-text-secondary) !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+}
+
+/* Required asterisk */
+body.wfacp_main_wrapper abbr.required {
+  color: var(--ss-orange) !important;
+  text-decoration: none !important;
+}
+
+/* Select2 (country dropdown) */
+body .select2-container--default .select2-selection--single {
+  background-color: var(--ss-bg-mid) !important;
+  border: 1px solid var(--ss-border) !important;
+  border-radius: var(--ss-radius) !important;
+  height: auto !important;
+  padding: 10px 14px !important;
+}
+
+body .select2-container--default .select2-selection--single .select2-selection__rendered {
+  color: var(--ss-text) !important;
+  line-height: 1.5 !important;
+  padding: 0 !important;
+}
+
+body .select2-container--default .select2-selection--single .select2-selection__arrow {
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+}
+
+body .select2-dropdown {
+  background-color: var(--ss-bg-card) !important;
+  border-color: var(--ss-border) !important;
+  border-radius: var(--ss-radius) !important;
+}
+
+body .select2-container--default .select2-search--dropdown .select2-search__field {
+  background-color: var(--ss-bg-mid) !important;
+  border-color: var(--ss-border) !important;
+  color: var(--ss-text) !important;
+  border-radius: var(--ss-radius) !important;
+}
+
+body .select2-container--default .select2-results__option {
+  color: var(--ss-text-secondary) !important;
+  padding: 8px 12px !important;
+}
+
+body .select2-container--default .select2-results__option--highlighted[aria-selected] {
+  background-color: var(--ss-accent) !important;
+  color: white !important;
+}
+
+body .select2-container--default .select2-results__option[aria-selected="true"] {
+  background-color: var(--ss-bg-hover) !important;
+}
+
+/* ==========================================================================
+   Layer 3: Buttons
+   ========================================================================== */
+
+/* Primary CTA — Place Order */
+body.wfacp_main_wrapper #place_order,
+body.wfacp_main_wrapper .wfacp-order-place-btn-wrap button {
+  background-color: var(--ss-accent) !important;
+  background-image: none !important;
+  border: none !important;
+  border-radius: var(--ss-radius) !important;
+  color: white !important;
+  font-family: 'Poppins', 'Plus Jakarta Sans', sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  letter-spacing: 0.02em !important;
+  min-height: 52px !important;
+  padding: 14px 32px !important;
+  text-transform: none !important;
+  transition: background-color var(--ss-transition), box-shadow var(--ss-transition), transform var(--ss-transition) !important;
+  cursor: pointer !important;
+}
+
+body.wfacp_main_wrapper #place_order:hover,
+body.wfacp_main_wrapper .wfacp-order-place-btn-wrap button:hover {
+  background-color: var(--ss-accent-light) !important;
+  box-shadow: var(--ss-glow-lg) !important;
+  transform: translateY(-1px) !important;
+}
+
+body.wfacp_main_wrapper #place_order:active,
+body.wfacp_main_wrapper .wfacp-order-place-btn-wrap button:active {
+  background-color: var(--ss-purple) !important;
+  transform: translateY(0) !important;
+}
+
+/* Coupon apply button */
+body.wfacp_main_wrapper .wfacp-coupon-field-btn,
+body.wfacp_main_wrapper .wfacp_coupon_code + button {
+  background-color: transparent !important;
+  border: 1px solid var(--ss-accent) !important;
+  border-radius: var(--ss-radius) !important;
+  color: var(--ss-accent) !important;
+  font-weight: 600 !important;
+  padding: 10px 20px !important;
+  transition: background-color var(--ss-transition), color var(--ss-transition) !important;
+  cursor: pointer !important;
+}
+
+body.wfacp_main_wrapper .wfacp-coupon-field-btn:hover,
+body.wfacp_main_wrapper .wfacp_coupon_code + button:hover {
+  background-color: var(--ss-accent) !important;
+  color: white !important;
+}
+
+/* ==========================================================================
+   Layer 4: Order Summary
+   ========================================================================== */
+
+body.wfacp_main_wrapper .wfacp_order_summary_container,
+body.wfacp_main_wrapper .wfacp_order_total_wrap {
+  background-color: var(--ss-bg-card) !important;
+  border: 1px solid var(--ss-border) !important;
+  border-radius: var(--ss-radius-lg) !important;
+}
+
+body.wfacp_main_wrapper table.shop_table,
+body.wfacp_main_wrapper table.wfacp_order_total_wrap {
+  background-color: transparent !important;
+}
+
+body.wfacp_main_wrapper table.shop_table td,
+body.wfacp_main_wrapper table.shop_table th,
+body.wfacp_main_wrapper table.shop_table tr {
+  border-color: var(--ss-border) !important;
+}
+
+/* Product name */
+body.wfacp_main_wrapper .wfacp_order_summary_item_name,
+body.wfacp_main_wrapper .product-name {
+  color: var(--ss-text) !important;
+}
+
+/* Price amounts — gold for premium feel */
+body.wfacp_main_wrapper .woocommerce-Price-amount.amount,
+body.wfacp_main_wrapper .product-total .amount,
+body.wfacp_main_wrapper .order-total .amount {
+  color: var(--ss-gold) !important;
+  font-weight: 700 !important;
+}
+
+/* Currency symbol */
+body.wfacp_main_wrapper .woocommerce-Price-currencySymbol {
+  color: var(--ss-gold) !important;
+}
+
+/* Total row */
+body.wfacp_main_wrapper tr.order-total td,
+body.wfacp_main_wrapper tr.order-total th {
+  background-color: var(--ss-bg-hover) !important;
+  font-weight: 700 !important;
+}
+
+body.wfacp_main_wrapper tr.order-total th {
+  color: var(--ss-text) !important;
+}
+
+/* Quantity controls */
+body.wfacp_main_wrapper .wfacp_quantity_selector input[type="number"] {
+  background-color: var(--ss-bg-mid) !important;
+  border-color: var(--ss-border) !important;
+  color: var(--ss-text) !important;
+  text-align: center !important;
+}
+
+/* "Important: Order now" banner */
+body.wfacp_main_wrapper .wfacp_product_switcher_description,
+body.wfacp_main_wrapper .wfacp_best_value {
+  background-color: var(--ss-bg-hover) !important;
+  border-color: var(--ss-accent) !important;
+  color: var(--ss-text) !important;
+}
+
+/* Order summary heading */
+body.wfacp_main_wrapper .wfacp_order_summary_container .wfacp_section_title {
+  color: var(--ss-text) !important;
+}
+
+/* "Here's what you get" section */
+body.wfacp_main_wrapper .wfacp_whats_included {
+  background-color: var(--ss-bg-card) !important;
+  border-color: var(--ss-border) !important;
+}
+
+/* Star ratings */
+body.wfacp_main_wrapper .star-rating,
+body.wfacp_main_wrapper [aria-label*="5/5"] {
+  color: var(--ss-gold) !important;
+}
+
+/* ==========================================================================
+   Layer 5: Payment Section
+   ========================================================================== */
+
+body.wfacp_main_wrapper #payment {
+  background-color: var(--ss-bg-card) !important;
+  border: 1px solid var(--ss-border) !important;
+  border-radius: var(--ss-radius-lg) !important;
+}
+
+body.wfacp_main_wrapper .payment_methods {
+  background-color: transparent !important;
+  border: none !important;
+}
+
+body.wfacp_main_wrapper .payment_box {
+  background-color: var(--ss-bg-mid) !important;
+  border-radius: var(--ss-radius) !important;
+  color: var(--ss-text-secondary) !important;
+}
+
+/* Remove default WooCommerce payment box arrow */
+body.wfacp_main_wrapper .payment_box::before {
+  display: none !important;
+}
+
+/* Radio buttons — custom purple */
+body.wfacp_main_wrapper .payment_methods input[type="radio"] {
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  width: 18px !important;
+  height: 18px !important;
+  border: 2px solid var(--ss-border) !important;
+  border-radius: 50% !important;
+  background-color: var(--ss-bg-mid) !important;
+  cursor: pointer !important;
+  transition: border-color var(--ss-transition), box-shadow var(--ss-transition) !important;
+  position: relative !important;
+}
+
+body.wfacp_main_wrapper .payment_methods input[type="radio"]:checked {
+  border-color: var(--ss-accent) !important;
+  box-shadow: inset 0 0 0 4px var(--ss-accent) !important;
+  background-color: var(--ss-bg-mid) !important;
+}
+
+/* Payment method labels */
+body.wfacp_main_wrapper .payment_methods label {
+  color: var(--ss-text) !important;
+}
+
+/* Stripe iframe container */
+body.wfacp_main_wrapper .payment_box iframe {
+  border-radius: var(--ss-radius) !important;
+}
+
+/* Checkboxes — custom purple */
+body.wfacp_main_wrapper input[type="checkbox"] {
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  width: 18px !important;
+  height: 18px !important;
+  border: 2px solid var(--ss-border) !important;
+  border-radius: 4px !important;
+  background-color: var(--ss-bg-mid) !important;
+  cursor: pointer !important;
+  transition: border-color var(--ss-transition), background-color var(--ss-transition) !important;
+  flex-shrink: 0 !important;
+}
+
+body.wfacp_main_wrapper input[type="checkbox"]:checked {
+  background-color: var(--ss-accent) !important;
+  border-color: var(--ss-accent) !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: 12px !important;
+}
+
+/* Terms & conditions */
+body.wfacp_main_wrapper .woocommerce-form__label-for-checkbox {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 8px !important;
+}
+
+/* ==========================================================================
+   Layer 6: Validation & Feedback
+   ========================================================================== */
+
+body.wfacp_main_wrapper .woocommerce-invalid-required-field input,
+body.wfacp_main_wrapper .woocommerce-invalid-email input {
+  border-color: var(--ss-error) !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+}
+
+body.wfacp_main_wrapper .woocommerce-error,
+body.wfacp_main_wrapper .wfacp_coupon_failed,
+body.wfacp_main_wrapper .wfacp_coupon_error_msg {
+  background-color: rgba(239, 68, 68, 0.1) !important;
+  border-color: var(--ss-error) !important;
+  color: #FCA5A5 !important;
+  border-radius: var(--ss-radius) !important;
+}
+
+body.wfacp_main_wrapper .woocommerce-message,
+body.wfacp_main_wrapper .wfacp_coupon_remove_msg {
+  background-color: rgba(34, 197, 94, 0.1) !important;
+  border-color: var(--ss-success) !important;
+  color: #86EFAC !important;
+  border-radius: var(--ss-radius) !important;
+}
+
+/* Info notices */
+body.wfacp_main_wrapper .woocommerce-info {
+  background-color: var(--ss-bg-hover) !important;
+  border-color: var(--ss-accent) !important;
+  color: var(--ss-text-secondary) !important;
+  border-radius: var(--ss-radius) !important;
+}
+
+/* Coupon section */
+body.wfacp_main_wrapper .wfacp-coupon-section,
+body.wfacp_main_wrapper .wfacp-coupon-page {
+  background-color: var(--ss-bg-card) !important;
+  border-color: var(--ss-border) !important;
+}
+
+/* ==========================================================================
+   Layer 7: Responsive
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  body.wfacp_main_wrapper .wfacp-section,
+  body.wfacp_main_wrapper .wfacp_main_form.woocommerce {
+    padding: 16px !important;
+    border-radius: var(--ss-radius) !important;
+  }
+
+  /* Ensure touch targets are large enough */
+  body.wfacp_main_wrapper input[type="text"],
+  body.wfacp_main_wrapper input[type="email"],
+  body.wfacp_main_wrapper input[type="tel"],
+  body.wfacp_main_wrapper input[type="password"],
+  body.wfacp_main_wrapper select,
+  body.wfacp_main_wrapper textarea {
+    min-height: 48px !important;
+    font-size: 16px !important; /* Prevents iOS auto-zoom */
+  }
+
+  body.wfacp_main_wrapper #place_order {
+    min-height: 52px !important;
+    font-size: 16px !important;
+    width: 100% !important;
+  }
+
+  /* Mobile mini cart accordion */
+  body.wfacp_main_wrapper .wfacp_mb_mini_cart_wrap,
+  body.wfacp_main_wrapper .wfacp_collapsible_order_summary_wrap {
+    background-color: var(--ss-bg-card) !important;
+    border-color: var(--ss-border) !important;
+    border-radius: var(--ss-radius) !important;
+  }
+
+  body.wfacp_main_wrapper .wfacp_mb_mini_cart_sec_accordion_content {
+    background-color: var(--ss-bg-card) !important;
+  }
+
+  body.wfacp_main_wrapper .wfacp_show_icon_wrap,
+  body.wfacp_main_wrapper .wfacp_show_price_wrap {
+    color: var(--ss-text) !important;
+  }
+}
+
+/* Tablet adjustments */
+@media (min-width: 768px) and (max-width: 1024px) {
+  body.wfacp_main_wrapper .wfacp-section,
+  body.wfacp_main_wrapper .wfacp_main_form.woocommerce {
+    padding: 20px !important;
+  }
+}
+
+/* ==========================================================================
+   Layer 8: Micro-interactions
+   ========================================================================== */
+
+/* Smooth transitions on all interactive elements */
+body.wfacp_main_wrapper input,
+body.wfacp_main_wrapper select,
+body.wfacp_main_wrapper textarea,
+body.wfacp_main_wrapper button,
+body.wfacp_main_wrapper a {
+  transition: border-color var(--ss-transition), box-shadow var(--ss-transition), background-color var(--ss-transition), color var(--ss-transition) !important;
+}
+
+/* Section heading subtle glow */
+body.wfacp_main_wrapper .wfacp_section_title {
+  text-shadow: 0 0 30px rgba(117, 62, 247, 0.15) !important;
+}
+
+/* Scrollbar styling (Firefox) */
+body.wfacp_main_wrapper {
+  scrollbar-width: thin !important;
+  scrollbar-color: var(--ss-border) var(--ss-bg) !important;
+}
+
+/* Scrollbar styling (Webkit) */
+body.wfacp_main_wrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+body.wfacp_main_wrapper::-webkit-scrollbar-track {
+  background: var(--ss-bg);
+}
+
+body.wfacp_main_wrapper::-webkit-scrollbar-thumb {
+  background-color: var(--ss-border);
+  border-radius: 4px;
+}
+
+/* FAQs accordion on checkout */
+body.wfacp_main_wrapper [aria-label*="Accordion"] > div,
+body.wfacp_main_wrapper .wfacp_faq_section {
+  background-color: var(--ss-bg-card) !important;
+  border-color: var(--ss-border) !important;
+  color: var(--ss-text) !important;
+}
+
+/* "Need further help?" text */
+body.wfacp_main_wrapper .wfacp-form p {
+  color: var(--ss-text-secondary) !important;
+}
+
+/* Testimonial quotes in sidebar */
+body.wfacp_main_wrapper blockquote,
+body.wfacp_main_wrapper .wfacp-form p[class*="elementor"] {
+  color: var(--ss-text-tertiary) !important;
+  font-style: italic !important;
+}
+
+/* Remove any leftover light-theme box shadows */
+body.wfacp_main_wrapper .wfacp-section,
+body.wfacp_main_wrapper .wfacp_main_form,
+body.wfacp_main_wrapper #payment,
+body.wfacp_main_wrapper .wfacp_order_summary_container {
+  box-shadow: none !important;
+}

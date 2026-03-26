@@ -214,7 +214,7 @@ function pushToGhPages() {
     // Copy root-level static files (texture PNGs etc.)
     for (const f of fs.readdirSync(distDir)) {
       const fullPath = path.join(distDir, f)
-      if (fs.statSync(fullPath).isFile() && /\.(png|jpg|jpeg|webp|svg|mp4)$/i.test(f)) {
+      if (fs.statSync(fullPath).isFile() && /\.(png|jpg|jpeg|webp|svg|mp4|css)$/i.test(f)) {
         fs.copyFileSync(fullPath, path.join(tmpDir, f))
       }
     }
@@ -474,6 +474,66 @@ async function main() {
     console.error('  You may need to manually update the JS URL in WP > Snippets > ID 7')
   } else {
     console.log('  Script loader updated with new JS URL.')
+  }
+
+  // -------------------------------------------------------------------------
+  // 9. Update/Create Checkout Theme CSS Snippet
+  // -------------------------------------------------------------------------
+  // Loads the dark-theme CSS on WooFunnels checkout pages only.
+  // CSS is hosted on GitHub Pages alongside other assets.
+
+  const checkoutCssUrl = `${GH_PAGES_BASE}/checkout-theme.css`
+  const checkoutSnippetCode = `add_action('wp_enqueue_scripts', function() {
+    if (is_singular('wffn_checkout') || strpos($_SERVER['REQUEST_URI'], '/checkouts/') !== false) {
+        wp_enqueue_style('ss-checkout-theme', '${checkoutCssUrl}', [], '${new Date().toISOString().slice(0,10)}');
+    }
+});`
+
+  console.log('\nUpdating checkout theme CSS snippet...')
+
+  // Try to find existing checkout snippet, or create new one
+  let checkoutSnippetId = null
+  try {
+    const listRes = await fetch(`${WP_URL}/wp-json/code-snippets/v1/snippets`, {
+      headers: { 'Authorization': AUTH },
+    })
+    if (listRes.ok) {
+      const snippets = await listRes.json()
+      const existing = snippets.find(s => s.name === 'SS Checkout Theme Loader')
+      if (existing) checkoutSnippetId = existing.id
+    }
+  } catch { /* ignore */ }
+
+  if (checkoutSnippetId) {
+    // Update existing
+    const res = await fetch(`${WP_URL}/wp-json/code-snippets/v1/snippets/${checkoutSnippetId}`, {
+      method: 'PUT',
+      headers: { 'Authorization': AUTH, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code: checkoutSnippetCode, active: true }),
+    })
+    if (res.ok) {
+      console.log(`  Checkout theme snippet #${checkoutSnippetId} updated.`)
+    } else {
+      console.error(`  Warning: Failed to update checkout snippet: ${res.status}`)
+    }
+  } else {
+    // Create new
+    const res = await fetch(`${WP_URL}/wp-json/code-snippets/v1/snippets`, {
+      method: 'POST',
+      headers: { 'Authorization': AUTH, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: 'SS Checkout Theme Loader',
+        code: checkoutSnippetCode,
+        active: true,
+        scope: 'global',
+      }),
+    })
+    if (res.ok) {
+      const created = await res.json()
+      console.log(`  Checkout theme snippet created (ID: ${created.id}).`)
+    } else {
+      console.error(`  Warning: Failed to create checkout snippet: ${res.status}`)
+    }
   }
 
   console.log('\nDeploy complete.')
