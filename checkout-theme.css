@@ -582,13 +582,13 @@ body.wfacp_main_wrapper::-webkit-scrollbar-thumb {
 }
 
 /* FAQ header/breadcrumb area — kill the 120px top padding */
-body.wfacp_main_wrapper .elementor-element-4114b91e {
+body.wfacp_main_wrapper .elementor-23004 .elementor-element.elementor-element-4114b91e {
   padding: 16px 20px 0 !important;
 }
 
 /* Breadcrumb container — remove grey card background */
-body.wfacp_main_wrapper .elementor-element-195625ba,
-body.wfacp_main_wrapper .elementor-element-4f857093 {
+body.wfacp_main_wrapper .elementor-23004 .elementor-element.elementor-element-195625ba,
+body.wfacp_main_wrapper .elementor-23004 .elementor-element.elementor-element-4f857093 {
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
