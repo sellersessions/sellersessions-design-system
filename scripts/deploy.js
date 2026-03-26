@@ -189,12 +189,34 @@ function pushToGhPages() {
     }
     fs.mkdirSync(tmpAssets, { recursive: true })
 
-    // Copy built files
+    // Copy built JS/CSS files
     for (const f of fs.readdirSync(path.join(distDir, 'assets'))) {
       fs.copyFileSync(
         path.join(distDir, 'assets', f),
         path.join(tmpAssets, f)
       )
+    }
+
+    // Copy static media files (textures, videos, thumbnails) from dist/
+    // These are copied from public/ by Vite during build
+    const mediaDirs = ['videos', 'thumbnails']
+    for (const dir of mediaDirs) {
+      const srcDir = path.join(distDir, dir)
+      if (fs.existsSync(srcDir)) {
+        const destDir = path.join(tmpDir, dir)
+        fs.mkdirSync(destDir, { recursive: true })
+        for (const f of fs.readdirSync(srcDir)) {
+          fs.copyFileSync(path.join(srcDir, f), path.join(destDir, f))
+        }
+      }
+    }
+
+    // Copy root-level static files (texture PNGs etc.)
+    for (const f of fs.readdirSync(distDir)) {
+      const fullPath = path.join(distDir, f)
+      if (fs.statSync(fullPath).isFile() && /\.(png|jpg|jpeg|webp|svg|mp4)$/i.test(f)) {
+        fs.copyFileSync(fullPath, path.join(tmpDir, f))
+      }
     }
 
     // Add a .nojekyll file (tells GitHub Pages to serve files as-is)

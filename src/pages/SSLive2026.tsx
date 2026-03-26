@@ -76,25 +76,25 @@ const VIDEO_TESTIMONIALS = [
     name: 'Adam Hiest',
     role: 'Amazon Seller',
     videoUrl: 'https://sellersessions.com/wp-content/uploads/2025/03/Adam-Hiest-Testimonal-Edited-V1.mp4',
-    thumbnail: '/thumbnails/adam-ssl2025-branded.jpg',
+    thumbnail: 'https://sellersessions.github.io/sellersessions-design-system/thumbnails/adam-ssl2025-branded.jpg',
   },
   {
     name: 'John',
     role: 'SSL 2025 Attendee',
     videoUrl: 'https://sellersessions.com/wp-content/uploads/2025/05/John-SSL2025-Testimonal.mp4',
-    thumbnail: '/thumbnails/john-ssl2025-branded.jpg',
+    thumbnail: 'https://sellersessions.github.io/sellersessions-design-system/thumbnails/john-ssl2025-branded.jpg',
   },
   {
     name: 'Fatos',
     role: 'SSL 2025 Attendee',
     videoUrl: 'https://sellersessions.com/wp-content/uploads/2025/05/Fatos-SSL2025-Testimonal.mp4',
-    thumbnail: '/thumbnails/fatos-ssl2025-branded.jpg',
+    thumbnail: 'https://sellersessions.github.io/sellersessions-design-system/thumbnails/fatos-ssl2025-branded.jpg',
   },
   {
     name: 'Cara',
     role: 'SSL 2025 Attendee',
     videoUrl: 'https://sellersessions.com/wp-content/uploads/2025/05/Cara-Testimonial-SSL2025.mp4',
-    thumbnail: '/thumbnails/cara-ssl2025-branded.jpg',
+    thumbnail: 'https://sellersessions.github.io/sellersessions-design-system/thumbnails/cara-ssl2025-branded.jpg',
   },
 ]
 
@@ -623,8 +623,8 @@ export default function SSLive2026() {
                 <video
                   ref={speakerVideoRef}
                   className="absolute inset-0 w-full h-full object-cover"
-                  src="/videos/speakers-animation.mp4"
-                  poster="/videos/speakers-poster.jpg"
+                  src="https://sellersessions.github.io/sellersessions-design-system/videos/speakers-animation.mp4"
+                  poster="https://sellersessions.github.io/sellersessions-design-system/videos/speakers-poster.jpg"
                   autoPlay
                   muted
                   loop

@@ -293,7 +293,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background-image: url('/section-texture.png');
+    background-image: url('https://sellersessions.github.io/sellersessions-design-system/section-texture.png');
     background-repeat: repeat;
     background-size: 512px 512px;
     opacity: 0.5;
@@ -314,7 +314,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background-image: url('/section-texture-violet.png');
+    background-image: url('https://sellersessions.github.io/sellersessions-design-system/section-texture-violet.png');
     background-repeat: repeat;
     background-size: 512px 512px;
     opacity: 1;
@@ -335,7 +335,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background-image: url('/section-texture-amber.png');
+    background-image: url('https://sellersessions.github.io/sellersessions-design-system/section-texture-amber.png');
     background-repeat: repeat;
     background-size: 512px 512px;
     opacity: 1;
@@ -356,7 +356,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background-image: url('/section-texture-indigo.png');
+    background-image: url('https://sellersessions.github.io/sellersessions-design-system/section-texture-indigo.png');
     background-repeat: repeat;
     background-size: 512px 512px;
     opacity: 0.35;
