@@ -103,7 +103,7 @@ ${entries.join('\n')}
 // ---------------------------------------------------------------------------
 
 const PAGE_MAP = {
-  ssl2026: { name: 'SSL 2026 Landing', liveId: 23003, testId: 28352, file: 'SSLive2026.tsx' },
+  ssl2026: { name: 'SSL 2026 Landing', liveId: 23003, testId: 28352, file: 'SSLive2026.tsx', livePostType: 'wffn_landing' },
   eventshub: { name: 'Events Hub', liveId: null, testId: null, file: 'EventsHub.tsx' },
   eventsarchive: { name: 'Events Archive', liveId: null, testId: null, file: 'EventsArchive.tsx' },
 }
@@ -379,7 +379,8 @@ async function main() {
     const body = { content: embedHtml, template: 'elementor_canvas' }
     if (status) body.status = status
 
-    const updateRes = await fetch(`${WP_URL}/wp-json/wp/v2/pages/${targetPageId}`, {
+    const postType = (promote && pageConfig.livePostType) ? pageConfig.livePostType : 'pages'
+    const updateRes = await fetch(`${WP_URL}/wp-json/wp/v2/${postType}/${targetPageId}`, {
       method: 'POST',
       headers: {
         'Authorization': AUTH,
