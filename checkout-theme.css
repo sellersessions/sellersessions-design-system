@@ -581,33 +581,23 @@ body.wfacp_main_wrapper::-webkit-scrollbar-thumb {
   border-radius: 4px;
 }
 
-/* FAQ header/breadcrumb area — reduce massive padding */
-body.wfacp_main_wrapper .e-con:has(> .e-con-inner > p > a[href="#"]) {
-  padding: 16px 24px !important;
-  min-height: unset !important;
-  background-color: var(--ss-bg) !important;
+/* FAQ header/breadcrumb area — kill the 120px top padding */
+body.wfacp_main_wrapper .elementor-element-4114b91e {
+  padding: 16px 20px 0 !important;
 }
 
-/* Elementor section wrapping the breadcrumb */
-body.wfacp_main_wrapper .elementor-section:has(a[href="#"]) {
-  padding: 16px 24px !important;
-  min-height: unset !important;
-  background: var(--ss-bg) !important;
+/* Breadcrumb container — remove grey card background */
+body.wfacp_main_wrapper .elementor-element-195625ba,
+body.wfacp_main_wrapper .elementor-element-4f857093 {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
-/* Breadcrumb text styling */
+/* Breadcrumb text */
 body.wfacp_main_wrapper p:has(> a[href="#"]) {
   font-size: 14px !important;
   margin: 0 !important;
-  padding: 8px 0 !important;
-}
-
-/* Fallback: target all Elementor containers between form and FAQs */
-body.wfacp_main_wrapper .wfacp-form ~ .e-con {
-  padding-top: 16px !important;
-  padding-bottom: 16px !important;
-  min-height: unset !important;
-  background-color: var(--ss-bg) !important;
 }
 
 /* FAQs accordion on checkout */
