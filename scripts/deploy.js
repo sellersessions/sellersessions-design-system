@@ -483,11 +483,11 @@ async function main() {
   // CSS is hosted on GitHub Pages alongside other assets.
 
   const checkoutCssUrl = `${GH_PAGES_BASE}/checkout-theme.css`
-  const checkoutSnippetCode = `add_action('wp_enqueue_scripts', function() {
-    if (is_singular('wffn_checkout') || strpos($_SERVER['REQUEST_URI'], '/checkouts/') !== false) {
-        wp_enqueue_style('ss-checkout-theme', '${checkoutCssUrl}', [], '${new Date().toISOString().slice(0,10)}');
+  const checkoutSnippetCode = `add_action('wp_footer', function() {
+    if (is_singular('wffn_checkout') || strpos(\$_SERVER['REQUEST_URI'], '/checkouts/') !== false) {
+        echo '<link rel="stylesheet" href="${checkoutCssUrl}?v=${Date.now()}" />';
     }
-});`
+}, 999);`
 
   console.log('\nUpdating checkout theme CSS snippet...')
 
