@@ -48,20 +48,20 @@
    Layer 1: Foundation
    ========================================================================== */
 
-body.wfacp_main_wrapper {
+body.wfacp_checkout-template {
   background-color: var(--ss-bg) !important;
   color: var(--ss-text) !important;
   font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif !important;
 }
 
 /* Main form container */
-body.wfacp_main_wrapper #wfacp-e-form,
-body.wfacp_main_wrapper .wfacp-form {
+body.wfacp_checkout-template #wfacp-e-form,
+body.wfacp_checkout-template .wfacp-form {
   background-color: transparent !important;
 }
 
-body.wfacp_main_wrapper .wfacp-section,
-body.wfacp_main_wrapper .wfacp_main_form.woocommerce {
+body.wfacp_checkout-template .wfacp-section,
+body.wfacp_checkout-template .wfacp_main_form.woocommerce {
   background-color: var(--ss-bg-card) !important;
   border: 1px solid var(--ss-border) !important;
   border-radius: var(--ss-radius-lg) !important;
@@ -69,36 +69,36 @@ body.wfacp_main_wrapper .wfacp_main_form.woocommerce {
 }
 
 /* Section headings */
-body.wfacp_main_wrapper .wfacp_section_heading,
-body.wfacp_main_wrapper .wfacp_section_title,
-body.wfacp_main_wrapper .wfacp-comm-title,
-body.wfacp_main_wrapper h2,
-body.wfacp_main_wrapper h3,
-body.wfacp_main_wrapper h4 {
+body.wfacp_checkout-template .wfacp_section_heading,
+body.wfacp_checkout-template .wfacp_section_title,
+body.wfacp_checkout-template .wfacp-comm-title,
+body.wfacp_checkout-template h2,
+body.wfacp_checkout-template h3,
+body.wfacp_checkout-template h4 {
   color: var(--ss-text) !important;
 }
 
 /* Body text */
-body.wfacp_main_wrapper p,
-body.wfacp_main_wrapper span,
-body.wfacp_main_wrapper label,
-body.wfacp_main_wrapper td,
-body.wfacp_main_wrapper th,
-body.wfacp_main_wrapper li {
+body.wfacp_checkout-template p,
+body.wfacp_checkout-template span,
+body.wfacp_checkout-template label,
+body.wfacp_checkout-template td,
+body.wfacp_checkout-template th,
+body.wfacp_checkout-template li {
   color: var(--ss-text-secondary) !important;
 }
 
 /* Links */
-body.wfacp_main_wrapper a {
+body.wfacp_checkout-template a {
   color: var(--ss-accent) !important;
 }
 
-body.wfacp_main_wrapper a:hover {
+body.wfacp_checkout-template a:hover {
   color: var(--ss-accent-light) !important;
 }
 
 /* Dividers / HR */
-body.wfacp_main_wrapper hr {
+body.wfacp_checkout-template hr {
   border-color: var(--ss-border) !important;
 }
 
@@ -106,15 +106,15 @@ body.wfacp_main_wrapper hr {
    Layer 2: Form Fields
    ========================================================================== */
 
-body.wfacp_main_wrapper input[type="text"],
-body.wfacp_main_wrapper input[type="email"],
-body.wfacp_main_wrapper input[type="tel"],
-body.wfacp_main_wrapper input[type="password"],
-body.wfacp_main_wrapper input[type="number"],
-body.wfacp_main_wrapper input[type="date"],
-body.wfacp_main_wrapper input[type="url"],
-body.wfacp_main_wrapper select,
-body.wfacp_main_wrapper textarea {
+body.wfacp_checkout-template input[type="text"],
+body.wfacp_checkout-template input[type="email"],
+body.wfacp_checkout-template input[type="tel"],
+body.wfacp_checkout-template input[type="password"],
+body.wfacp_checkout-template input[type="number"],
+body.wfacp_checkout-template input[type="date"],
+body.wfacp_checkout-template input[type="url"],
+body.wfacp_checkout-template select,
+body.wfacp_checkout-template textarea {
   background-color: var(--ss-bg-mid) !important;
   border: 1px solid var(--ss-border) !important;
   border-radius: var(--ss-radius) !important;
@@ -128,15 +128,15 @@ body.wfacp_main_wrapper textarea {
   appearance: none !important;
 }
 
-body.wfacp_main_wrapper input::placeholder,
-body.wfacp_main_wrapper textarea::placeholder {
+body.wfacp_checkout-template input::placeholder,
+body.wfacp_checkout-template textarea::placeholder {
   color: var(--ss-text-tertiary) !important;
 }
 
 /* Autofill override (Chrome/Safari) */
-body.wfacp_main_wrapper input:-webkit-autofill,
-body.wfacp_main_wrapper input:-webkit-autofill:hover,
-body.wfacp_main_wrapper input:-webkit-autofill:focus {
+body.wfacp_checkout-template input:-webkit-autofill,
+body.wfacp_checkout-template input:-webkit-autofill:hover,
+body.wfacp_checkout-template input:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0 1000px var(--ss-bg-mid) inset !important;
   -webkit-text-fill-color: var(--ss-text) !important;
   border-color: var(--ss-border) !important;
@@ -144,30 +144,30 @@ body.wfacp_main_wrapper input:-webkit-autofill:focus {
 }
 
 /* Focus state */
-body.wfacp_main_wrapper input[type="text"]:focus,
-body.wfacp_main_wrapper input[type="email"]:focus,
-body.wfacp_main_wrapper input[type="tel"]:focus,
-body.wfacp_main_wrapper input[type="password"]:focus,
-body.wfacp_main_wrapper input[type="number"]:focus,
-body.wfacp_main_wrapper input[type="date"]:focus,
-body.wfacp_main_wrapper input[type="url"]:focus,
-body.wfacp_main_wrapper select:focus,
-body.wfacp_main_wrapper textarea:focus {
+body.wfacp_checkout-template input[type="text"]:focus,
+body.wfacp_checkout-template input[type="email"]:focus,
+body.wfacp_checkout-template input[type="tel"]:focus,
+body.wfacp_checkout-template input[type="password"]:focus,
+body.wfacp_checkout-template input[type="number"]:focus,
+body.wfacp_checkout-template input[type="date"]:focus,
+body.wfacp_checkout-template input[type="url"]:focus,
+body.wfacp_checkout-template select:focus,
+body.wfacp_checkout-template textarea:focus {
   border-color: var(--ss-border-focus) !important;
   box-shadow: var(--ss-glow) !important;
   outline: none !important;
 }
 
 /* Labels */
-body.wfacp_main_wrapper .wfacp-form-control-label,
-body.wfacp_main_wrapper label {
+body.wfacp_checkout-template .wfacp-form-control-label,
+body.wfacp_checkout-template label {
   color: var(--ss-text-secondary) !important;
   font-weight: 500 !important;
   font-size: 14px !important;
 }
 
 /* Required asterisk */
-body.wfacp_main_wrapper abbr.required {
+body.wfacp_checkout-template abbr.required {
   color: var(--ss-orange) !important;
   text-decoration: none !important;
 }
@@ -224,8 +224,8 @@ body .select2-container--default .select2-results__option[aria-selected="true"] 
    ========================================================================== */
 
 /* Primary CTA — Place Order */
-body.wfacp_main_wrapper #place_order,
-body.wfacp_main_wrapper .wfacp-order-place-btn-wrap button {
+body.wfacp_checkout-template #place_order,
+body.wfacp_checkout-template .wfacp-order-place-btn-wrap button {
   background-color: var(--ss-accent) !important;
   background-image: none !important;
   border: none !important;
@@ -242,22 +242,22 @@ body.wfacp_main_wrapper .wfacp-order-place-btn-wrap button {
   cursor: pointer !important;
 }
 
-body.wfacp_main_wrapper #place_order:hover,
-body.wfacp_main_wrapper .wfacp-order-place-btn-wrap button:hover {
+body.wfacp_checkout-template #place_order:hover,
+body.wfacp_checkout-template .wfacp-order-place-btn-wrap button:hover {
   background-color: var(--ss-accent-light) !important;
   box-shadow: var(--ss-glow-lg) !important;
   transform: translateY(-1px) !important;
 }
 
-body.wfacp_main_wrapper #place_order:active,
-body.wfacp_main_wrapper .wfacp-order-place-btn-wrap button:active {
+body.wfacp_checkout-template #place_order:active,
+body.wfacp_checkout-template .wfacp-order-place-btn-wrap button:active {
   background-color: var(--ss-purple) !important;
   transform: translateY(0) !important;
 }
 
 /* Coupon apply button */
-body.wfacp_main_wrapper .wfacp-coupon-field-btn,
-body.wfacp_main_wrapper .wfacp_coupon_code + button {
+body.wfacp_checkout-template .wfacp-coupon-field-btn,
+body.wfacp_checkout-template .wfacp_coupon_code + button {
   background-color: transparent !important;
   border: 1px solid var(--ss-accent) !important;
   border-radius: var(--ss-radius) !important;
@@ -268,8 +268,8 @@ body.wfacp_main_wrapper .wfacp_coupon_code + button {
   cursor: pointer !important;
 }
 
-body.wfacp_main_wrapper .wfacp-coupon-field-btn:hover,
-body.wfacp_main_wrapper .wfacp_coupon_code + button:hover {
+body.wfacp_checkout-template .wfacp-coupon-field-btn:hover,
+body.wfacp_checkout-template .wfacp_coupon_code + button:hover {
   background-color: var(--ss-accent) !important;
   color: white !important;
 }
@@ -278,56 +278,56 @@ body.wfacp_main_wrapper .wfacp_coupon_code + button:hover {
    Layer 4: Order Summary
    ========================================================================== */
 
-body.wfacp_main_wrapper .wfacp_order_summary_container,
-body.wfacp_main_wrapper .wfacp_order_total_wrap {
+body.wfacp_checkout-template .wfacp_order_summary_container,
+body.wfacp_checkout-template .wfacp_order_total_wrap {
   background-color: var(--ss-bg-card) !important;
   border: 1px solid var(--ss-border) !important;
   border-radius: var(--ss-radius-lg) !important;
 }
 
-body.wfacp_main_wrapper table.shop_table,
-body.wfacp_main_wrapper table.wfacp_order_total_wrap {
+body.wfacp_checkout-template table.shop_table,
+body.wfacp_checkout-template table.wfacp_order_total_wrap {
   background-color: transparent !important;
 }
 
-body.wfacp_main_wrapper table.shop_table td,
-body.wfacp_main_wrapper table.shop_table th,
-body.wfacp_main_wrapper table.shop_table tr {
+body.wfacp_checkout-template table.shop_table td,
+body.wfacp_checkout-template table.shop_table th,
+body.wfacp_checkout-template table.shop_table tr {
   border-color: var(--ss-border) !important;
 }
 
 /* Product name */
-body.wfacp_main_wrapper .wfacp_order_summary_item_name,
-body.wfacp_main_wrapper .product-name {
+body.wfacp_checkout-template .wfacp_order_summary_item_name,
+body.wfacp_checkout-template .product-name {
   color: var(--ss-text) !important;
 }
 
 /* Price amounts — gold for premium feel */
-body.wfacp_main_wrapper .woocommerce-Price-amount.amount,
-body.wfacp_main_wrapper .product-total .amount,
-body.wfacp_main_wrapper .order-total .amount {
+body.wfacp_checkout-template .woocommerce-Price-amount.amount,
+body.wfacp_checkout-template .product-total .amount,
+body.wfacp_checkout-template .order-total .amount {
   color: var(--ss-gold) !important;
   font-weight: 700 !important;
 }
 
 /* Currency symbol */
-body.wfacp_main_wrapper .woocommerce-Price-currencySymbol {
+body.wfacp_checkout-template .woocommerce-Price-currencySymbol {
   color: var(--ss-gold) !important;
 }
 
 /* Total row */
-body.wfacp_main_wrapper tr.order-total td,
-body.wfacp_main_wrapper tr.order-total th {
+body.wfacp_checkout-template tr.order-total td,
+body.wfacp_checkout-template tr.order-total th {
   background-color: var(--ss-bg-hover) !important;
   font-weight: 700 !important;
 }
 
-body.wfacp_main_wrapper tr.order-total th {
+body.wfacp_checkout-template tr.order-total th {
   color: var(--ss-text) !important;
 }
 
 /* Quantity controls */
-body.wfacp_main_wrapper .wfacp_quantity_selector input[type="number"] {
+body.wfacp_checkout-template .wfacp_quantity_selector input[type="number"] {
   background-color: var(--ss-bg-mid) !important;
   border-color: var(--ss-border) !important;
   color: var(--ss-text) !important;
@@ -335,27 +335,27 @@ body.wfacp_main_wrapper .wfacp_quantity_selector input[type="number"] {
 }
 
 /* "Important: Order now" banner */
-body.wfacp_main_wrapper .wfacp_product_switcher_description,
-body.wfacp_main_wrapper .wfacp_best_value {
+body.wfacp_checkout-template .wfacp_product_switcher_description,
+body.wfacp_checkout-template .wfacp_best_value {
   background-color: var(--ss-bg-hover) !important;
   border-color: var(--ss-accent) !important;
   color: var(--ss-text) !important;
 }
 
 /* Order summary heading */
-body.wfacp_main_wrapper .wfacp_order_summary_container .wfacp_section_title {
+body.wfacp_checkout-template .wfacp_order_summary_container .wfacp_section_title {
   color: var(--ss-text) !important;
 }
 
 /* "Here's what you get" section */
-body.wfacp_main_wrapper .wfacp_whats_included {
+body.wfacp_checkout-template .wfacp_whats_included {
   background-color: var(--ss-bg-card) !important;
   border-color: var(--ss-border) !important;
 }
 
 /* Star ratings */
-body.wfacp_main_wrapper .star-rating,
-body.wfacp_main_wrapper [aria-label*="5/5"] {
+body.wfacp_checkout-template .star-rating,
+body.wfacp_checkout-template [aria-label*="5/5"] {
   color: var(--ss-gold) !important;
 }
 
@@ -363,30 +363,30 @@ body.wfacp_main_wrapper [aria-label*="5/5"] {
    Layer 5: Payment Section
    ========================================================================== */
 
-body.wfacp_main_wrapper #payment {
+body.wfacp_checkout-template #payment {
   background-color: var(--ss-bg-card) !important;
   border: 1px solid var(--ss-border) !important;
   border-radius: var(--ss-radius-lg) !important;
 }
 
-body.wfacp_main_wrapper .payment_methods {
+body.wfacp_checkout-template .payment_methods {
   background-color: transparent !important;
   border: none !important;
 }
 
-body.wfacp_main_wrapper .payment_box {
+body.wfacp_checkout-template .payment_box {
   background-color: var(--ss-bg-mid) !important;
   border-radius: var(--ss-radius) !important;
   color: var(--ss-text-secondary) !important;
 }
 
 /* Remove default WooCommerce payment box arrow */
-body.wfacp_main_wrapper .payment_box::before {
+body.wfacp_checkout-template .payment_box::before {
   display: none !important;
 }
 
 /* Radio buttons — custom purple */
-body.wfacp_main_wrapper .payment_methods input[type="radio"] {
+body.wfacp_checkout-template .payment_methods input[type="radio"] {
   -webkit-appearance: none !important;
   -moz-appearance: none !important;
   appearance: none !important;
@@ -400,24 +400,24 @@ body.wfacp_main_wrapper .payment_methods input[type="radio"] {
   position: relative !important;
 }
 
-body.wfacp_main_wrapper .payment_methods input[type="radio"]:checked {
+body.wfacp_checkout-template .payment_methods input[type="radio"]:checked {
   border-color: var(--ss-accent) !important;
   box-shadow: inset 0 0 0 4px var(--ss-accent) !important;
   background-color: var(--ss-bg-mid) !important;
 }
 
 /* Payment method labels */
-body.wfacp_main_wrapper .payment_methods label {
+body.wfacp_checkout-template .payment_methods label {
   color: var(--ss-text) !important;
 }
 
 /* Stripe iframe container */
-body.wfacp_main_wrapper .payment_box iframe {
+body.wfacp_checkout-template .payment_box iframe {
   border-radius: var(--ss-radius) !important;
 }
 
 /* Checkboxes — custom purple */
-body.wfacp_main_wrapper input[type="checkbox"] {
+body.wfacp_checkout-template input[type="checkbox"] {
   -webkit-appearance: none !important;
   -moz-appearance: none !important;
   appearance: none !important;
@@ -431,7 +431,7 @@ body.wfacp_main_wrapper input[type="checkbox"] {
   flex-shrink: 0 !important;
 }
 
-body.wfacp_main_wrapper input[type="checkbox"]:checked {
+body.wfacp_checkout-template input[type="checkbox"]:checked {
   background-color: var(--ss-accent) !important;
   border-color: var(--ss-accent) !important;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") !important;
@@ -441,7 +441,7 @@ body.wfacp_main_wrapper input[type="checkbox"]:checked {
 }
 
 /* Terms & conditions */
-body.wfacp_main_wrapper .woocommerce-form__label-for-checkbox {
+body.wfacp_checkout-template .woocommerce-form__label-for-checkbox {
   display: flex !important;
   align-items: flex-start !important;
   gap: 8px !important;
@@ -451,23 +451,23 @@ body.wfacp_main_wrapper .woocommerce-form__label-for-checkbox {
    Layer 6: Validation & Feedback
    ========================================================================== */
 
-body.wfacp_main_wrapper .woocommerce-invalid-required-field input,
-body.wfacp_main_wrapper .woocommerce-invalid-email input {
+body.wfacp_checkout-template .woocommerce-invalid-required-field input,
+body.wfacp_checkout-template .woocommerce-invalid-email input {
   border-color: var(--ss-error) !important;
   box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
 }
 
-body.wfacp_main_wrapper .woocommerce-error,
-body.wfacp_main_wrapper .wfacp_coupon_failed,
-body.wfacp_main_wrapper .wfacp_coupon_error_msg {
+body.wfacp_checkout-template .woocommerce-error,
+body.wfacp_checkout-template .wfacp_coupon_failed,
+body.wfacp_checkout-template .wfacp_coupon_error_msg {
   background-color: rgba(239, 68, 68, 0.1) !important;
   border-color: var(--ss-error) !important;
   color: #FCA5A5 !important;
   border-radius: var(--ss-radius) !important;
 }
 
-body.wfacp_main_wrapper .woocommerce-message,
-body.wfacp_main_wrapper .wfacp_coupon_remove_msg {
+body.wfacp_checkout-template .woocommerce-message,
+body.wfacp_checkout-template .wfacp_coupon_remove_msg {
   background-color: rgba(34, 197, 94, 0.1) !important;
   border-color: var(--ss-success) !important;
   color: #86EFAC !important;
@@ -475,7 +475,7 @@ body.wfacp_main_wrapper .wfacp_coupon_remove_msg {
 }
 
 /* Info notices */
-body.wfacp_main_wrapper .woocommerce-info {
+body.wfacp_checkout-template .woocommerce-info {
   background-color: var(--ss-bg-hover) !important;
   border-color: var(--ss-accent) !important;
   color: var(--ss-text-secondary) !important;
@@ -483,8 +483,8 @@ body.wfacp_main_wrapper .woocommerce-info {
 }
 
 /* Coupon section */
-body.wfacp_main_wrapper .wfacp-coupon-section,
-body.wfacp_main_wrapper .wfacp-coupon-page {
+body.wfacp_checkout-template .wfacp-coupon-section,
+body.wfacp_checkout-template .wfacp-coupon-page {
   background-color: var(--ss-bg-card) !important;
   border-color: var(--ss-border) !important;
 }
@@ -494,51 +494,51 @@ body.wfacp_main_wrapper .wfacp-coupon-page {
    ========================================================================== */
 
 @media (max-width: 767px) {
-  body.wfacp_main_wrapper .wfacp-section,
-  body.wfacp_main_wrapper .wfacp_main_form.woocommerce {
+  body.wfacp_checkout-template .wfacp-section,
+  body.wfacp_checkout-template .wfacp_main_form.woocommerce {
     padding: 16px !important;
     border-radius: var(--ss-radius) !important;
   }
 
   /* Ensure touch targets are large enough */
-  body.wfacp_main_wrapper input[type="text"],
-  body.wfacp_main_wrapper input[type="email"],
-  body.wfacp_main_wrapper input[type="tel"],
-  body.wfacp_main_wrapper input[type="password"],
-  body.wfacp_main_wrapper select,
-  body.wfacp_main_wrapper textarea {
+  body.wfacp_checkout-template input[type="text"],
+  body.wfacp_checkout-template input[type="email"],
+  body.wfacp_checkout-template input[type="tel"],
+  body.wfacp_checkout-template input[type="password"],
+  body.wfacp_checkout-template select,
+  body.wfacp_checkout-template textarea {
     min-height: 48px !important;
     font-size: 16px !important; /* Prevents iOS auto-zoom */
   }
 
-  body.wfacp_main_wrapper #place_order {
+  body.wfacp_checkout-template #place_order {
     min-height: 52px !important;
     font-size: 16px !important;
     width: 100% !important;
   }
 
   /* Mobile mini cart accordion */
-  body.wfacp_main_wrapper .wfacp_mb_mini_cart_wrap,
-  body.wfacp_main_wrapper .wfacp_collapsible_order_summary_wrap {
+  body.wfacp_checkout-template .wfacp_mb_mini_cart_wrap,
+  body.wfacp_checkout-template .wfacp_collapsible_order_summary_wrap {
     background-color: var(--ss-bg-card) !important;
     border-color: var(--ss-border) !important;
     border-radius: var(--ss-radius) !important;
   }
 
-  body.wfacp_main_wrapper .wfacp_mb_mini_cart_sec_accordion_content {
+  body.wfacp_checkout-template .wfacp_mb_mini_cart_sec_accordion_content {
     background-color: var(--ss-bg-card) !important;
   }
 
-  body.wfacp_main_wrapper .wfacp_show_icon_wrap,
-  body.wfacp_main_wrapper .wfacp_show_price_wrap {
+  body.wfacp_checkout-template .wfacp_show_icon_wrap,
+  body.wfacp_checkout-template .wfacp_show_price_wrap {
     color: var(--ss-text) !important;
   }
 }
 
 /* Tablet adjustments */
 @media (min-width: 768px) and (max-width: 1024px) {
-  body.wfacp_main_wrapper .wfacp-section,
-  body.wfacp_main_wrapper .wfacp_main_form.woocommerce {
+  body.wfacp_checkout-template .wfacp-section,
+  body.wfacp_checkout-template .wfacp_main_form.woocommerce {
     padding: 20px !important;
   }
 }
@@ -548,35 +548,35 @@ body.wfacp_main_wrapper .wfacp-coupon-page {
    ========================================================================== */
 
 /* Smooth transitions on all interactive elements */
-body.wfacp_main_wrapper input,
-body.wfacp_main_wrapper select,
-body.wfacp_main_wrapper textarea,
-body.wfacp_main_wrapper button,
-body.wfacp_main_wrapper a {
+body.wfacp_checkout-template input,
+body.wfacp_checkout-template select,
+body.wfacp_checkout-template textarea,
+body.wfacp_checkout-template button,
+body.wfacp_checkout-template a {
   transition: border-color var(--ss-transition), box-shadow var(--ss-transition), background-color var(--ss-transition), color var(--ss-transition) !important;
 }
 
 /* Section heading subtle glow */
-body.wfacp_main_wrapper .wfacp_section_title {
+body.wfacp_checkout-template .wfacp_section_title {
   text-shadow: 0 0 30px rgba(117, 62, 247, 0.15) !important;
 }
 
 /* Scrollbar styling (Firefox) */
-body.wfacp_main_wrapper {
+body.wfacp_checkout-template {
   scrollbar-width: thin !important;
   scrollbar-color: var(--ss-border) var(--ss-bg) !important;
 }
 
 /* Scrollbar styling (Webkit) */
-body.wfacp_main_wrapper::-webkit-scrollbar {
+body.wfacp_checkout-template::-webkit-scrollbar {
   width: 8px;
 }
 
-body.wfacp_main_wrapper::-webkit-scrollbar-track {
+body.wfacp_checkout-template::-webkit-scrollbar-track {
   background: var(--ss-bg);
 }
 
-body.wfacp_main_wrapper::-webkit-scrollbar-thumb {
+body.wfacp_checkout-template::-webkit-scrollbar-thumb {
   background-color: var(--ss-border);
   border-radius: 4px;
 }
@@ -584,7 +584,7 @@ body.wfacp_main_wrapper::-webkit-scrollbar-thumb {
 /* FAQ header/breadcrumb area — kill the 120px top padding
    Elementor sets padding via --padding-top CSS var consumed internally.
    We override padding-top directly with max specificity. */
-body.wfacp_main_wrapper .elementor-23004 .elementor-element.elementor-element-4114b91e.e-con-full.e-flex.e-con {
+body.wfacp_checkout-template .elementor-23004 .elementor-element.elementor-element-4114b91e.e-con-full.e-flex.e-con {
   padding-top: 16px !important;
   padding-bottom: 0 !important;
   padding-block-start: 16px !important;
@@ -592,43 +592,43 @@ body.wfacp_main_wrapper .elementor-23004 .elementor-element.elementor-element-41
 }
 
 /* Breadcrumb container — remove grey card background */
-body.wfacp_main_wrapper .elementor-23004 .elementor-element.elementor-element-195625ba,
-body.wfacp_main_wrapper .elementor-23004 .elementor-element.elementor-element-4f857093 {
+body.wfacp_checkout-template .elementor-23004 .elementor-element.elementor-element-195625ba,
+body.wfacp_checkout-template .elementor-23004 .elementor-element.elementor-element-4f857093 {
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
 }
 
 /* Breadcrumb text */
-body.wfacp_main_wrapper p:has(> a[href="#"]) {
+body.wfacp_checkout-template p:has(> a[href="#"]) {
   font-size: 14px !important;
   margin: 0 !important;
 }
 
 /* FAQs accordion on checkout */
-body.wfacp_main_wrapper [aria-label*="Accordion"] > div,
-body.wfacp_main_wrapper .wfacp_faq_section {
+body.wfacp_checkout-template [aria-label*="Accordion"] > div,
+body.wfacp_checkout-template .wfacp_faq_section {
   background-color: var(--ss-bg-card) !important;
   border-color: var(--ss-border) !important;
   color: var(--ss-text) !important;
 }
 
 /* "Need further help?" text */
-body.wfacp_main_wrapper .wfacp-form p {
+body.wfacp_checkout-template .wfacp-form p {
   color: var(--ss-text-secondary) !important;
 }
 
 /* Testimonial quotes in sidebar */
-body.wfacp_main_wrapper blockquote,
-body.wfacp_main_wrapper .wfacp-form p[class*="elementor"] {
+body.wfacp_checkout-template blockquote,
+body.wfacp_checkout-template .wfacp-form p[class*="elementor"] {
   color: var(--ss-text-tertiary) !important;
   font-style: italic !important;
 }
 
 /* Remove any leftover light-theme box shadows */
-body.wfacp_main_wrapper .wfacp-section,
-body.wfacp_main_wrapper .wfacp_main_form,
-body.wfacp_main_wrapper #payment,
-body.wfacp_main_wrapper .wfacp_order_summary_container {
+body.wfacp_checkout-template .wfacp-section,
+body.wfacp_checkout-template .wfacp_main_form,
+body.wfacp_checkout-template #payment,
+body.wfacp_checkout-template .wfacp_order_summary_container {
   box-shadow: none !important;
 }
