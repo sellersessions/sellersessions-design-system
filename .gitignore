@@ -8,3 +8,6 @@ review/screenshots/
 
 # Local Netlify folder
 .netlify
+
+# Browser-automation screenshots
+_captures/
