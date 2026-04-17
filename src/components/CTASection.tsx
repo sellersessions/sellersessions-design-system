@@ -18,8 +18,15 @@ export function CTASection({
   return (
     <section
       className="relative py-24 overflow-hidden"
-      style={{ background: 'linear-gradient(135deg, #461499 0%, #1a0540 100%)' }}
+      style={{ background: '#0C0322' }}
     >
+      {/* Radial purple glow — matches card hover pattern */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse 60% 50% at 50% 50%, rgba(117, 62, 247, 0.15) 0%, rgba(70, 20, 153, 0.05) 50%, transparent 80%)',
+        }}
+      />
       <Container className="relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -41,7 +48,7 @@ export function CTASection({
                 variant="cta"
                 size="lg"
                 href={primaryCTA.href}
-                className="!bg-white !text-[#461499] hover:!bg-[#f0f0f0]"
+                className="!bg-white !text-[#0C0322] hover:!bg-[#f0f0f0]"
               >
                 {primaryCTA.label}
               </Button>

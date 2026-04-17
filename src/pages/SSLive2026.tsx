@@ -37,7 +37,21 @@ const IMAGES = {
   logo: 'https://sellersessions.com/wp-content/uploads/2025/02/Seller-Sessions-Live-horizontal-Logo-NC.png',
   crowd: 'https://sellersessions.com/wp-content/uploads/2025/05/imagen-crowd-1.jpg',
   bgVenue: 'https://sellersessions.com/wp-content/uploads/2025/09/1_photo-1690585703267-de31ea667ef0ixlibrb-4.1-scaled.jpg',
+  // Placeholders — replace with real images before deploy
+  workshopHands: 'https://placehold.co/800x500/1a1a2e/753EF7?text=Workshop+Hands-On',
+  networking: 'https://placehold.co/800x500/1a1a2e/753EF7?text=Networking+Evening',
+  venue1: 'https://placehold.co/600x400/1a1a2e/753EF7?text=Venue+Setup',
+  venue2: 'https://placehold.co/600x400/1a1a2e/753EF7?text=Stage+View',
+  venue3: 'https://placehold.co/600x400/1a1a2e/753EF7?text=Workshop+Tables',
+  venue4: 'https://placehold.co/600x400/1a1a2e/753EF7?text=Crowd+Energy',
 }
+
+const SPEAKERS = [
+  { name: 'Speaker TBA', role: 'Topic coming soon', image: 'https://placehold.co/400x400/1a1a2e/753EF7?text=Speaker+1' },
+  { name: 'Speaker TBA', role: 'Topic coming soon', image: 'https://placehold.co/400x400/1a1a2e/753EF7?text=Speaker+2' },
+  { name: 'Speaker TBA', role: 'Topic coming soon', image: 'https://placehold.co/400x400/1a1a2e/753EF7?text=Speaker+3' },
+  { name: 'Speaker TBA', role: 'Topic coming soon', image: 'https://placehold.co/400x400/1a1a2e/753EF7?text=Speaker+4' },
+]
 
 const VIDEO_URL = 'https://sellersessions.com/wp-content/uploads/2025/05/New-video-venue-V2-.mp4'
 const BG_VIDEO_URL = 'https://sellersessions.com/wp-content/uploads/2025/08/Marko-Video-Background-Khairul-Fayyad-720p-h264.mp4'
@@ -473,42 +487,80 @@ export default function SSLive2026() {
           ============================================= */}
       <Section className="section-dark" style={{ paddingTop: '100px', paddingBottom: '100px' }}>
         <Container>
-          <div className="max-w-[900px] mx-auto text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="text-3xl md:text-[42px] font-bold mb-8 text-white">
-                Advanced Hands-On Learning<br />
-                <span className="text-[#753EF7]">in a Workshop Format</span>
-              </h2>
-            </motion.div>
+          <div className="max-w-[1100px] mx-auto">
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              {/* Left — Image */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="overflow-hidden rounded-xl"
+              >
+                <img
+                  src={IMAGES.workshopHands}
+                  alt="Hands-on workshop"
+                  className="w-full h-full object-cover aspect-[16/10]"
+                />
+              </motion.div>
 
-            <div className="grid md:grid-cols-3 gap-6">
-              {[
-                { icon: <Laptop className="w-7 h-7" />, text: 'Bring your own laptop — this is essential' },
-                { icon: <Plug className="w-7 h-7" />, text: 'Dedicated workstation with power outlets provided' },
-                { icon: <FileText className="w-7 h-7" />, text: 'Library of custom bots, plugins, walkthroughs and resources' },
-              ].map((item, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                >
-                  <Card padding="md" className="h-full text-center">
-                    <div className="inline-flex items-center justify-center w-14 h-14 rounded-full mb-4" style={{ backgroundColor: 'rgba(117, 62, 247, 0.15)' }}>
-                      <span className="text-[#753EF7]">{item.icon}</span>
+              {/* Right — Content */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+              >
+                <h2 className="text-3xl md:text-[42px] font-bold mb-8 text-white">
+                  Advanced Hands-On Learning<br />
+                  <span className="text-[#753EF7]">in a Workshop Format</span>
+                </h2>
+
+                <div className="space-y-4">
+                  {[
+                    { icon: <Laptop className="w-6 h-6" />, text: 'Bring your own laptop — this is essential' },
+                    { icon: <Plug className="w-6 h-6" />, text: 'Dedicated workstation with power outlets provided' },
+                    { icon: <FileText className="w-6 h-6" />, text: 'Library of custom bots, plugins, walkthroughs and resources' },
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-start gap-4">
+                      <div className="inline-flex items-center justify-center w-12 h-12 rounded-full flex-shrink-0" style={{ backgroundColor: 'rgba(117, 62, 247, 0.15)' }}>
+                        <span className="text-[#753EF7]">{item.icon}</span>
+                      </div>
+                      <p className="pt-3" style={{ color: 'rgba(255,255,255,0.8)', fontSize: '15px', lineHeight: '1.6' }}>{item.text}</p>
                     </div>
-                    <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '15px', lineHeight: '1.6' }}>{item.text}</p>
-                  </Card>
-                </motion.div>
-              ))}
+                  ))}
+                </div>
+              </motion.div>
             </div>
           </div>
         </Container>
+      </Section>
+
+      {/* =============================================
+          NETWORKING IMAGE
+          ============================================= */}
+      <Section className="section-card" style={{ paddingTop: '0', paddingBottom: '0' }}>
+        <div className="relative">
+          <div
+            className="h-[350px] md:h-[450px] bg-cover bg-center"
+            style={{ backgroundImage: `url(${IMAGES.networking})` }}
+          >
+            <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, #1a1a2e 0%, transparent 30%, transparent 70%, #1a1a2e 100%)' }} />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-center px-4"
+              >
+                <h2 className="text-3xl md:text-[42px] font-bold text-white mb-4" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
+                  Networking That <span className="text-[#753EF7]">Matters</span>
+                </h2>
+                <p className="text-lg" style={{ color: 'rgba(255,255,255,0.9)', textShadow: '0 2px 10px rgba(0,0,0,0.8)' }}>
+                  Where partnerships form and deals happen — no pitch decks, just real conversations.
+                </p>
+              </motion.div>
+            </div>
+          </div>
+        </div>
       </Section>
 
       {/* =============================================
@@ -587,6 +639,90 @@ export default function SSLive2026() {
           >
             Evening Strategy Sessions: Continue your development with organised evening discussions and roundtables focused on actionable insights from fellow sellers that extend learning beyond standard conference hours.
           </motion.p>
+        </Container>
+      </Section>
+
+      {/* =============================================
+          SPEAKERS
+          ============================================= */}
+      <Section className="section-dark" style={{ paddingTop: '100px', paddingBottom: '100px' }}>
+        <Container>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl md:text-[42px] font-bold mb-4 text-white">
+              Who's Speaking at <span className="text-[#753EF7]">SSL 2026</span>
+            </h2>
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '15px' }}>
+              Lineup announcement coming soon. All speakers are active sellers — no service providers on stage.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-[1000px] mx-auto">
+            {SPEAKERS.map((speaker, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+              >
+                <Card padding="none" className="overflow-hidden text-center">
+                  <div className="aspect-square overflow-hidden">
+                    <img
+                      src={speaker.image}
+                      alt={speaker.name}
+                      className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                    />
+                  </div>
+                  <div className="p-4">
+                    <h4 className="font-bold text-white text-sm">{speaker.name}</h4>
+                    <p className="text-xs mt-1" style={{ color: 'rgba(255,255,255,0.5)' }}>{speaker.role}</p>
+                  </div>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      {/* =============================================
+          VENUE GALLERY
+          ============================================= */}
+      <Section className="section-card" style={{ paddingTop: '80px', paddingBottom: '80px' }}>
+        <Container>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-10"
+          >
+            <h2 className="text-3xl md:text-[42px] font-bold mb-4 text-white">
+              The <span className="text-[#753EF7]">Experience</span>
+            </h2>
+          </motion.div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-[1200px] mx-auto">
+            {[IMAGES.venue1, IMAGES.venue2, IMAGES.venue3, IMAGES.venue4].map((src, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="overflow-hidden rounded-xl"
+              >
+                <img
+                  src={src}
+                  alt={`SSL event ${i + 1}`}
+                  className="w-full h-full object-cover aspect-[3/2] transition-transform duration-500 hover:scale-110"
+                />
+              </motion.div>
+            ))}
+          </div>
         </Container>
       </Section>
 
