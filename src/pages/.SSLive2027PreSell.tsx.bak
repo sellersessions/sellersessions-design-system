@@ -1,0 +1,508 @@
+/**
+ * Seller Sessions Live 2027 - Pre-Sell Landing Page
+ * Goes live within days of SSL 2026 (9 May 2026)
+ *
+ * Pricing model: 72-hour 50% off window post-event (£499.50),
+ * then full price £999.
+ *
+ * S1: Hero (WHY) — animated SVG + Claude Code focus
+ * S2: Claude Code value (WHY) — what you'll master
+ * S3: What You'll Build (WHAT) — skills, agents, automations
+ * S4: Event Details + Price (WHAT IF) — 72hr urgency
+ * S5: Final CTA (WHAT IF) — countdown urgency
+ *
+ * v8 — QA gauntlet fixes + full-width layout + logo fix + consistent CTAs
+ */
+
+import { useState } from 'react'
+import { motion, useReducedMotion } from 'framer-motion'
+import { Container } from '../components/Container'
+import { Section } from '../components/Section'
+import { Card } from '../components/Card'
+import { Button } from '../components/Button'
+import { HyperText } from '../components/HyperText'
+import {
+  Calendar,
+  Terminal,
+  Bot,
+  Workflow,
+  GitBranch,
+  Layers,
+  Clock,
+  ArrowRight,
+} from 'lucide-react'
+
+/* ─── Golden easing from design-db/animation.csv ─── */
+const GOLDEN_EASE = [0.16, 1, 0.3, 1] as const
+
+/* ─── Animated SVG: floating terminal brackets ─── */
+function FloatingTerminal({ reducedMotion }: { reducedMotion: boolean }) {
+  if (reducedMotion) return null
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+      <motion.svg
+        viewBox="0 0 60 60" className="absolute w-16 h-16 opacity-[0.07]"
+        style={{ top: '15%', left: '8%' }}
+        animate={{ y: [0, -12, 0], rotate: [0, 5, 0] }}
+        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+      >
+        <text x="10" y="42" fill="#753EF7" fontSize="40" fontFamily="monospace" fontWeight="bold">&gt;_</text>
+      </motion.svg>
+
+      <motion.svg
+        viewBox="0 0 40 80" className="absolute w-10 h-20 opacity-[0.05]"
+        style={{ top: '25%', right: '12%' }}
+        animate={{ y: [0, 10, 0], rotate: [0, -3, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+      >
+        <text x="5" y="60" fill="#F97316" fontSize="64" fontFamily="monospace">{'{'}</text>
+      </motion.svg>
+
+      <motion.svg
+        viewBox="0 0 40 60" className="absolute w-8 h-12 opacity-[0.06]"
+        style={{ bottom: '20%', left: '15%' }}
+        animate={{ y: [0, -8, 0] }}
+        transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+      >
+        <text x="5" y="45" fill="#753EF7" fontSize="48" fontFamily="monospace">/</text>
+      </motion.svg>
+
+      <motion.svg
+        viewBox="0 0 100 100" className="absolute w-24 h-24 opacity-[0.04]"
+        style={{ top: '60%', right: '8%' }}
+        animate={{ rotate: [0, 90, 0] }}
+        transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+      >
+        {[0, 1, 2, 3].map(row =>
+          [0, 1, 2, 3].map(col => (
+            <circle key={`${row}-${col}`} cx={15 + col * 25} cy={15 + row * 25} r="2" fill="#753EF7" />
+          ))
+        )}
+      </motion.svg>
+    </div>
+  )
+}
+
+/* ─── Animated SVG: pulsing rings (Claude/AI aesthetic) ─── */
+function PulsingRings({ reducedMotion }: { reducedMotion: boolean }) {
+  if (reducedMotion) return null
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+      <svg className="absolute w-full h-full" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+        {[300, 500, 700].map((r, i) => (
+          <motion.circle
+            key={i}
+            cx="720" cy="450" r={r}
+            fill="none"
+            stroke="rgba(117, 62, 247, 0.04)"
+            strokeWidth="1"
+            initial={{ scale: 0.95, opacity: 0 }}
+            animate={{ scale: [0.95, 1.05, 0.95], opacity: [0.03, 0.06, 0.03] }}
+            transition={{ duration: 4 + i * 2, repeat: Infinity, ease: 'easeInOut', delay: i * 0.8 }}
+          />
+        ))}
+      </svg>
+    </div>
+  )
+}
+
+/* ─── Countdown timer (72-hour window) ─── */
+function CountdownBadge({ reducedMotion }: { reducedMotion: boolean }) {
+  return (
+    <div
+      className="relative inline-flex items-center gap-2 px-4 py-2 rounded-lg"
+      style={{
+        background: 'linear-gradient(135deg, rgba(249, 115, 22, 0.15) 0%, rgba(117, 62, 247, 0.15) 100%)',
+        border: '1px solid rgba(249, 115, 22, 0.2)',
+      }}
+    >
+      {!reducedMotion && (
+        <motion.div
+          className="absolute inset-0 rounded-lg pointer-events-none"
+          style={{ boxShadow: '0 0 25px rgba(249,115,22,0.15)' }}
+          animate={{ opacity: [0.4, 1, 0.4] }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+        />
+      )}
+      <Clock className="w-4 h-4 text-ss-orange" />
+      <span className="text-sm font-semibold text-white/90">72-Hour Window</span>
+      <span className="text-sm text-white/70">|</span>
+      <span className="text-sm font-bold text-ss-orange">50% Off</span>
+    </div>
+  )
+}
+
+const IMAGES = {
+  logo: 'https://sellersessions.com/wp-content/uploads/2025/02/Seller-Sessions-Live-horizontal-Logo-NC.png',
+}
+
+const CHECKOUT_URL = '#get-tickets'
+
+export default function SSLive2027PreSell() {
+  const prefersReducedMotion = useReducedMotion() ?? false
+  const [ticketLoading, setTicketLoading] = useState(false)
+
+  const handleTicketClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    setTicketLoading(true)
+    setTimeout(() => { window.location.href = CHECKOUT_URL }, 600)
+  }
+
+  return (
+    <main className="min-h-screen bg-ss-bg">
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-ss-purple focus:text-white focus:px-4 focus:py-2 focus:rounded-lg">
+        Skip to main content
+      </a>
+
+      {/* ═══════════════════════════════════════════
+          S1: HERO — Claude Code focus + animated SVGs
+          ═══════════════════════════════════════════ */}
+      <header
+        id="main-content"
+        className="relative overflow-hidden"
+        style={{
+          minHeight: '90vh',
+          display: 'flex', flexDirection: 'column', justifyContent: 'center',
+          background: `
+            radial-gradient(ellipse at 50% 30%, rgba(117, 62, 247, 0.15) 0%, transparent 60%),
+            radial-gradient(ellipse at 20% 70%, rgba(70, 20, 153, 0.10) 0%, transparent 50%),
+            radial-gradient(ellipse at 80% 60%, rgba(249, 115, 22, 0.06) 0%, transparent 40%),
+            linear-gradient(180deg, #0C0322 0%, #0A0A0A 100%)
+          `,
+        }}
+      >
+          <PulsingRings reducedMotion={prefersReducedMotion} />
+          <FloatingTerminal reducedMotion={prefersReducedMotion} />
+
+          <Container size="xl" className="relative py-16 md:py-24 text-center" style={{ zIndex: 2 }}>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: GOLDEN_EASE }}
+            >
+              {/* Single combined badge */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.0, ease: GOLDEN_EASE }}
+                className="mb-8"
+              >
+                <span
+                  className="inline-flex flex-wrap items-center justify-center gap-3 px-5 py-2 rounded-full text-sm font-semibold uppercase tracking-[2px]"
+                  style={{ backgroundColor: 'rgba(117, 62, 247, 0.12)', border: '1px solid rgba(117, 62, 247, 0.25)' }}
+                >
+                  <Calendar className="w-4 h-4 text-ss-accent" />
+                  <span className="text-white/80">May 8, 2027</span>
+                  <span className="text-white/40 hidden sm:inline">|</span>
+                  <span className="text-white/80">London</span>
+                  <span className="text-white/40 hidden sm:inline">|</span>
+                  <span className="text-ss-orange">72hrs at 50% Off</span>
+                </span>
+              </motion.div>
+
+              {/* Logo */}
+              <motion.img
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.15, ease: GOLDEN_EASE }}
+                src={IMAGES.logo}
+                alt="Seller Sessions Live"
+                className="h-14 md:h-20 w-auto max-w-md mx-auto mb-8 object-contain"
+              />
+
+              {/* Headline */}
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, ease: GOLDEN_EASE }}
+                className="text-3xl md:text-5xl lg:text-[56px] font-bold mb-4 leading-tight text-white"
+              >
+                Build Your Business<br />
+                <HyperText text="With Claude Code" className="text-ss-accent" duration={1800} />
+              </motion.h1>
+
+              {/* Subheadline */}
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.45, ease: GOLDEN_EASE }}
+                className="text-lg md:text-xl mb-10 text-white/70"
+              >
+                One day. One tool. Everything changes.
+              </motion.p>
+
+              {/* CTA */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6, ease: GOLDEN_EASE }}
+                className="flex flex-wrap justify-center gap-4"
+              >
+                <Button
+                  variant="outline" size="lg" href={CHECKOUT_URL}
+                  className="!border-0 !bg-transparent btn-animated-border hover:!bg-white/5 focus-visible:ring-2 focus-visible:ring-ss-orange focus-visible:outline-none"
+                  isLoading={ticketLoading} onClick={handleTicketClick}
+                >
+                  50% Off — £499.50
+                </Button>
+                <Button variant="outline" size="lg" href="#what-youll-build" className="!border-white/30 hover:!bg-white/10 focus-visible:ring-2 focus-visible:ring-ss-accent focus-visible:outline-none">
+                  What You'll Build
+                </Button>
+              </motion.div>
+            </motion.div>
+          </Container>
+      </header>
+
+      {/* ═══════════════════════════════════════════
+          S2: CLAUDE CODE VALUE — Why this tool changes everything
+          ═══════════════════════════════════════════ */}
+      <Section id="claude-code" className="section-mid relative overflow-hidden py-16 md:py-24">
+        <Container size="xl" className="relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, ease: GOLDEN_EASE }}
+            className="text-center mb-12"
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-[2px] mb-6"
+              style={{ backgroundColor: 'rgba(117, 62, 247, 0.12)', color: '#753EF7', border: '1px solid rgba(117, 62, 247, 0.2)' }}>
+              <Terminal className="w-3.5 h-3.5" />
+              Powered by Anthropic
+            </div>
+            <h2 className="text-2xl md:text-4xl lg:text-[48px] font-bold mb-4 text-white">
+              One Tool. <span className="text-ss-accent">Every Workflow.</span>
+            </h2>
+            <p className="max-w-2xl mx-auto text-white/70 text-base leading-[1.8]">
+              Claude Code is an operating system for your business.
+              No code required. Just conversation.
+            </p>
+          </motion.div>
+
+          {/* Feature cards — full width grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+            {[
+              {
+                icon: Bot,
+                title: 'Agents That Work For You',
+                desc: 'Autonomous agents that handle product research, competitor tracking, and listing optimisation.',
+                color: '#753EF7',
+              },
+              {
+                icon: Workflow,
+                title: 'Business Automations',
+                desc: 'Connect data sources, automate reporting, and trigger actions based on your metrics.',
+                color: '#F97316',
+              },
+              {
+                icon: GitBranch,
+                title: 'Skills & Repos',
+                desc: 'Production-ready skills, hooks, and frameworks you install and use the same day.',
+                color: '#FBBF24',
+              },
+              {
+                icon: Layers,
+                title: 'Joining the Dots',
+                desc: 'Combine agents, automations, and data into one sophisticated system for your business.',
+                color: '#753EF7',
+              },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08, duration: 0.5, ease: GOLDEN_EASE }}
+              >
+                <Card padding="lg" className="h-full group">
+                  <div className="flex flex-col items-center text-center gap-4">
+                    <div
+                      className="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform duration-200 group-hover:scale-110"
+                      style={{ backgroundColor: `${item.color}15`, border: `1px solid ${item.color}25` }}
+                    >
+                      <item.icon className="w-7 h-7" style={{ color: item.color }} />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-white mb-2">{item.title}</h3>
+                      <p className="text-white/70 text-sm leading-relaxed">{item.desc}</p>
+                    </div>
+                  </div>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      {/* ═══════════════════════════════════════════
+          S3: WHAT YOU'LL BUILD — Concrete takeaways
+          ═══════════════════════════════════════════ */}
+      <Section id="what-youll-build" className="section-dark relative overflow-hidden py-16 md:py-24">
+        <Container size="xl">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left: heading + description */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, ease: GOLDEN_EASE }}
+            >
+              <h2 className="text-2xl md:text-4xl lg:text-[48px] font-bold mb-4 text-white leading-tight">
+                Walk Out With <span className="text-ss-accent">Working Systems</span>
+              </h2>
+              <p className="text-white/70 text-base leading-[1.8]">
+                This isn't theory. You build live alongside the speakers on your own laptop.
+                Everything you create is yours to take home and keep using.
+              </p>
+            </motion.div>
+
+            {/* Right: staggered list */}
+            <div className="space-y-3">
+              {[
+                'Production-ready agents for product research and competitor tracking',
+                'Automated reporting pipelines that pull from your Seller Central data',
+                'Custom skills and hooks you can install in Claude Code immediately',
+                'A framework for building sophisticated multi-agent workflows',
+                'Data analysis systems that turn raw numbers into decisions',
+                'Evening dinner and networking with 7 and 8-figure sellers',
+              ].map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.08, duration: 0.4, ease: GOLDEN_EASE }}
+                  className="flex items-center gap-4 p-4 rounded-xl transition-colors duration-200 hover:bg-white/[0.03]"
+                  style={{ borderLeft: `2px solid ${i === 5 ? '#FBBF24' : '#753EF7'}40` }}
+                >
+                  <ArrowRight className="w-5 h-5 flex-shrink-0" style={{ color: i === 5 ? '#FBBF24' : '#753EF7' }} />
+                  <span className="text-white/80 text-base">{item}</span>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </Container>
+      </Section>
+
+      {/* ═══════════════════════════════════════════
+          S4: EVENT DETAILS + PRICING — 72hr urgency
+          ═══════════════════════════════════════════ */}
+      <Section id="get-tickets" className="section-mid py-16 md:py-24">
+        <Container size="xl">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left: event info */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, ease: GOLDEN_EASE }}
+            >
+              <img
+                src={IMAGES.logo}
+                alt="Seller Sessions Live"
+                className="h-12 md:h-16 w-auto max-w-sm mb-8 object-contain"
+              />
+              <h2 className="text-2xl md:text-4xl font-bold mb-6 text-white">
+                Saturday 8 May 2027
+              </h2>
+              <div className="space-y-3 text-white/70 text-lg">
+                <p>London</p>
+                <p>Full Day Conference + Evening Dinner</p>
+                <p>Networking with 7 and 8-figure sellers</p>
+              </div>
+            </motion.div>
+
+            {/* Right: pricing card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1, duration: 0.5, ease: GOLDEN_EASE }}
+            >
+              <Card padding="lg">
+                <div className="text-center py-4">
+                  <div className="mb-2">
+                    <span className="text-lg text-white/40 line-through mr-3">£999</span>
+                    <span className="text-4xl md:text-5xl font-bold text-white" style={{ letterSpacing: '-0.02em' }}>£499.50</span>
+                  </div>
+                  <p className="text-white/50 text-sm mb-8">
+                    72-hour window. Then full price.
+                  </p>
+
+                  <Button
+                    variant="outline" size="lg" href={CHECKOUT_URL}
+                    className="!border-0 !bg-transparent btn-animated-border hover:!bg-white/5 w-full md:w-auto focus-visible:ring-2 focus-visible:ring-ss-orange focus-visible:outline-none"
+                    isLoading={ticketLoading} onClick={handleTicketClick}
+                  >
+                    Secure Your Seat
+                  </Button>
+                </div>
+              </Card>
+            </motion.div>
+          </div>
+        </Container>
+      </Section>
+
+      {/* ═══════════════════════════════════════════
+          S5: FINAL CTA — urgency close (peak-end rule)
+          ═══════════════════════════════════════════ */}
+      <section
+        className="relative py-16 md:py-20 overflow-hidden"
+        style={{
+          background: `
+            radial-gradient(ellipse at 50% 50%, rgba(117, 62, 247, 0.12) 0%, transparent 60%),
+            linear-gradient(180deg, #0C0322 0%, #0A0A0A 100%)
+          `,
+        }}
+      >
+        <Container size="xl" className="relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, ease: GOLDEN_EASE }}
+            className="text-center"
+          >
+            <div className="mb-6">
+              <CountdownBadge reducedMotion={prefersReducedMotion} />
+            </div>
+            <h2 className="text-2xl md:text-4xl lg:text-[48px] font-bold mb-4 text-white">
+              The Clock Is Running
+            </h2>
+            <p className="text-lg mb-8 max-w-2xl mx-auto text-white/70" style={{ lineHeight: '1.7' }}>
+              Every edition sells out. This 50% window won't be extended.
+              Once the 72 hours are up, it's full price.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Button
+                variant="outline" size="lg" href={CHECKOUT_URL}
+                className="!border-0 !bg-transparent btn-animated-border hover:!bg-white/5 focus-visible:ring-2 focus-visible:ring-ss-orange focus-visible:outline-none"
+                isLoading={ticketLoading} onClick={handleTicketClick}
+              >
+                Get 50% Off — £499.50
+              </Button>
+            </div>
+          </motion.div>
+        </Container>
+      </section>
+
+      {/* ═══════════════════════════════════════════
+          FOOTER
+          ═══════════════════════════════════════════ */}
+      <footer className="py-12 border-t border-white/5">
+        <Container size="xl">
+          <div className="text-center">
+            <img src={IMAGES.logo} alt="Seller Sessions Live" className="h-10 w-auto max-w-xs mx-auto mb-4 opacity-50 object-contain" />
+            <p className="text-white/50 text-sm mb-2">
+              Seller Sessions Live 2027 — Saturday 8 May 2027, London
+            </p>
+            <p className="text-white/40 text-xs">
+              &copy; {new Date().getFullYear()} Riley Tate Ltd. All rights reserved.
+              &nbsp;|&nbsp; <a href="mailto:danny@sellersessions.com" className="hover:text-white/60 transition-colors focus-visible:ring-2 focus-visible:ring-ss-accent focus-visible:outline-none focus-visible:rounded-sm">danny@sellersessions.com</a>
+            </p>
+          </div>
+        </Container>
+      </footer>
+    </main>
+  )
+}

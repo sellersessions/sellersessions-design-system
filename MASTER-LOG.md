@@ -2,7 +2,7 @@
 project: ss-page-builder
 status: active
 tier: 1
-last_session: 2026-03-21
+last_session: 2026-04-12
 tags: [react, wordpress]
 ---
 
@@ -32,11 +32,15 @@ Key files: `scripts/deploy.js` (core pipeline), `src/pages/` (3 pages), `src/com
 
 **Safety infrastructure (Session 4-5):** Code Snippet overwrite bug fixed -- `page-scripts.json` tracks JS URLs across all pages. Pre-promote guards check placeholders and links. Responsive screenshot script at `npm run test:responsive`. Full rollback docs in `ROLLBACK.md`. Elementor backup at `scripts/elementor-backup-23003.json`. Rollback script at `scripts/rollback-swap.sh`.
 
-**What needs doing:** Deploy visual refinements + teardown changes to live (after Danny review). Add mid-page CTAs (after sections 5 and 8). Fix testimonial grid debt (Nir 11w, Rony 13w). Speaker headshot photos. Build home page. Events Hub and Events Archive.
+**Checkout theme (26 Mar):** Dark design system applied to WooFunnels checkout (`/checkouts/ssl26-checkout/`) via CSS-only overrides. `checkout-theme.css` hosted on GitHub Pages, loaded via Code Snippet #10 (`wp_footer` priority 999). Body class: `wfacp_checkout-template` (NOT `wfacp_main_wrapper`). 8 layers: foundation, form fields, buttons, order summary, payment, validation, responsive, micro-interactions. Stripe card fields remain white (cross-origin iframe — needs PHP filter for dark mode, separate task). Rollback: deactivate Snippet #10.
 
-**Visual polish (19 Mar session):** 14 premium techniques applied via REFINE audit from Claude UI Workflow pipeline. Section banding (3 depths), atmospheric gradient orbs, dramatic stat numerals with count-up animation, badge chips on speakers, proof elevation near pricing, CTA pulse glow, glass overlay on hero, parallax crowd image, bento asymmetry on feature grid, phase-banded agenda timeline. NOT yet deployed to live -- local only.
+**What needs doing:** Checkout CSS refinements (Danny to review live). Stripe dark mode (PHP filter). Add mid-page CTAs (after sections 5 and 8). Fix testimonial grid debt (Nir 11w, Rony 13w). Build home page. Events Hub and Events Archive.
 
-**Last session (22 Mar):** Loom feedback session — Danny recorded 9:37 video walkthrough, Claude extracted 13 items and implemented all. Animation kills (Modular Format, SpeakerTimeline slide-ins, testimonials, video testimonials all made static). Text edits ("Advanced Learning", "Why This Format Works", "SSL 2026" global). FAQ contact merged into venue (4→3 items). HyperText slowed 600→1800ms. Hero CTA hover added. Check/X icons restyled to SS palette. Deployed to Netlify: https://ss-live-2026-preview.netlify.app. NOT yet deployed to WP live.
+**Last session (12 Apr, continued):** SSL 2027 pre-sell page through full QA gauntlet. 7 parallel audit agents (Web Design Guidelines, Emil Animation, Impeccable Anti-Cliche, A11y WCAG, Web Performance, Design DB CSVs, Mobile Responsive) scored the page: 23 PASS, 27 WARN, 10 FAIL. Key fixes applied (v7): prefers-reduced-motion hook, focus-visible rings, landmarks/h1 hierarchy, contrast bumps (white/70+ minimum), golden easing on all entries, hero stagger compressed 1.6s→0.6s, boxShadow→opacity glow (GPU), S5 CTA made visible. v8: full-width layout (removed inner max-w constraints), logo squash fix (object-contain), 4-col feature grid, 2-col split for S3+S4, consistent btn-animated-border on all CTAs, background textures removed from S2+S3. Experimented with hybrid light/dark colour scheme (v9-v10) but reverted to dark — light mode needs more design work. Draft deployed to Netlify: `ss-live-2026-preview.netlify.app`. Not yet promoted to prod.
+
+**Previous session (12 Apr, first half):** SSL 2027 pre-sell landing page built as 8-phase pipeline run. `src/pages/SSLive2027PreSell.tsx` created with 5 sections: Hero (Claude Code + 72hr badge), Claude Code Value (4 balanced cards), What You'll Build (arrow list), Event Details (clean Card, no NeonGradientCard), Final CTA. 6 REFINE iterations: v1 too lazy, v2 new content, v3 hero trimmed, v4 cards balanced, v5 full-bleed hero, v6 pricing simplified. V6 SIGNED OFF. Pricing model: 72-hour 50% off window (£499.50), then £999. Event: Saturday 8 May 2027, London, same venue.
+
+**Previous session (26 Mar):** Full deploy to live. Landing page at `sellersessions.com/sp/seller-sessions-live-2026/` updated with all Loom feedback changes. Media assets moved to GitHub Pages. CTA links go direct to `/checkouts/ssl26-checkout/`. Checkout page has dark theme via CSS overrides (Snippet #10). Deploy script now handles `wffn_landing` post type and pushes media + CSS to gh-pages.
 
 ## Iteration Cycle (permanent reference)
 
@@ -129,14 +133,52 @@ Key files: `scripts/deploy.js` (core pipeline), `src/pages/` (3 pages), `src/com
 - [x] Visual REFINE pass -- 14/19 premium techniques applied (section banding, stat numerals, count-up, badge chips, proof elevation, CTA pulse, glass overlay, parallax, bento grid, phase-banded agenda, atmospheric orbs, dot-grid texture)
 - [x] Danny Loom feedback review -- 13 items extracted and implemented (22 Mar)
 - [ ] Danny visually reviews CardStack carousel (concept approved, refinement TBD)
-- [ ] Deploy all local changes to WP live (after Danny final review on Netlify preview)
+- [x] Deploy all local changes to WP live (26 Mar -- landing page + checkout theme)
+- [x] Speaker images served from GitHub Pages (not WP media)
+- [x] CTA links changed from ?wffn-next-link=yes to direct /checkouts/ssl26-checkout/
+- [x] Deploy script fixed for wffn_landing post type
+- [x] Checkout dark theme CSS (8 layers, Snippet #10)
+- [ ] Checkout CSS refinements -- Danny to review live and flag issues
+- [ ] Stripe card fields dark mode (requires PHP filter, separate task)
 - [ ] Add mid-page CTAs after sections 5 and 8 (10-section gap currently)
-- [ ] Alex reviews standalone HTML (`review/SSL2026-review-draft.html`)
 - [ ] Fix testimonial grid debt (Nir 11w, Rony 13w -- need longer quotes)
-- [ ] Speaker headshot photos -- swap placeholders for real images
-- [ ] Run `npm run test:responsive` -- review mobile/tablet screenshots
+- [ ] Marko background video 404 (WP-hosted, needs re-upload)
 - [ ] Build home page (`src/pages/HomePage.tsx`)
 - [ ] Repeat for Events Hub and Events Archive pages
+
+---
+
+## Session 11 -- 2026-03-26 23:54 GMT
+
+**Full deploy to live + checkout dark theme**
+
+**Phase 1 — Landing page deploy to WP live:**
+- Deployed Netlify preview (13 Loom feedback changes) to live WP page 23003
+- Fixed deploy script: `wffn_landing` post type support added to PAGE_MAP + REST API endpoint
+- Promote guards passed (0 placeholders, 0 link issues)
+
+**Phase 2 — Media assets to GitHub Pages:**
+- All media (textures, speaker photos, video testimonials, speakers animation) moved from WP-relative paths to absolute GitHub Pages URLs
+- Deploy script updated: copies `videos/`, `thumbnails/`, `speakers/`, root PNGs + CSS to gh-pages branch
+- 10 of 11 404s resolved. Only remaining: Marko background video (WP-hosted)
+
+**Phase 3 — CTA checkout links:**
+- Changed all 4 ticket CTAs from `?wffn-next-link=yes` to direct `/checkouts/ssl26-checkout/`
+- Eliminates dependency on WooFunnels JS redirect (which WP Rocket defers)
+
+**Phase 4 — Checkout dark theme:**
+- Created `src/styles/checkout-theme.css` (8 layers, ~300 lines)
+- Hosted on GitHub Pages, loaded via Code Snippet #10 (`wp_footer` priority 999)
+- Body class discovery: `wfacp_checkout-template` not `wfacp_main_wrapper` — fixed all 139 selectors
+- FAQ breadcrumb padding: Elementor uses CSS custom properties (`--padding-top: 120px`) consumed by `.e-con` rule. Override needed max specificity + `!important` on `padding-top` directly
+- Injection moved from `wp_enqueue_scripts` (head) to `wp_footer` priority 999 (after Elementor inline styles)
+
+**Decisions:**
+- Option B for media hosting (GitHub Pages, not WP Media Library) — same CDN as JS, no WP admin needed
+- Direct checkout URL over WooFunnels redirect — more reliable with WP Rocket
+- CSS-only checkout theme — zero risk to WooCommerce/Stripe/FooEvents functionality
+
+**Known limitation:** Stripe card input fields remain white (cross-origin iframe). Fix requires PHP filter `woocommerce_stripe_elements_options` — separate task.
 
 ---
 

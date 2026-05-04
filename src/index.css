@@ -420,6 +420,15 @@
     animation: ctaPulse 2.5s ease-in-out infinite;
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    .cta-pulse {
+      animation: none;
+    }
+    .glow-card:hover {
+      transform: none;
+    }
+  }
+
   /* ========================================
      DOT GRID TEXTURE
      ======================================== */
