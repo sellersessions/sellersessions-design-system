@@ -9,6 +9,7 @@
  * Usage:
  *   npm run deploy -- --page ssl2026
  *   npm run deploy -- --page ssl2026 --promote   (sets status to publish)
+ *   npm run deploy -- --page ssl2027 --promote   (SSL 2027 live page)
  *
  * Requires .env with:
  *   WP_URL=https://sellersessions.com
@@ -68,6 +69,7 @@ const AUTH = 'Basic ' + Buffer.from(`${WP_USER}:${WP_APP_PASSWORD}`).toString('b
 
 const PAGE_MAP = {
   ssl2026: { name: 'SSL 2026 Landing', liveId: 23003, testId: 28352 },
+  ssl2027: { name: 'SSL 2027 Landing', liveId: 28562, testId: null },
   eventshub: { name: 'Events Hub', liveId: null, testId: null },
   eventsarchive: { name: 'Events Archive', liveId: null, testId: null },
 }
@@ -81,7 +83,7 @@ const pageFlag = args.indexOf('--page')
 const promote = args.includes('--promote')
 
 if (pageFlag === -1 || !args[pageFlag + 1]) {
-  console.error('Usage: npm run deploy -- --page <ssl2026|eventshub|eventsarchive>')
+  console.error('Usage: npm run deploy -- --page <ssl2026|ssl2027|eventshub|eventsarchive>')
   process.exit(1)
 }
 
@@ -270,6 +272,29 @@ async function main() {
 
     const updated = await updateRes.json()
     console.log(`  Updated: ${updated.link}`)
+  }
+
+  // After deploy: update Code Snippet 7 on WP to point to the new JS bundle.
+  // The snippet maps page IDs to their JS bundle URL (loaded via wp_footer).
+  // ssl2027 live page ID is 28562.
+  if (pageKey === 'ssl2027' && promote) {
+    console.log('\nUpdating Code Snippet 7 for ssl2027...')
+    const snippetRes = await fetch(`${WP_URL}/wp-json/wp/v2/code-snippets/7`, {
+      method: 'POST',
+      headers: {
+        'Authorization': AUTH,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        code: `add_action("wp_footer", function() {\n    $page_scripts = [\n        28352 => "${jsUrl}",\n        23003 => "${jsUrl}",\n        28562 => "${jsUrl}",\n    ];\n    if (is_singular() && isset($page_scripts[get_the_ID()]) && $page_scripts[get_the_ID()]) {\n        echo '<script src="' . esc_url($page_scripts[get_the_ID()]) . '"></script>';\n    }\n});`,
+      }),
+    })
+    if (snippetRes.ok) {
+      console.log('  Code Snippet 7 updated with ssl2027 bundle URL.')
+    } else {
+      console.warn('  Could not auto-update Code Snippet 7 via REST — update manually in WP Admin.')
+      console.warn(`  Add: 28562 => "${jsUrl}"`)
+    }
   }
 
   console.log('\nDeploy complete.')
