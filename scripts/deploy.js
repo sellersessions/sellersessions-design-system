@@ -9,6 +9,7 @@
  * Usage:
  *   npm run deploy -- --page ssl2026
  *   npm run deploy -- --page ssl2026 --promote   (sets status to publish)
+ *   npm run deploy -- --page ssl2027 --promote   (SSL 2027 live page)
  *
  * Requires .env with:
  *   WP_URL=https://sellersessions.com
@@ -104,6 +105,7 @@ ${entries.join('\n')}
 
 const PAGE_MAP = {
   ssl2026: { name: 'SSL 2026 Landing', liveId: 23003, testId: 28352, file: 'SSLive2026.tsx', livePostType: 'wffn_landing' },
+  ssl2027: { name: 'SSL 2027 Landing', liveId: 28562, testId: null,  file: 'SSLive2027.tsx' },
   eventshub: { name: 'Events Hub', liveId: null, testId: null, file: 'EventsHub.tsx' },
   eventsarchive: { name: 'Events Archive', liveId: null, testId: null, file: 'EventsArchive.tsx' },
 }
@@ -117,7 +119,7 @@ const pageFlag = args.indexOf('--page')
 const promote = args.includes('--promote')
 
 if (pageFlag === -1 || !args[pageFlag + 1]) {
-  console.error('Usage: npm run deploy -- --page <ssl2026|eventshub|eventsarchive>')
+  console.error('Usage: npm run deploy -- --page <ssl2026|ssl2027|eventshub|eventsarchive>')
   process.exit(1)
 }
 
@@ -484,7 +486,7 @@ async function main() {
 
   const checkoutCssUrl = `${GH_PAGES_BASE}/checkout-theme.css`
   const checkoutSnippetCode = `add_action('wp_footer', function() {
-    if (is_singular('wffn_checkout') || strpos(\$_SERVER['REQUEST_URI'], '/checkouts/') !== false) {
+    if (is_singular('wffn_checkout') || strpos($_SERVER['REQUEST_URI'], '/checkouts/') !== false) {
         echo '<link rel="stylesheet" href="${checkoutCssUrl}?v=${Date.now()}" />';
     }
 }, 999);`
